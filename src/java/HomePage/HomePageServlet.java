@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -29,6 +30,7 @@ public class HomePageServlet extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            HttpSession ss = request.getSession(false);
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -36,7 +38,7 @@ public class HomePageServlet extends HttpServlet {
             out.println("<title>Servlet HomePageServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomePageServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet HomePageServlet at " + request.getContextPath () +"/"+ ss.getAttribute("user_email") +"</h1>");
             out.println("</body>");
             out.println("</html>");
         }

@@ -41,6 +41,7 @@ public class RegisterServlet extends HttpServlet {
                 request.setAttribute("phone", phone);
                 request.setAttribute("email", email);
                 request.setAttribute("password", password);
+                request.setAttribute("cfpassword", cfpassword);
                 // Validate email format
                 if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
                     request.setAttribute("message", "Please enter a valid email format!");
@@ -62,11 +63,25 @@ public class RegisterServlet extends HttpServlet {
                     return;
                 }
                 
+               
+                UserDAO u = new UserDAO();
+                for(User x : u.getAllUser()){
+                    if(x.getEmail().equals(email)){
+                        request.setAttribute("message", "Email are already existed!");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
+                    }
+                    if(x.getPhone().equals(phone)){
+                        request.setAttribute("message", "Phone are already existed!");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
+                    }
+                }
+                u.addUser(new User(name, address,gender, phone, email, password, "customer"));
+                request.setAttribute("message", "Registered successfully");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
                 // If all validations pass, you can proceed with further processing like saving to a database.
                 // For now, let's just forward to a success page or back to the registration page
-                request.setAttribute("message", "Registration successful!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-                
             } catch (NumberFormatException e) {
                 // Handle invalid number format for gender
                 request.setAttribute("message", "Invalid gender value!");

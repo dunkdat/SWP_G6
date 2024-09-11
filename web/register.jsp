@@ -76,13 +76,13 @@
                 <input type="text" id="name" name="name" value="${name}" required>
 
                 <label for="address">Address:</label>
-                <input type="address"id="address" name="address" value="${address}"required></input>
+                <input type="address"id="address" name="address" value="${address}"required>
 
                 <label for="gender">Gender:</label>
                 <select id="gender" name="gender" required>
                     <option value="" disabled selected>Select Gender</option>
-                    <option value="1" ${gender == 1 ? 'slected' : ''}>Male</option>
-                    <option value="0" ${gender == 0 ? 'slected' : ''}>Female</option>
+                    <option value="1" ${gender == 1 ? 'selected' : ''}>Male</option>
+                    <option value="0" ${gender == 0 ? 'selected' : ''}>Female</option>
                 </select>
 
                 <label for="phone">Phone:</label>
@@ -92,15 +92,15 @@
                 <input type="email" id="email" name="email" value="${email}"required>
 
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" value="${password}" required>
 
                 <label for="confirm-password">Confirm Password:</label>
-                <input type="password" id="confirm-password" name="cfpassword" required>
+                <input type="password" id="confirm-password" name="cfpassword" value="${cfpassword}" required>
 
                 <input type="submit" value="Register">
             </form>
                  <div style="color:red; font-style: italic">${message}</div>
         </div>
-       
+        
     </body>
 </html>

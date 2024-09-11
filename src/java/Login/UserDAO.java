@@ -18,7 +18,7 @@ public class UserDAO extends DBContext{
     public List<User> getAllUser() {
         List<User> t = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM User";
+            String sql = "SELECT * FROM Users";
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -29,5 +29,21 @@ public class UserDAO extends DBContext{
             System.out.println(e);
         }
         return t;
+    }
+    public void addUser(User x){
+        try{
+            String sql = "insert Users(name, address, gender, phone, username, password, role) values(?,?,?,?,?,?,?)";
+            PreparedStatement   statement = connection.prepareStatement(sql);
+            statement.setString(1, x.getName());
+            statement.setString(2, x.getAddress());
+            statement.setInt(3, x.getGender());
+            statement.setString(4, x.getPhone());
+            statement.setString(5, x.getEmail());
+            statement.setString(6, x.getPassword());
+            statement.setString(7, x.getRole());
+            statement.executeUpdate();
+        }catch(SQLException ex){
+            System.err.println("");
+        }
     }
 }

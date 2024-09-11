@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -36,6 +37,8 @@ public class LoginServlet extends HttpServlet {
                 boolean log = false;
             for(User x : u.getAllUser()){
                 if(x.email.equals(email) && x.password.equals(password)){
+                    HttpSession session = request.getSession();
+                    session.setAttribute("user_email", x.email);
                     log=true;
                     request.getRequestDispatcher("homepage").forward(request, response);
                 }
