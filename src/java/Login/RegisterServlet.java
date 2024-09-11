@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * RegisterServlet handles user registration logic.
@@ -22,7 +23,7 @@ public class RegisterServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+        HttpSession ss = request.getSession();
         String name = request.getParameter("name");
         String address = request.getParameter("address");
         String genderStr = request.getParameter("gender");
@@ -35,13 +36,13 @@ public class RegisterServlet extends HttpServlet {
             try {
                 // Gender validation
                 int gender = Integer.parseInt(genderStr);
-                 request.setAttribute("name", name);
-                request.setAttribute("address", address);
-                request.setAttribute("gender", gender);
-                request.setAttribute("phone", phone);
-                request.setAttribute("email", email);
-                request.setAttribute("password", password);
-                request.setAttribute("cfpassword", cfpassword);
+                 ss.setAttribute("name", name);
+                ss.setAttribute("address", address);
+                ss.setAttribute("gender", gender);
+                ss.setAttribute("phone", phone);
+                ss.setAttribute("email", email);
+                ss.setAttribute("password", password);
+                ss.setAttribute("cfpassword", cfpassword);
                 // Validate email format
                 if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
                     request.setAttribute("message", "Please enter a valid email format!");
@@ -77,9 +78,8 @@ public class RegisterServlet extends HttpServlet {
                     return;
                     }
                 }
-                u.addUser(new User(name, address,gender, phone, email, password, "customer"));
-                request.setAttribute("message", "Registered successfully");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+               
+                request.getRequestDispatcher("UserVerify").forward(request, response);
                 // If all validations pass, you can proceed with further processing like saving to a database.
                 // For now, let's just forward to a success page or back to the registration page
             } catch (NumberFormatException e) {

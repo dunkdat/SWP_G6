@@ -99,8 +99,8 @@
 
                 <input type="submit" value="Register">
             </form>
-                 <div style="color:red; font-style: italic">${message}</div>
-        </div>
-        
+            <div style="color:red; font-style: italic">${message}</div>
+            
+
     </body>
 </html>
