@@ -42,7 +42,7 @@ public class CheckCode extends HttpServlet {
             if(code.equals(authcode)){
                 request.setAttribute("message", "Verify successfully!");
                 UserDAO u = new UserDAO();
-                 u.addUser(new User(name, address,gender, phone, email, password, "customer"));
+                u.addUser(new User(name, address,gender, phone, email, password, "customer"));
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }else{
                 request.setAttribute("message", "Wrong verify code!");

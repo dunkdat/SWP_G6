@@ -1,19 +1,14 @@
-<%-- 
-    Document   : login
-    Created on : Sep 11, 2024, 12:00:30 PM
-    Author     : DAT
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login Page</title>
         <style>
             body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f4;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #e9ecef;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -22,44 +17,105 @@
             }
             .container {
                 background-color: white;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                width: 300px;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 400px;
+                box-sizing: border-box;
+                text-align: center;
             }
             .container h1 {
-                font-size: 24px;
+                font-size: 26px;
                 margin-bottom: 20px;
+                color: #333;
+                font-weight: bold;
             }
             .container label {
                 display: block;
                 margin-bottom: 8px;
+                font-weight: bold;
+                color: #555;
             }
             .container input[type="text"],
             .container input[type="password"] {
                 width: 100%;
-                padding: 10px;
-                margin-bottom: 10px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-            }
-            .container input[type="submit"] {
-                width: 48%;
-                padding: 10px;
-                border: none;
-                border-radius: 4px;
-                background-color: #4CAF50;
-                color: white;
-                cursor: pointer;
+                padding: 12px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
                 font-size: 16px;
             }
-            .container input[type="submit"]:nth-of-type(2) {
-                background-color: #f44336;
-                float: right;
+            .container input[type="submit"] {
+                width: 100%;
+                padding: 12px;
+                border: none;
+                border-radius: 5px;
+                background-color: #28a745;
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            .container input[type="submit"]:hover {
+                background-color: #218838;
             }
             .container .button-container {
                 display: flex;
                 justify-content: space-between;
+                margin-top: 10px;
+            }
+            .container a {
+                color: #007bff;
+                text-decoration: none;
+                margin-right: 15px;
+            }
+            .container a:hover {
+                text-decoration: underline;
+            }
+            .container .links {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 20px;
+            }
+            .container .error-message {
+                color: red;
+                font-style: italic;
+                margin-top: 10px;
+            }
+            .or {
+                margin: 20px 0;
+                font-size: 18px;
+                color: #999;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .or:before, .or:after {
+                content: "";
+                flex: 1;
+                border-bottom: 1px solid #ccc;
+                margin: 0 10px;
+            }
+            .or span {
+                display: inline-block;
+                background: white;
+                padding: 0 10px;
+                filter: blur(1px);
+                opacity: 0.7;
+            }
+            @media (max-width: 500px) {
+                .container {
+                    padding: 20px;
+                }
+                .container h1 {
+                    font-size: 22px;
+                }
+                .container input[type="submit"] {
+                    font-size: 16px;
+                }
             }
         </style>
     </head>
@@ -68,17 +124,19 @@
             <h1>Login</h1>
             <form action="login" method="post">
                 <label for="email">Email:</label>
-                <input type="text" id="email" name="email" >
+                <input type="text" id="email" name="email" placeholder="Enter your email">
 
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" >
+                <input type="password" id="password" name="password" placeholder="Enter your password">
 
-                <div class="button-container">
-                    <input type="submit" value="Login">
-                    <input type="submit" value="Register" formaction="register.jsp">
-                </div>
+                <input type="submit" value="Login">
             </form>
-            <div style="color:red; font-style: italic">${message}</div>
+            <div class="or"><span>or</span></div>
+            <div class="links">
+                <a href="register.jsp">Register</a>
+                <a href="resetpassword.jsp">Reset Password</a>
+            </div>
+            <div class="error-message">${message}</div>
         </div>
     </body>
 </html>

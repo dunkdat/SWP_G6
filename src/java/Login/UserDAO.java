@@ -32,7 +32,7 @@ public class UserDAO extends DBContext{
     }
     public void addUser(User x){
         try{
-            String sql = "insert Users(name, address, gender, phone, username, password, role) values(?,?,?,?,?,?,?)";
+            String sql = "insert Users(name, address, gender, phone, username, password, role) values(?,?,?,?,?,?,?);";
             PreparedStatement   statement = connection.prepareStatement(sql);
             statement.setString(1, x.getName());
             statement.setString(2, x.getAddress());
@@ -45,5 +45,36 @@ public class UserDAO extends DBContext{
         }catch(SQLException ex){
             System.err.println("");
         }
+    }
+    public void changePassword(String email, String newpassword){
+        try{
+            String sql = "update Users set password = ? where username = ?;";
+            PreparedStatement   statement = connection.prepareStatement(sql);
+            statement.setString(1, newpassword);
+            statement.setString(2, email);
+            statement.executeUpdate();
+        }catch(SQLException ex){
+            System.err.println("");
+        }
+    }
+    public boolean existedEmail(String email){
+        try{
+            String sql = "select * from Users where username = ?";
+            PreparedStatement   statement = connection.prepareStatement(sql);
+            statement.setString(1, email);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                  return true;
+                 
+            }
+            
+        }catch(SQLException ex){
+            System.err.println("");
+        }
+        return false;
+    }
+    public static void main(String[] args) {
+        UserDAO x = new UserDAO();
+        x.addUser(new User("Dat", "Minh Khai",1,"0962906982", "datnb258@gmail.com","1234","customer"));
     }
 }

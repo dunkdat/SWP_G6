@@ -11,13 +11,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author DAT
  */
-public class UserVerify extends HttpServlet {
+public class ResetPassword extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -30,11 +29,29 @@ public class UserVerify extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-           String email = request.getParameter("email");
-           
-           SendVerify s = new SendVerify();
-           String code = s.getRandom();
-           String content = "<html>" +
+            UserDAO u = new UserDAO();
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String cfpassword = request.getParameter("cfpassword");
+            if(password != null && cfpassword != null && email != null){
+                if(password.equals(cfpassword)){
+                    request.setAttribute("message", "Reset password successfully");
+                    u.changePassword(email, password);
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                    return;
+                }else{
+                    request.setAttribute("message", "Passwords do not match!");
+                    request.setAttribute("email", email);
+                    request.getRequestDispatcher("changepassword.jsp").forward(request, response);
+                    return;
+                }
+            }
+            if(email != null ){
+                
+            if(u.existedEmail(email)){
+                
+                UserVerify uv = new UserVerify();
+                String content = "<html>" +
                  "<head><style>" +
                  "body { font-family: Arial, sans-serif; margin: 0; padding: 20px;}" +
                  "h1 { color: #333; text-align: center; }" +
@@ -45,22 +62,21 @@ public class UserVerify extends HttpServlet {
                  "<body>" +
                  "<div class='container'>" +
                  "<h1>Hello!</h1>" +
-                 "<p>Thank you for registering. Please use the following verification code to complete your registration:</p>" +
-                 "<p class='code'>" + code + "</p>" +
+                 "<p>Thank you for trust our shop. Please use the following link code to resest your password:</p>" +
+                 "<p class='code'>" + "<a href="+"http://localhost:8081/Bad_Sport/changepassword.jsp?email="+email+""+">Click Me</a>" + "</p>" +
                  "<p>If you did not request this code, please ignore this email.</p>" +
                  "</div>" +
                  "</body>" +
                  "</html>";
-           boolean test = s.sendEmail(email, content, "Your Verification Code");
-           
-           if(test){
-               HttpSession ss = request.getSession();
-               ss.setAttribute("authcode", code);
-               request.setAttribute("verify", "true");
-               request.setAttribute("email", email);
-               request.setAttribute("message", "Registered successfully, please verify your email!");
-               request.getRequestDispatcher("verify.jsp").forward(request, response);
-           }
+                SendVerify s = new SendVerify();
+                 s.sendEmail(email, content, "Reset Your Password");
+                request.setAttribute("message", "Send successfully, please check your email!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }else{
+                request.setAttribute("message", "Your email are not registered!");
+                request.getRequestDispatcher("resetpassword.jsp").forward(request, response);
+            }
+        }
         }
     } 
 
