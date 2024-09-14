@@ -14,7 +14,7 @@
     </servlet>
     <servlet>
         <servlet-name>UserVerify</servlet-name>
-        <servlet-class>Login.UserVerify</servlet-class>
+        <servlet-class>Login.Email.UserVerify</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CheckCode</servlet-name>
