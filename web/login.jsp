@@ -106,6 +106,32 @@
                 filter: blur(1px);
                 opacity: 0.7;
             }
+            
+            /* CSS for Google login button */
+            .google-btn {
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 90%;
+                padding: 12px;
+                margin-top: 15px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: white;
+                font-size: 16px;
+                color: #333;
+                transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            }
+            .google-btn img {
+                height: 20px;
+                margin-right: 10px;
+            }
+            .google-btn:hover {
+                background-color: #f0f0f0;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
             @media (max-width: 500px) {
                 .container {
                     padding: 20px;
@@ -124,14 +150,32 @@
             <h1>Login</h1>
             <form action="login" method="post">
                 <label for="email">Email:</label>
-                <input type="text" id="email" name="email" placeholder="Enter your email">
+                <input type="text" id="email" name="email" placeholder="Enter your email" required="Please enter email">
 
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password">
-
+                <input type="password" id="password" name="password" placeholder="Enter your password" required="Please enter password">
+                    
                 <input type="submit" value="Login">
             </form>
+
             <div class="or"><span>or</span></div>
+
+            <!-- Google Login Button -->
+            <a class="google-btn" href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20
+ profile openid
+
+&redirect_uri=http://localhost:8081/Bad_Sport/gglogin
+
+&response_type=code
+
+&client_id=614333023710-0svuqckuhffj6sqvrrf9ds8rbsrvke67.apps.googleusercontent.com
+
+&approval_prompt=force">
+                
+                <img src="images/gglogo.png" alt="Google logo">
+                Login with Google
+            </a>
+
             <div class="links">
                 <a href="register.jsp">Register</a>
                 <a href="resetpassword.jsp">Reset Password</a>

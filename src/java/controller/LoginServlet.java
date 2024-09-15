@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Login;
+package controller;
 
+import dal.UserDAO;
+import model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author DAT
  */
-public class CheckCode extends HttpServlet {
+public class LoginServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -29,28 +31,29 @@ public class CheckCode extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-            HttpSession ss = request.getSession(false);
-            String name =(String) ss.getAttribute("name");
-        String address =(String) ss.getAttribute("address");
-        int gender = (int) ss.getAttribute("gender");
-        String phone = (String)ss.getAttribute("phone");
-        String email = (String)ss.getAttribute("email");
-        String password =(String) ss.getAttribute("password");
-            String authcode = (String) ss.getAttribute("authcode");
-            String code = request.getParameter("code");
-            
-            if(code.equals(authcode)){
-                request.setAttribute("message", "Verify successfully!");
-                UserDAO u = new UserDAO();
-                u.addUser(new User(name, address,gender, phone, email, password, "customer"));
+        try (PrintWriter out = response.getWriter()) {
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            UserDAO u = new UserDAO();
+            if(email!=null && password!=null){
+                boolean log = false;
+            for(User x : u.getAllUser()){
+                if(x.getEmail().equals(email) && x.getPassword().equals(password)){
+                    HttpSession session = request.getSession();
+                    session.setAttribute("user_email", x.getEmail());
+                    log=true;
+                    request.getRequestDispatcher("homepage").forward(request, response);
+                }
+              }
+            if(!log){
+                request.setAttribute("message", "Your email or password are incorrect, try again !");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
             }else{
-                request.setAttribute("message", "Wrong verify code!");
-                request.setAttribute("email", email);
-                request.getRequestDispatcher("verify.jsp").forward(request, response);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         }
-   
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

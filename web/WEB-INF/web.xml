@@ -2,11 +2,11 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>Login.LoginServlet</servlet-class>
+        <servlet-class>controller.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>Login.RegisterServlet</servlet-class>
+        <servlet-class>controller.RegisterServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>HomePageServlet</servlet-name>
@@ -14,15 +14,19 @@
     </servlet>
     <servlet>
         <servlet-name>UserVerify</servlet-name>
-        <servlet-class>Login.Email.UserVerify</servlet-class>
+        <servlet-class>controller.UserVerify</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CheckCode</servlet-name>
-        <servlet-class>Login.CheckCode</servlet-class>
+        <servlet-class>GoogleLogin.CheckCode</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ResetPassword</servlet-name>
-        <servlet-class>Login.ResetPassword</servlet-class>
+        <servlet-class>controller.ResetPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <servlet-class>GoogleLogin.GoogleLoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -47,5 +51,9 @@
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/resetpass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <url-pattern>/gglogin</url-pattern>
     </servlet-mapping>
 </web-app>

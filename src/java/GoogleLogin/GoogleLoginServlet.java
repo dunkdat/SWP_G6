@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Login.Email;
+package GoogleLogin;
 
+import dal.UserDAO;
+import model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author DAT
  */
-public class UserVerify extends HttpServlet {
+public class GoogleLoginServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -30,37 +32,24 @@ public class UserVerify extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-           String email = request.getParameter("email");
-           
-           SendVerify s = new SendVerify();
-           String code = s.getRandom();
-           String content = "<html>" +
-                 "<head><style>" +
-                 "body { font-family: Arial, sans-serif; margin: 0; padding: 20px;}" +
-                 "h1 { color: #333; text-align: center; }" +
-                 "p { font-size: 16px; color: #555; text-align: center; }" +
-                 ".container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9; text-align: center; }" +
-                 ".code { font-size: 36px; font-weight: bold; color: #007bff; margin: 20px 0; }" +
-                 "</style></head>" +
-                 "<body>" +
-                 "<div class='container'>" +
-                 "<h1>Hello!</h1>" +
-                 "<p>Thank you for registering. Please use the following verification code to complete your registration:</p>" +
-                 "<p class='code'>" + code + "</p>" +
-                 "<p>If you did not request this code, please ignore this email.</p>" +
-                 "</div>" +
-                 "</body>" +
-                 "</html>";
-           boolean test = s.sendEmail(email, content, "Your Verification Code");
-           
-           if(test){
-               HttpSession ss = request.getSession();
-               ss.setAttribute("authcode", code);
-               request.setAttribute("verify", "true");
-               request.setAttribute("email", email);
-               request.setAttribute("message", "Registered successfully, please verify your email!");
-               request.getRequestDispatcher("verify.jsp").forward(request, response);
-           }
+            String code = request.getParameter("code");
+            GoogleLogin gg = new GoogleLogin();
+            String acessToken = gg.getToken(code);
+            GoogleAccount acc = gg.getUserInfo(acessToken);
+            UserDAO u = new UserDAO();
+            HttpSession ss = request.getSession();
+            if(acc.getName()==null) return;
+            if(!u.existedEmail(acc.getEmail())){
+                SendVerify s = new SendVerify();
+                String pass = s.getRandom();
+                u.addUser(new User(acc.getName(),null,1 ,null, acc.getEmail(), pass, "customer"));
+                ss.setAttribute("user_email", acc.getEmail());
+                request.getRequestDispatcher("homepage").forward(request, response);
+            }else{
+                
+                ss.setAttribute("user_email", acc.getEmail());
+                request.getRequestDispatcher("homepage").forward(request, response);
+            }
         }
     } 
 

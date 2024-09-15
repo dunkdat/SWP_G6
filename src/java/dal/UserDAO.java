@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Login;
+package dal;
 
+import dal.DBContext;
+import model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,6 +48,7 @@ public class UserDAO extends DBContext{
             System.err.println("");
         }
     }
+    
     public void changePassword(String email, String newpassword){
         try{
             String sql = "update Users set password = ? where username = ?;";

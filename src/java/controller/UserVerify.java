@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Login;
+package controller;
 
+import GoogleLogin.SendVerify;
+import GoogleLogin.SendVerify;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author DAT
  */
-public class LoginServlet extends HttpServlet {
+public class UserVerify extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -30,26 +32,37 @@ public class LoginServlet extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            UserDAO u = new UserDAO();
-            if(email!=null && password!=null){
-                boolean log = false;
-            for(User x : u.getAllUser()){
-                if(x.email.equals(email) && x.password.equals(password)){
-                    HttpSession session = request.getSession();
-                    session.setAttribute("user_email", x.email);
-                    log=true;
-                    request.getRequestDispatcher("homepage").forward(request, response);
-                }
-              }
-            if(!log){
-                request.setAttribute("message", "Your email or password are incorrect, try again !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            }else{
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
+           String email = request.getParameter("email");
+           
+           SendVerify s = new SendVerify();
+           String code = s.getRandom();
+           String content = "<html>" +
+                 "<head><style>" +
+                 "body { font-family: Arial, sans-serif; margin: 0; padding: 20px;}" +
+                 "h1 { color: #333; text-align: center; }" +
+                 "p { font-size: 16px; color: #555; text-align: center; }" +
+                 ".container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9; text-align: center; }" +
+                 ".code { font-size: 36px; font-weight: bold; color: #007bff; margin: 20px 0; }" +
+                 "</style></head>" +
+                 "<body>" +
+                 "<div class='container'>" +
+                 "<h1>Hello!</h1>" +
+                 "<p>Thank you for registering. Please use the following verification code to complete your registration:</p>" +
+                 "<p class='code'>" + code + "</p>" +
+                 "<p>If you did not request this code, please ignore this email.</p>" +
+                 "</div>" +
+                 "</body>" +
+                 "</html>";
+           boolean test = s.sendEmail(email, content, "Your Verification Code");
+           
+           if(test){
+               HttpSession ss = request.getSession();
+               ss.setAttribute("authcode", code);
+               request.setAttribute("verify", "true");
+               request.setAttribute("email", email);
+               request.setAttribute("message", "Registered successfully, please verify your email!");
+               request.getRequestDispatcher("verify.jsp").forward(request, response);
+           }
         }
     } 
 

@@ -1,5 +1,7 @@
-package Login;
+package controller;
 
+import dal.UserDAO;
+import model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -67,6 +69,7 @@ public class RegisterServlet extends HttpServlet {
                
                 UserDAO u = new UserDAO();
                 for(User x : u.getAllUser()){
+                    if(x.getPhone()==null) continue;
                     if(x.getEmail().equals(email)){
                         request.setAttribute("message", "Email are already existed!");
                     request.getRequestDispatcher("register.jsp").forward(request, response);

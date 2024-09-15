@@ -3,10 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Login;
+package controller;
 
-import Login.Email.SendVerify;
-import Login.Email.UserVerify;
+import GoogleLogin.SendVerify;
+import dal.UserDAO;
+import controller.UserVerify;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
