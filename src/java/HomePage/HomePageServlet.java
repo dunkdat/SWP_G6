@@ -5,6 +5,7 @@
 
 package HomePage;
 
+import dal.SliderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -31,16 +32,9 @@ public class HomePageServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HttpSession ss = request.getSession(false);
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet HomePageServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet HomePageServlet at " + request.getContextPath () +"/"+ ss.getAttribute("user_email") +"</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            SliderDAO p = new SliderDAO();
+            request.setAttribute("slider", p.getAllSlider());
+            request.getRequestDispatcher("homepage.jsp").forward(request, response);
         }
     } 
 
