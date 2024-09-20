@@ -12,9 +12,15 @@ public class User {
     int id;
     String name, address;
     int gender;
-    String phone, email, password, role, status;
+    String phone, email, password, role, status, imagePath;
 
     public User() {
+    }
+
+    public User(int id, String name, String imagePath) {
+        this.id = id;
+        this.name = name;
+        this.imagePath = imagePath;
     }
 
     public User(int id, String name, String address, int gender, String phone, String email, String password, String role, String status) {
@@ -38,8 +44,31 @@ public class User {
         this.password = password;
         this.role = role;
     }
+    public User(int id, String name, String address, int gender, String phone, String email, String role, String imagePath) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.gender = gender;
+        this.phone = phone;
+        this.email = email;
+        this.role = role;
+        this.imagePath = imagePath;
+    }
+    public User(int id, String name, String address, int gender, String phone, String imagePath) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.gender = gender;
+        this.phone = phone;
+        this.imagePath = imagePath;
+    }
+    public String getImagePath() {
+        return imagePath;
+    }
 
-    
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     public int getId() {
         return id;
