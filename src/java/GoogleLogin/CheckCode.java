@@ -30,7 +30,6 @@ public class CheckCode extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       
         response.setContentType("text/html;charset=UTF-8");
             HttpSession ss = request.getSession(false);
             String name =(String) ss.getAttribute("name");
