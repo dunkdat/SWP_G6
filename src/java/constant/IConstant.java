@@ -35,14 +35,6 @@ public class IConstant {
     public static final String NUMERIC_CHARACTERS = "0123456789";
     public static final String SPECIAL_CHARACTERS = "!@#$%^&*()-_=+[]{}|;:'<>,.?/";
 
-    //gmail constant
-    public static final String GOOGLE_CLIENT_ID = "885594330359-qiap8iobv2612lng4j4dertmkgd21164.apps.googleusercontent.com";
-    public static final String GOOGLE_CLIENT_SECRET = "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";
-    public static final String GOOGLE_REDIRECT_URI = "http://localhost:8080/Fphone/loginEmail";
-    public static final String GOOGLE_GRANT_TYPE = "authorization_code";
-    public static final String GOOGLE_LINK_GET_TOKEN = "https://accounts.google.com/o/oauth2/token";
-    public static final String GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
-    
     public static final String PATH_USER = "images/User_img/";
     public static final int[] NUMBER_OPTION = new int[]{3, 5, 7, 10};
     public static final int ITEMS_PER_PAGE = 5;
