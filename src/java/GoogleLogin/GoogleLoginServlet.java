@@ -5,7 +5,7 @@
 
 package GoogleLogin;
 
-import dal.UserDAO;
+import dal.DAOUser;
 import model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,7 +37,7 @@ public class GoogleLoginServlet extends HttpServlet {
             GoogleLogin gg = new GoogleLogin();
             String acessToken = gg.getToken(code);
             GoogleAccount acc = gg.getUserInfo(acessToken);
-            UserDAO u = new UserDAO();
+            DAOUser u = new DAOUser();
             HttpSession ss = request.getSession();
             if(acc.getName()==null) return;
             if(!u.existedEmail(acc.getEmail())){

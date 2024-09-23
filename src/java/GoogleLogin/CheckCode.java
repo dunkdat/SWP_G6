@@ -5,7 +5,7 @@
 
 package GoogleLogin;
 
-import dal.UserDAO;
+import dal.DAOUser;
 import model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -44,7 +44,7 @@ public class CheckCode extends HttpServlet {
             
             if(code.equals(authcode)){
                 request.setAttribute("message", "Verify successfully!");
-                UserDAO u = new UserDAO();
+                DAOUser u = new DAOUser();
                 Encode e = new Encode();
                 u.addUser(new User(name, address,gender, phone, email, e.toSHA1(password), "customer"));
                 request.getRequestDispatcher("login.jsp").forward(request, response);
