@@ -5,7 +5,7 @@
 
 package controller;
 
-import dal.UserDAO;
+import dal.DAOUser;
 import model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import javax.mail.Session;
 import util.Encode;
 
 /**
@@ -35,22 +36,17 @@ public class LoginServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
-            UserDAO u = new UserDAO();
+            DAOUser u = new DAOUser();
             Encode e = new Encode();
             if(email!=null && password!=null){
-                boolean log = false;
-            for(User x : u.getAllUser()){
-                if(x.getEmail().equals(email) && x.getPassword().equals(e.toSHA1(password))){
-                    HttpSession session = request.getSession();
-                    session.setAttribute("user", x);
-                    log=true;
-                    request.getRequestDispatcher("homepage").forward(request, response);
-                }
-              }
-            if(!log){
-                request.setAttribute("message", "Your email or password are incorrect, try again !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
+               if(u.ValidateUsers(email, password)!=null){
+                   HttpSession ss = request.getSession();
+                   ss.setAttribute("current_user", u.ValidateUsers(email, password));
+                   request.getRequestDispatcher("homepage").forward(request, response);
+               }else{
+                   request.setAttribute("message", "Wrong email or password!");
+                   request.getRequestDispatcher("login.jsp").forward(request, response);
+               }
             }else{
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }

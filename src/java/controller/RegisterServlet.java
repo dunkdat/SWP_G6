@@ -1,6 +1,6 @@
 package controller;
 
-import dal.UserDAO;
+import dal.DAOUser;
 import model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -67,7 +67,7 @@ public class RegisterServlet extends HttpServlet {
                 }
                 
                
-                UserDAO u = new UserDAO();
+                DAOUser u = new DAOUser();
                 for(User x : u.getAllUser()){
                     if(x.getPhone()==null) continue;
                     if(x.getEmail().equals(email)){

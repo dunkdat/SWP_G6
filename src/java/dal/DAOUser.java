@@ -8,13 +8,18 @@ import com.mysql.cj.protocol.Resultset;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import model.User;
+import util.Encode;
 
 /**
  *
  * @author Lenovo
  */
 public class DAOUser extends DBContext{
+    
+            Encode e = new Encode();
     public User getUserById(int user_id) {
         User cus = null;
         String sql = "SELECT * FROM Users join Role on Users.role = Role.id\n"
@@ -38,6 +43,28 @@ public class DAOUser extends DBContext{
         }
         return null;
     }
+    public User getUserByEmail(String email) {
+        User cus = null;
+        String sql = "SELECT * FROM Users WHERE email = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, email);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return new User(rs.getInt("id"), 
+                        rs.getString("name"),
+                        rs.getString("address"), 
+                        rs.getInt("gender"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("details"),
+                        rs.getString("imagePath"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
     
      public User ValidateUsers(String email, String password) {
         String sql = "SELECT * FROM Users\n"
@@ -45,7 +72,7 @@ public class DAOUser extends DBContext{
         try {
            PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, email);
-            pre.setString(2, password);
+            pre.setString(2, e.toSHA1(password));
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 return new User(rs.getInt("id"), 
@@ -99,5 +126,66 @@ public class DAOUser extends DBContext{
             System.out.println(e);
         }
         return n > 0;
+    }
+    public List<User> getAllUser() {
+        List<User> t = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM Users";
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                User x = new User(rs.getInt("id"), rs.getString("name"), rs.getString("address"), rs.getInt("gender"), rs.getString("phone"), rs.getString( "email"), rs.getString("password"), rs.getString("role"),rs.getString("status"));
+                t.add(x);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return t;
+    }
+    public void addUser(User x){
+        try{
+            String sql = "insert Users(name, address, gender, phone, email, password, role) values(?,?,?,?,?,?,?);";
+            PreparedStatement   statement = connection.prepareStatement(sql);
+            statement.setString(1, x.getName());
+            statement.setString(2, x.getAddress());
+            statement.setInt(3, x.getGender());
+            statement.setString(4, x.getPhone());
+            statement.setString(5, x.getEmail());
+            statement.setString(6, x.getPassword());
+            statement.setString(7, x.getRole());
+            statement.executeUpdate();
+        }catch(SQLException ex){
+            System.err.println("");
+        }
+    }
+    
+    public void changePassword(String email, String newpassword){
+        try{
+            String sql = "update Users set password = ? where email = ?;";
+            PreparedStatement   statement = connection.prepareStatement(sql);
+            statement.setString(1, e.toSHA1(newpassword));
+            statement.setString(2, email);
+            statement.executeUpdate();
+        }catch(SQLException ex){
+            System.err.println("");
+        }
+    }
+    public boolean existedEmail(String email){
+        try{
+            String sql = "select * from Users where email = ?";
+            PreparedStatement   statement = connection.prepareStatement(sql);
+            statement.setString(1, email);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                  return true;
+                 
+            }
+            
+        }catch(SQLException ex){
+            System.err.println("");
+        }
+        return false;
+    }
+    public static void main(String[] args) {
     }
 }

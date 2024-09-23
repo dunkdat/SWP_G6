@@ -66,7 +66,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Reset Password</h1>
+        <h1>Reset Password!</h1>
         <div class="message">${message}</div>
         <div>
             <form action="resetpass" method="post">
