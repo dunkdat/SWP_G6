@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import util.Encode;
 
 /**
  *
@@ -44,7 +45,8 @@ public class CheckCode extends HttpServlet {
             if(code.equals(authcode)){
                 request.setAttribute("message", "Verify successfully!");
                 UserDAO u = new UserDAO();
-                u.addUser(new User(name, address,gender, phone, email, password, "customer"));
+                Encode e = new Encode();
+                u.addUser(new User(name, address,gender, phone, email, e.toSHA1(password), "customer"));
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }else{
                 request.setAttribute("message", "Wrong verify code!");
