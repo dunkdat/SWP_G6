@@ -28,6 +28,30 @@
         <servlet-name>GoogleLoginServlet</servlet-name>
         <servlet-class>GoogleLogin.GoogleLoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NewsServlet</servlet-name>
+        <servlet-class>controller.NewsServlet</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>NewsServlet</servlet-name>
+        <url-pattern>/NewsServlet</url-pattern>
+    </servlet-mapping>
+     <servlet>
+        <servlet-name>NewsManagerServlet</servlet-name>
+        <servlet-class>controller.NewsManagerServlet</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>NewsManagerServlet</servlet-name>
+        <url-pattern>/NewsManagerServlet</url-pattern>
+    </servlet-mapping>
+     <servlet>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-class>controller.ProfileServlet</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>ProfileServlet</servlet-name>
+        <url-pattern>/ProfileServlet</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
