@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import util.Encode;
 
 /**
  *
@@ -35,12 +36,13 @@ public class LoginServlet extends HttpServlet {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             UserDAO u = new UserDAO();
+            Encode e = new Encode();
             if(email!=null && password!=null){
                 boolean log = false;
             for(User x : u.getAllUser()){
-                if(x.getEmail().equals(email) && x.getPassword().equals(password)){
+                if(x.getEmail().equals(email) && x.getPassword().equals(e.toSHA1(password))){
                     HttpSession session = request.getSession();
-                    session.setAttribute("user_email", x.getEmail());
+                    session.setAttribute("user", x);
                     log=true;
                     request.getRequestDispatcher("homepage").forward(request, response);
                 }

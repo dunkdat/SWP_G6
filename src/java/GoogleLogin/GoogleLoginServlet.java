@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import util.Encode;
 
 /**
  *
@@ -41,7 +42,8 @@ public class GoogleLoginServlet extends HttpServlet {
             if(acc.getName()==null) return;
             if(!u.existedEmail(acc.getEmail())){
                 SendVerify s = new SendVerify();
-                String pass = s.getRandom();
+                Encode e = new Encode();
+                String pass = e.toSHA1(s.getRandom());
                 u.addUser(new User(acc.getName(),null,1 ,null, acc.getEmail(), pass, "customer"));
                 ss.setAttribute("user_email", acc.getEmail());
                 request.getRequestDispatcher("homepage").forward(request, response);
