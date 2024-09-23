@@ -1,0 +1,196 @@
+* {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: 'Poppins', sans-serif;
+                height: 100vh; /* Full screen height */
+                width: 100vw;  /* Full screen width */
+                overflow: hidden;
+                background: url('images/backgr.jpg') no-repeat center center;
+                background-size: cover; /* Ensures the image covers the entire area */
+            }
+            .container {
+                display: flex;
+                height: 100vh; /* Full screen height */
+            }
+            .form-section {
+                flex: 0 0 40%; /* Form takes 40% */
+                padding: 80px 50px;/* Slightly transparent white */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 100vh; /* Full height */
+            }
+            h1 {
+                font-size: 40px;
+                color: orange;
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
+            p {
+                color: lightgrey;
+                font-size: 14px;
+                margin-bottom: 40px;
+            }
+            label {
+                font-size: 18px;
+                font-weight: 500;
+                color: #fff;
+                display: block;
+                margin-bottom: 5px;
+            }
+            input[type="text"], input[type="password"] {
+                width: 100%;
+                padding: 15px;
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                font-size: 14px;
+            }
+            .checkbox-section {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 40px;
+            }
+            .checkbox-section a {
+                font-size: 12px;
+                color: orange;
+                text-decoration: none;
+            }
+            .checkbox-section a:hover {
+                text-decoration: underline;
+            }
+            .btn {
+                width: 100%;
+                padding: 15px;
+                background-color: orange; /* Changed to orange */
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.3s ease; /* Added transition */
+            }
+            .btn:hover {
+                background-color: #ff8c00; /* Darker orange on hover */
+                transform: translateY(-2px); /* Lift effect */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            }
+            .google-btn {
+                background-color: #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                padding: 15px;
+                color: #fff;
+                border: 1px solid black;
+                border-radius: 8px;
+                margin-top: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.3s ease;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            }
+            .google-btn img {
+                vertical-align: middle;
+                margin-right: 10px;
+                height: 20px;
+            }
+            .google-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+            .google-btn a {
+                color: black;
+                text-decoration: none;
+            }
+            .signup {
+                text-align: center;
+                margin-top: 20px;
+                font-size: 14px;
+                color: #fff;
+            }
+            .signup a {
+                color: orange;
+                text-decoration: none;
+                font-weight: bold;
+            }
+            .signup a:hover {
+                text-decoration: underline;
+            }
+
+            /* Modal styles */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+                justify-content: center;
+                align-items: center;
+            }
+            .modal-content {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+                max-width: 400px;
+                width: 80%;
+            }
+            .modal-content h2 {
+                font-size: 24px;
+                margin-bottom: 15px;
+                color: orange;
+            }
+            .modal-content p {
+                margin-bottom: 20px;
+                font-size: 16px;
+                color: #333;
+            }
+            .modal-content .close-btn {
+                padding: 10px 20px;
+                background-color: orange;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            .modal-content .close-btn:hover {
+                background-color: #ff8c00;
+            }
+
+            /* Responsive Design for Mobile */
+            @media (max-width: 768px) {
+                .container {
+                    flex-direction: column; /* Stack form and image vertically */
+                }
+                .form-section {
+                    flex: 1;
+                    padding: 50px 30px; /* Reduce padding for smaller screens */
+                    height: auto;
+                }
+            }
+
+            @media (max-width: 480px) {
+                h1 {
+                    font-size: 28px; /* Adjust font size for smaller screens */
+                }
+                .form-section {
+                    padding: 40px 20px; /* Further reduce padding */
+                }
+                input[type="text"], input[type="password"] {
+                    padding: 12px; /* Reduce input padding */
+                }
+                .btn, .google-btn {
+                    padding: 12px; /* Adjust button size */
+                    font-size: 14px;
+                }
+            }
