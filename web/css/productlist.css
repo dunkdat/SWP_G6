@@ -1,0 +1,352 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Header Styling */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.header .left-section {
+    display: flex;
+    align-items: center;
+}
+
+.header .left-section img {
+    height: 60px;
+    margin-right: 1rem;
+}
+
+.header .hotline {
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.header .store-locator {
+    margin-left: 2rem;
+    font-weight: bold;
+    color: #ff6600;
+}
+
+.header .right-section {
+    display: flex;
+    align-items: center;
+}
+
+.header .right-section img {
+    height: 30px;
+    margin-left: 1rem;
+}
+
+.header .search-bar {
+    position: relative;
+    margin-right: 2rem;
+}
+
+.header .search-bar input {
+    padding: 0.5rem;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    width: 250px;
+    padding-right: 40px;
+    font-size: 1rem;
+    transition: box-shadow 0.3s ease;
+}
+
+.header .search-bar input:focus {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.header .search-bar .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #ff6600;
+    cursor: pointer;
+}
+
+.header .icons {
+    display: flex;
+    align-items: center;
+}
+
+.header .icons img {
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.header .icons span {
+    font-size: 12px;
+    background-color: #ff6600;
+    color: #fff;
+    border-radius: 50%;
+    padding: 3px 7px;
+    position: relative;
+    top: -10px;
+    left: -10px;
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #ff6600;
+    color: #fff;
+    padding: 2rem 1rem;
+    width: 220px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin: 1rem 0;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: #ff9933;
+}
+
+/* Main Content Layout */
+.main-content {
+    display: flex;
+    padding: 4rem 2rem;
+    margin-top: 150px;
+}
+
+.content {
+            margin-left: 200px;
+            transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+            z-index: 1; /* Ensure content is behind the navbar */
+        }
+
+        .hero {
+            background-color: #ffe5cc; /* Light orange background */
+            padding: 2rem;
+            text-align: center;
+            color: #ff6600; /* Primary orange text color */
+        }
+
+        .hero h1 {
+            margin: 0;
+        }
+
+        .nav-bar {
+            background-color: #ff6600; /* Primary orange color */
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+            z-index: 1; /* Ensure navigation bar is behind the navbar */
+        }
+
+        .nav-bar a {
+            color: #fff;
+            margin: 0 1.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-bar a:hover {
+            background-color: #ff9933; /* Lighter orange on hover */
+        }
+
+/* Filter Section */
+.filter-section {
+    width: 20%;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.filter-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.filter-section input {
+    margin-right: 8px;
+}
+
+.apply-filter-btn {
+    background-color: #ff6600;
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+    display: block;
+}
+
+.apply-filter-btn:hover {
+    background-color: #ff9933;
+}
+
+/* Products Section */
+.products-section {
+    width: 75%;
+    margin-left: 2rem;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.product {
+    padding: 1rem;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column; /* Xếp các phần tử theo cột */
+    justify-content: space-between; /* Đẩy các phần tử xuống dưới */
+    height: 100%; /* Chiều cao đầy đủ của khung */
+}
+
+.product:hover {
+    transform: translateY(-10px);
+}
+
+.product img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.product h2 {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+    color: red;
+}
+
+.product p {
+    font-size: 1.2rem;
+    color: #ff6600; /* Cam cho giá sản phẩm */
+    font-weight: bold;
+    margin-top: auto; /* Đẩy phần giá xuống dưới */
+}
+
+.view-details-btn {
+    background-color: #ff6600; /* Cam cho nút chi tiết */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 0.5rem; /* Khoảng cách giữa giá và nút */
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.pagination a {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    color: #ff6600;
+    border: 1px solid #ff6600;
+    margin: 0 0.25rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #ff9933;
+    color: white;
+}
+
+/* Footer */
+.footer {
+    background-color: #ffe5cc;
+    color: black;
+    text-align: center;
+    padding: 1.5rem;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Navbar Hidden */
+.navbar.hidden {
+    transform: translateX(-100%);
+}
+
+.header.expanded, .content.expanded {
+    margin-left: 220px;
+}
+
+.header.collapsed, .content.collapsed {
+    margin-left: 0;
+}
+
+/* Toggle Button */
+.toggle-button {
+    background-color: #ff6600;
+    color: white;
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+/* Message Styling */
+.mess {
+    font-size: 3rem;
+    color: grey;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

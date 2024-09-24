@@ -1,92 +1,92 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-
 package controller;
 
 import dal.DAOUser;
 import model.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import javax.mail.Session;
 import util.Encode;
 
-/**
- *
- * @author DAT
- */
 public class LoginServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            DAOUser u = new DAOUser();
-            Encode e = new Encode();
-            if(email!=null && password!=null){
-               if(u.ValidateUsers(email, password)!=null){
-                   HttpSession ss = request.getSession();
-                   ss.setAttribute("current_user", u.ValidateUsers(email, password));
-                   request.getRequestDispatcher("homepage").forward(request, response);
-               }else{
-                   request.setAttribute("message", "Wrong email or password!");
-                   request.getRequestDispatcher("login.jsp").forward(request, response);
-               }
-            }else{
+        
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String remember = request.getParameter("remember"); // Get the 'Remember Me' checkbox value
+        
+        DAOUser u = new DAOUser();
+        Encode e = new Encode();
+        
+        if(email != null && password != null){
+            // Validate user credentials
+            User currentUser = u.ValidateUsers(email, password);
+            
+            if(currentUser != null){
+                HttpSession ss = request.getSession();
+                ss.setAttribute("current_user", currentUser);
+                
+                // Handle Remember Me functionality
+                if("on".equals(remember)) { 
+                    // Create cookies for email and password
+                    Cookie emailCookie = new Cookie("email", email);
+                    Cookie passwordCookie = new Cookie("password", password);
+                    
+                    // Set cookies to expire in 7 days (604800 seconds)
+                    emailCookie.setMaxAge(7 * 24 * 60 * 60); 
+                    passwordCookie.setMaxAge(7 * 24 * 60 * 60); 
+                    
+                    // Add cookies to the response
+                    response.addCookie(emailCookie);
+                    response.addCookie(passwordCookie);
+                }
+                
+                request.getRequestDispatcher("homepage").forward(request, response);
+            } else {
+                request.setAttribute("message", "Wrong email or password!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
+        } else {
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-    } 
+    }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        // Check for Remember Me cookies
+        Cookie[] cookies = request.getCookies();
+        String email = null;
+        String password = null;
+        
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("email".equals(cookie.getName())) {
+                    email = cookie.getValue();
+                } else if ("password".equals(cookie.getName())) {
+                    password = cookie.getValue();
+                }
+            }
+        }
+        
+        // If cookies are found, prefill the login form
+        if (email != null && password != null) {
+            request.setAttribute("email", email);
+            request.setAttribute("password", password);
+        }
+        
         processRequest(request, response);
-    } 
+    }
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

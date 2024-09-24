@@ -266,8 +266,8 @@ body {
         }
 
         .footer {
-            background-color: #ff6600; /* Primary orange color */
-            color: #fff;
+            background-color: #ffe5cc; /* Primary orange color */
+            color: black;
             text-align: center;
             padding: 1rem;
             position: relative; /* Changed from fixed to relative */
@@ -300,5 +300,151 @@ body {
             cursor: pointer;
             z-index: 1100; /* Higher than the navbar */
         }
+        @media only screen and (max-width: 768px) {
+    /* Điều chỉnh header */
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 0.5rem;
+    }
 
+    .header .left-section img {
+        height: 40px; /* Thu nhỏ logo */
+    }
 
+    .header .search-bar {
+        margin-right: 0;
+        width: 100%; /* Chiếm toàn bộ chiều rộng trên di động */
+        padding-bottom: 1rem;
+    }
+
+    .header .search-bar input {
+        width: 100%; /* Chiếm toàn bộ chiều rộng input search */
+    }
+
+    .header .icons img {
+        margin-right: 0.5rem;
+    }
+
+    .header .icons {
+        margin-top: 0.5rem;
+        width: 100%; /* Chiếm hết chiều rộng */
+        justify-content: space-around;
+    }
+
+    /* Điều chỉnh navbar */
+    .navbar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .navbar a {
+        margin: 0.5rem 0;
+        font-size: 1rem;
+    }
+
+    /* Điều chỉnh content */
+    .content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    /* Điều chỉnh hero section */
+    .hero {
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 1.5rem; /* Giảm kích thước font cho tiêu đề trên di động */
+    }
+
+    /* Điều chỉnh các sản phẩm */
+    .products {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    /* Điều chỉnh slider */
+    .slider {
+        height: auto; /* Cho phép chiều cao tự động */
+    }
+
+    .slider img {
+        width: 100%;
+        object-fit: contain; /* Đảm bảo hình ảnh giữ tỷ lệ */
+    }
+
+    /* Điều chỉnh blog posts */
+    .blog-post {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .blog-post img {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 1rem;
+    }
+
+    /* Điều chỉnh footer */
+    .footer {
+        padding: 1rem;
+        text-align: center;
+    }
+
+    /* Điều chỉnh thanh toggle-button */
+    .toggle-button {
+        padding: 0.5rem;
+        font-size: 1rem;
+    }
+
+    /* Ẩn sidebar mặc định trên di động và hiện khi cần */
+    .navbar.hidden {
+        transform: translateX(-100%);
+        position: absolute;
+        top: 0;
+    }
+
+    .navbar {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .header.collapsed, .content.collapsed {
+        margin-left: 0;
+    }
+
+    .header.expanded, .content.expanded {
+        margin-left: 0;
+    }
+}
+
+/* Media query cho màn hình rất nhỏ (dưới 480px) */
+@media only screen and (max-width: 480px) {
+    .header {
+        padding: 1rem 0.25rem;
+    }
+
+    .header .search-bar input {
+        font-size: 0.9rem; /* Giảm kích thước font cho input */
+    }
+
+    .navbar a {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+
+    .hero h1 {
+        font-size: 1.2rem;
+    }
+
+    .product {
+        max-width: 100%;
+    }
+}

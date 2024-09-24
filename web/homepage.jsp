@@ -31,15 +31,15 @@
 
     <nav class="navbar hidden" id="navbar">
         <div class="logo">Online Shop</div>
-        <a href="#">Home</a>
-        <a href="#">Racket</a>
-        <a href="#">Shoes</a>
-        <a href="#">Net</a>
-        <a href="#">Grip</a>
-        <a href="#">Back Pack</a>
-        <a href="#">Shuttlecock</a>
-        <a href="#">Contact</a>
-        <a href="#">Cart</a>
+        <a href="homepage">Home</a>
+        <a href="productlist?category=racket">Racket</a>
+        <a href="productlist?category=shoes">Shoes</a>
+        <a href="productlist?category=net">Net</a>
+        <a href="productlist?category=grip">Grip</a>
+        <a href="productlist?category=backpack">Back Pack</a>
+        <a href="productlist?category=shuttlecock">Shuttlecock</a>
+        <a href="">Contact</a>
+        <a href="">Cart</a>
     </nav>
 
     <div class="content collapsed" id="content">
@@ -122,19 +122,6 @@
             content.classList.toggle('collapsed');
             header.classList.toggle('collapsed');
         }
-
-        function toggleProductDropdown(event) {
-            event.stopPropagation(); // Prevent click from propagating to the document
-            const dropdown = document.getElementById('product-dropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Hide dropdown if clicking outside of it
-        document.addEventListener('click', function() {
-            const dropdown = document.getElementById('product-dropdown');
-            dropdown.style.display = 'none';
-        });
-
         // Slider functionality
         let slideIndex = 0;
         showSlides();

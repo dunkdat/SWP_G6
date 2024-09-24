@@ -187,5 +187,7 @@ public class DAOUser extends DBContext{
         return false;
     }
     public static void main(String[] args) {
+        DAOUser d = new DAOUser();
+        System.out.println(d.ValidateUsers("datnb258@gmail.com", "datdeptrai").getEmail());
     }
 }
