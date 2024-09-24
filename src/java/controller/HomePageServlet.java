@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package HomePage;
+package controller;
 
 import dal.SliderDAO;
 import java.io.IOException;
@@ -32,9 +32,15 @@ public class HomePageServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HttpSession ss = request.getSession(false);
-            SliderDAO p = new SliderDAO();
+            if(ss!=null && ss.getAttribute("current_user")!=null){
+                SliderDAO p = new SliderDAO();
             request.setAttribute("slider", p.getAllSlider());
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
+            }else{
+                request.setAttribute("message", "Please login first!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+            
         }
     } 
 

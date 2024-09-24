@@ -10,7 +10,7 @@
     </servlet>
     <servlet>
         <servlet-name>HomePageServlet</servlet-name>
-        <servlet-class>HomePage.HomePageServlet</servlet-class>
+        <servlet-class>controller.HomePageServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UserVerify</servlet-name>
@@ -32,23 +32,27 @@
         <servlet-name>NewsServlet</servlet-name>
         <servlet-class>controller.NewsServlet</servlet-class>
     </servlet>
-     <servlet-mapping>
+    <servlet>
+        <servlet-name>ProductListServlet</servlet-name>
+        <servlet-class>controller.ProductListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/NewsServlet</url-pattern>
     </servlet-mapping>
-     <servlet>
+    <servlet>
         <servlet-name>NewsManagerServlet</servlet-name>
         <servlet-class>controller.NewsManagerServlet</servlet-class>
     </servlet>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>NewsManagerServlet</servlet-name>
         <url-pattern>/NewsManagerServlet</url-pattern>
     </servlet-mapping>
-     <servlet>
+    <servlet>
         <servlet-name>ProfileServlet</servlet-name>
         <servlet-class>controller.ProfileServlet</servlet-class>
     </servlet>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>
         <url-pattern>/ProfileServlet</url-pattern>
     </servlet-mapping>
@@ -79,5 +83,9 @@
     <servlet-mapping>
         <servlet-name>GoogleLoginServlet</servlet-name>
         <url-pattern>/gglogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductListServlet</servlet-name>
+        <url-pattern>/productlist</url-pattern>
     </servlet-mapping>
 </web-app>
