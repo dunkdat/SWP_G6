@@ -21,7 +21,7 @@
                 <span class="search-icon">🔍</span>
             </div>
             <div class="icons">
-                <img src="images/profile.png" alt="Account">
+                <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img src="images/profile.png" alt="Account"></a>
                 <img src="images/cart.png" alt="Cart">
             </div>
         </div>
@@ -38,8 +38,6 @@
         <a href="productlist?category=grip">Grip</a>
         <a href="productlist?category=backpack">Back Pack</a>
         <a href="productlist?category=shuttlecock">Shuttlecock</a>
-        <a href="">Contact</a>
-        <a href="">Cart</a>
     </nav>
 
     <div class="content collapsed" id="content">
@@ -49,12 +47,12 @@
         </section>
 
         <section class="nav-bar">
-            <a href="#">Home Page</a>
-            <a href="#">Sale</a>
-            <a href="#">Voucher</a>
-            <a href="#">About Us</a>
-            <a href="#">Contact</a>
-        </section>
+        <a href="homepage">Home Page</a>
+        <a href="#">Sale</a>
+        <a href="#">Voucher</a>
+        <a href="aboutus.jsp">About Us</a>
+        <a href="contact.jsp">Contact</a>
+    </section>
 
         <section class="slider">
             <c:forEach items="${requestScope.slider}" var="n">
