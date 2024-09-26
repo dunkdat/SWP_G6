@@ -361,15 +361,47 @@ body {
     }
 
     /* Điều chỉnh các sản phẩm */
-    .products {
-        flex-direction: column;
-        align-items: center;
-    }
+   section.products {
+    display: flex;
+    justify-content: space-around; /* Space between each product */
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background for section */
+    margin: 20px 0;
+}
 
-    .product {
-        width: 100%;
-        max-width: 300px;
-    }
+.product {
+    text-align: center;
+    width: 300px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for 3D effect */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product:hover {
+    transform: scale(1.05); /* Scale effect on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.product img {
+    max-width: 100%; /* Make the images responsive */
+    height: auto;
+    border-radius: 8px;
+}
+
+.product h2 {
+    font-size: 24px;
+    color: #333;
+    margin: 10px 0;
+}
+
+.product p {
+    font-size: 16px;
+    color: #777;
+}
+
 
     /* Điều chỉnh slider */
     .slider {

@@ -58,11 +58,12 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        User current_user = (User) session.getAttribute("current_user");
         String[] listService = {"Account info", "My order", "Change password"};
         request.setAttribute("listService", listService);
         //gia su dang nhap
-        session.setAttribute("currentUser", daoUser.getUserById(1));
+        session.setAttribute("currentUser", current_user);
         User acc = (User)session.getAttribute("currentUser");
         String service = request.getParameter("Service");
         

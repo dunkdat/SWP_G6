@@ -47,12 +47,12 @@
         </section>
 
         <section class="nav-bar">
-        <a href="homepage">Home Page</a>
-        <a href="#">Sale</a>
-        <a href="#">Voucher</a>
-        <a href="aboutus.jsp">About Us</a>
-        <a href="contact.jsp">Contact</a>
-    </section>
+            <a href="homepage">Home Page</a>
+            <a href="#">Sale</a>
+            <a href="#">Voucher</a>
+            <a href="aboutus.jsp">About Us</a>
+            <a href="contact.jsp">Contact</a>
+        </section>
 
         <section class="slider">
             <c:forEach items="${requestScope.slider}" var="n">
@@ -68,37 +68,42 @@
 
         <section class="blog-section">
             <h2>Latest Blog Posts</h2>
-            <div class="blog-post">
-                <img src="https://via.placeholder.com/150" alt="Blog Post 1">
-                <div>
-                    <h3>How to Find the Best Deals</h3>
-                    <p>Discover tips and tricks to save money on your favorite products. Learn how to compare prices and find the best deals online.</p>
-                </div>
-            </div>
-            <div class="blog-post">
-                <img src="https://via.placeholder.com/150" alt="Blog Post 2">
-                <div>
-                    <h3>Top 10 Products of 2024</h3>
-                    <p>Check out our curated list of the top products to watch in 2024. From gadgets to household items, these products are a must-have.</p>
-                </div>
-            </div>
+            <c:forEach var="blog" items="${bloglist}" varStatus="status">
+                <c:if test="${status.index < 2}">
+                    <div class="blog-post">
+                        <a href="NewsServlet"><img src="${blog.imagePath}" alt="Blog Post Image"></a>
+                        <div>
+                            <h3>${blog.newsTitle}</h3>
+                            <p>${blog.shortContent}</p>
+                        </div>
+                    </div>
+                </c:if>
+            </c:forEach>
         </section>
 
         <section class="products">
+            
             <div class="product">
-                <img src="" alt="Product 1">
-                <h2>Product 1</h2>
-                <p>$10.00</p>
+                <a href="productlist?category=racket">
+                    <img src="images/racket.jpg" alt="Product 1">
+                </a>
+                <h2>Rackets</h2>
+                <p>Choose your partner !!!</p>
+            </div>
+            
+            <div class="product">
+                <a href="productlist?category=backpack">
+                    <img src="images/bag.jpg" alt="Product 2">
+                </a>
+                <h2>Back Packs</h2>
+                <p>Be professional</p>
             </div>
             <div class="product">
-                <img src="" alt="Product 2">
-                <h2>Product 2</h2>
-                <p>$20.00</p>
-            </div>
-            <div class="product">
-                <img src="" alt="Product 3">
-                <h2>Product 3</h2>
-                <p>$30.00</p>
+                <a href="productlist?category=shoes">
+                    <img src="images/shoes.jpg" alt="Product 3">
+                </a>
+                <h2>Shoes</h2>
+                <p>Confident and speed</p>
             </div>
         </section>
     </div>
@@ -120,6 +125,7 @@
             content.classList.toggle('collapsed');
             header.classList.toggle('collapsed');
         }
+        
         // Slider functionality
         let slideIndex = 0;
         showSlides();
@@ -132,7 +138,7 @@
             slideIndex++;
             if (slideIndex > slides.length) { slideIndex = 1 }
             slides[slideIndex - 1].style.display = "block";
-            setTimeout(showSlides, 3000);
+            setTimeout(showSlides, 3000); // Change slide every 3 seconds
         }
 
         function plusSlides(n) {
