@@ -27,6 +27,54 @@
               integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        
+        <!-- Main Color CSS -->
+        <style>
+            :root {
+                --main-color: #ff6600;
+            }
+            
+            /* Change the button and main colors */
+            .btn-main {
+                background-color: var(--main-color);
+                border-color: var(--main-color);
+                color: white;
+            }
+
+            .btn-main:hover {
+                background-color: #e65c00;
+                border-color: #e65c00;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                color: var(--main-color);
+            }
+
+            a {
+                color: var(--main-color);
+            }
+
+            a:hover {
+                color: #e65c00;
+            }
+
+            .navbar {
+                background-color: var(--main-color);
+                padding: 10px;
+            }
+
+            .navbar .btn-logout, .navbar .btn-homepage {
+                background-color: white;
+                color: var(--main-color);
+                border-color: var(--main-color);
+                margin-left: 10px;
+            }
+
+            .navbar .btn-logout:hover, .navbar .btn-homepage:hover {
+                background-color: #e65c00;
+                color: white;
+            }
+        </style>
     </head>
 
     <%
@@ -37,6 +85,23 @@
     %>
 
     <body>
+        <!-- Navbar with Logout and Homepage Button -->
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" href="#">My Profile</a>
+
+                <div class="ms-auto d-flex">
+                    <!-- Back to Homepage Button -->
+                    <a href="homepage" class="btn btn-homepage">Home</a>
+
+                    <!-- Logout Button -->
+                    <form action="logout" method="POST">
+                        <button type="submit" class="btn btn-logout">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
         <section>
             <div class="container">
                 <h1 class="my-4">Account</h1>
@@ -48,7 +113,7 @@
                             <li class="me-5">
                                 <a href="profile?Service=${service}"
                                    <c:if test="${service == requestScope.current}">
-                                       style="text-decoration: underline; text-decoration-color: var(--pink-color);"
+                                       style="text-decoration: underline; text-decoration-color: var(--main-color);"
                                    </c:if>
                                    <c:if test="${service != requestScope.current}">
                                        style="text-decoration: none;"
@@ -131,7 +196,7 @@
                                                 </div>
                                             </div>
                                             <div class="mt-5">
-                                                <button type="submit" class="btn btn-dark text-white fs-4 fw-bold">Update Information</button>
+                                                <button type="submit" class="btn btn-main text-white fs-4 fw-bold">Update Information</button>
                                             </div>
                                         </div>
                                     </div>
@@ -168,7 +233,7 @@
                                                 </div>
                                             </div>
                                             <div class="mt-5">
-                                                <button type="submit" class="btn btn-dark text-white fs-4 fw-bold">Update Password</button>
+                                                <button type="submit" class="btn btn-main text-white fs-4 fw-bold">Update Password</button>
                                             </div>
                                         </div>
                                     </form>

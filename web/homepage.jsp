@@ -67,22 +67,19 @@
         </section>
 
         <section class="blog-section">
-            <h2>Latest Blog Posts</h2>
+    <h2>Latest Blog Posts</h2>
+    <c:forEach var="blog" items="${bloglist}" varStatus="status">
+        <c:if test="${status.index < 2}">
             <div class="blog-post">
-                <img src="https://via.placeholder.com/150" alt="Blog Post 1">
+                <a href="NewsServlet"><img src="${blog.imagePath}" alt="Blog Post Image"></a>
                 <div>
-                    <h3>How to Find the Best Deals</h3>
-                    <p>Discover tips and tricks to save money on your favorite products. Learn how to compare prices and find the best deals online.</p>
+                    <h3>${blog.newsTitle}</h3>
+                    <p>${blog.shortContent}</p>
                 </div>
             </div>
-            <div class="blog-post">
-                <img src="https://via.placeholder.com/150" alt="Blog Post 2">
-                <div>
-                    <h3>Top 10 Products of 2024</h3>
-                    <p>Check out our curated list of the top products to watch in 2024. From gadgets to household items, these products are a must-have.</p>
-                </div>
-            </div>
-        </section>
+        </c:if>
+    </c:forEach>
+</section>
 
         <section class="products">
             <div class="product">

@@ -5,8 +5,6 @@
 
 package controller;
 
-import dal.DAONews;
-import dal.SliderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author DAT
  */
-public class HomePageServlet extends HttpServlet {
+public class LogoutServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -32,15 +30,13 @@ public class HomePageServlet extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-                SliderDAO p = new SliderDAO();
-                DAONews d = new DAONews();
-            request.setAttribute("bloglist", d.getAllNews());
-            request.setAttribute("slider", p.getAllSlider());
-            request.getRequestDispatcher("homepage.jsp").forward(request, response);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+            HttpSession ss = request.getSession(false);
+            if(ss!=null){
+                ss.invalidate();
+                request.getRequestDispatcher("homepage").forward(request, response);
             }
             
-        
+        }
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

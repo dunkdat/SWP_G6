@@ -737,6 +737,39 @@ public class DAONews extends DBContext {
         }
         return list;
     }
+    public List<News> getAllNews(){
+        List<News> newsList = new ArrayList<>();
 
+        String query = "SELECT * FROM News";
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery(query)) {
 
+            while (rs.next()) {
+                News news = new News();
+                news.setNewsId(rs.getInt("id"));
+                news.setNewsTitle(rs.getString("newsTitle"));
+                news.setShortContent(rs.getString("shortContent"));
+                news.setDescription(rs.getString("description"));
+                news.setNewsGroupId(rs.getInt("newsGroupId"));
+                news.setCreateDate(rs.getDate("createDate"));
+                news.setModifiedDate(rs.getDate("modifiedDate"));
+                news.setCreateBy(rs.getInt("createBy"));
+                news.setImagePath(rs.getString("imagePath"));
+                news.setViewCount(rs.getInt("viewsCount"));
+
+                newsList.add(news);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return newsList;
+    }
+    public static void main(String[] args) {
+        DAONews d = new DAONews();
+        System.out.println(d.getAllNews().get(0).getShortContent());
+    }
 }
+    
+
+

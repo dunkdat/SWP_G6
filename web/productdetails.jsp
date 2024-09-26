@@ -71,16 +71,16 @@
 
                     <!-- Color Selection -->
                     <div class="color-wrapper">
-                        <label>Select Color:</label>
-                        <div class="color-options">
-                            <c:forEach items="${requestScope.colors}" var="color">
-                                <div class="color-box" style="background-color: ${color};" onclick="selectColor('${color}')"></div>
-                            </c:forEach>
-                        </div>
-                    </div>
+    <div class="color-options">
+        <c:forEach items="${requestScope.colors}" var="color">
+            <div class="color-box" style="background-color: ${color};" 
+                onclick="selectColor('<c:out value='${color}'/>')"></div>
+        </c:forEach>
+    </div>
+</div>
                     
                     <input type="hidden" name="color" id="selected-color" value="">
-                    <input type="hidden" name="productId" value="${product.id}">
+                    <input type="hidden" name="name" value="${product.name}">
                     <button type="submit" class="add-to-cart-btn">Add to Cart</button>
                 </form>
             </div>
@@ -90,9 +90,135 @@
         <div class="product-description-feedback">
             <!-- Product Description -->
             <section class="product-description">
-                <h3>More About ${product.name}</h3>
-                <p>...</p> <!-- Assuming there is a long description for the product -->
-            </section>
+    <h3>More About ${product.name}</h3>
+    
+    <c:choose>
+        <c:when test="${product.category == 'racket'}">
+            <p>Badminton rackets are designed with specific features to enhance a player's performance, offering a blend of power, control, and maneuverability.</p>
+
+            <p><strong>Specifications:</strong></p>
+            <ul>
+                <li>Weight: 85g</li>
+                <li>Balance Point: 295mm (Head-Heavy)</li>
+                <li>Frame Material: High Modulus Graphite</li>
+                <li>String Tension: 24-30 lbs</li>
+            </ul>
+
+            <p><strong>Strengths:</strong></p>
+            <ul>
+                <li>Provides excellent power for smashes</li>
+                <li>Highly durable and lightweight construction</li>
+                <li>Offers great stability and control during fast rallies</li>
+            </ul>
+
+            <p><strong>Play Style:</strong> This racket is designed for offensive players, with a head-heavy balance that aids in powerful smashes. It's ideal for players looking to dominate with aggressive shots, yet it offers enough control for defensive plays when needed.</p>
+        </c:when>
+
+        <c:when test="${product.category == 'shoes'}">
+            <p>Badminton shoes are engineered to provide players with excellent grip, cushioning, and lateral support during quick movements on the court.</p>
+
+            <p><strong>Specifications:</strong></p>
+            <ul>
+                <li>Weight: 300g</li>
+                <li>Material: Breathable mesh and synthetic leather</li>
+                <li>Sole: Non-marking rubber</li>
+                <li>Special Feature: Enhanced ankle support</li>
+            </ul>
+
+            <p><strong>Strengths:</strong></p>
+            <ul>
+                <li>Provides excellent grip for quick footwork</li>
+                <li>Lightweight and breathable material for comfort</li>
+                <li>Durable sole with extra traction for improved stability</li>
+            </ul>
+
+            <p><strong>Play Style:</strong> These shoes are perfect for players looking for agility and speed on the court, while offering great cushioning for prolonged matches.</p>
+        </c:when>
+
+        <c:when test="${product.category == 'net'}">
+            <p>Badminton nets are designed to meet official size requirements and offer durability for both indoor and outdoor play.</p>
+
+            <p><strong>Specifications:</strong></p>
+            <ul>
+                <li>Length: 6.1 meters (20 feet)</li>
+                <li>Material: Nylon with reinforced edges</li>
+                <li>Height: 1.55 meters (5 feet 1 inch)</li>
+                <li>Weather Resistance: Suitable for outdoor use</li>
+            </ul>
+
+            <p><strong>Strengths:</strong></p>
+            <ul>
+                <li>Durable material for long-term use</li>
+                <li>Lightweight and easy to set up</li>
+                <li>Weather-resistant for outdoor matches</li>
+            </ul>
+        </c:when>
+
+        <c:when test="${product.category == 'grip'}">
+            <p>Badminton racket grips provide players with improved comfort and control, reducing slippage during intense rallies.</p>
+
+            <p><strong>Specifications:</strong></p>
+            <ul>
+                <li>Material: PU (Polyurethane) for extra tackiness</li>
+                <li>Length: 1100mm</li>
+                <li>Thickness: 0.75mm</li>
+                <li>Special Feature: Sweat-absorbing and non-slip</li>
+            </ul>
+
+            <p><strong>Strengths:</strong></p>
+            <ul>
+                <li>Improves grip and comfort</li>
+                <li>Absorbs sweat to reduce slippage</li>
+                <li>Long-lasting and durable</li>
+            </ul>
+        </c:when>
+
+        <c:when test="${product.category == 'backpack'}">
+            <p>Badminton racket bags are designed to store and protect your equipment, providing space for rackets, shoes, and accessories.</p>
+
+            <p><strong>Specifications:</strong></p>
+            <ul>
+                <li>Capacity: Fits up to 6 rackets</li>
+                <li>Material: Water-resistant polyester</li>
+                <li>Compartments: 2 main compartments, 1 shoe compartment</li>
+                <li>Straps: Adjustable padded shoulder straps</li>
+            </ul>
+
+            <p><strong>Strengths:</strong></p>
+            <ul>
+                <li>Spacious design with multiple compartments</li>
+                <li>Water-resistant material for added protection</li>
+                <li>Padded straps for comfortable carrying</li>
+            </ul>
+        </c:when>
+
+        <c:when test="${product.category == 'shuttlecock'}">
+            <p>Badminton shuttlecocks are a vital part of the game, available in both feather and synthetic varieties, each offering different flight characteristics.</p>
+
+            <p><strong>Specifications:</strong></p>
+            <ul>
+                <li>Type: Feather or Nylon</li>
+                <li>Feather Material: Goose or duck feathers</li>
+                <li>Cork Material: Natural or composite cork</li>
+                <li>Flight Accuracy: High precision for consistent performance</li>
+            </ul>
+
+            <p><strong>Strengths:</strong></p>
+            <ul>
+                <li>Feather shuttlecocks offer better flight and speed control</li>
+                <li>Synthetic shuttlecocks are more durable and cost-effective</li>
+                <li>Accurate flight trajectory for professional play</li>
+            </ul>
+
+            <p><strong>Play Style:</strong> Feather shuttlecocks are preferred in competitive matches for their precise flight characteristics, while synthetic ones are ideal for training and casual play due to their durability.</p>
+        </c:when>
+
+        <c:otherwise>
+            <p>Product information is currently unavailable.</p>
+        </c:otherwise>
+    </c:choose>
+</section>
+
 
             <!-- Average Rating Display Section -->
             <section class="rating-display">
