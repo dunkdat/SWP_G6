@@ -363,10 +363,10 @@ body {
 .color-box {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
     cursor: pointer;
     border: 2px solid transparent;
     transition: border-color 0.3s ease;
+    border-radius: 0; /* Make the color boxes square */
 }
 
 .color-box:hover {
@@ -376,6 +376,7 @@ body {
 .color-box.selected {
     border-color: #ff6600;
 }
+
 .product-description-feedback {
     margin-top: 2rem;
     padding: 2rem;
@@ -454,6 +455,7 @@ body {
     font-size: 1.1rem;
     color: #ff6600;
 }
+
 .product-description {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
