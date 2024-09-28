@@ -364,7 +364,7 @@ body {
     width: 40px;
     height: 40px;
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 2px solid grey;
     transition: border-color 0.3s ease;
     border-radius: 0; /* Make the color boxes square */
 }
@@ -503,4 +503,97 @@ body {
 /* Styling for each product block */
 .product-description .specifications {
     margin-top: 20px;
+}
+.product-promotions {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #fff4e6;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.product-promotions h3, .product-promotions h4 {
+    font-size: 1.6rem;
+    color: #ff6600;
+    margin-bottom: 1rem;
+}
+
+.product-promotions ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.product-promotions ul li {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+}
+
+.product-promotions ul li:before {
+    content: '✔';
+    color: #ff6600;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.product-promotions h4 {
+    margin-top: 1.5rem;
+}
+
+.product-promotions ul li:nth-of-type(1) {
+    margin-bottom: 0.5rem;
+}
+
+.product-promotions ul li:nth-of-type(1):before {
+    content: '🎁';
+    color: #ff6600;
+}
+
+.product-promotions ul li:nth-of-type(2) {
+    margin-bottom: 1rem;
+}
+/* Size Wrapper Styling */
+.size-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.size-wrapper label {
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.size-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.size-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.size-box:hover {
+    border-color: #ff6600;
+}
+
+.size-box.selected {
+    background-color: #ff6600;
+    color: white;
+    border-color: #ff6600;
 }

@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.DAOUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.User;
 
 /**
  *
@@ -30,8 +32,10 @@ public class LogoutServlet extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            DAOUser u = new DAOUser();
             HttpSession ss = request.getSession(false);
             if(ss!=null){
+                User currentUser = (User) ss.getAttribute("current_user");
                 ss.invalidate();
                 request.getRequestDispatcher("homepage").forward(request, response);
             }

@@ -46,8 +46,12 @@ public class LoginServlet extends HttpServlet {
                     response.addCookie(emailCookie);
                     response.addCookie(passwordCookie);
                 }
+                if(!currentUser.getRole().equals("Admin")){
+                    request.getRequestDispatcher("homepage").forward(request, response);
+                }else if(currentUser.getRole().equals("Admin")){
+                    request.getRequestDispatcher("userlist").forward(request, response);
+                }
                 
-                request.getRequestDispatcher("homepage").forward(request, response);
             } else {
                 request.setAttribute("message", "Wrong email or password!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

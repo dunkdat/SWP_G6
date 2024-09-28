@@ -12,7 +12,7 @@ public class User {
     int id;
     String name, address;
     int gender;
-    String phone, email, password, role, status, imagePath;
+    String phone, email, password,detail, role, status, imagePath;
 
     public User() {
     }
@@ -44,6 +44,20 @@ public class User {
         this.password = password;
         this.role = role;
     }
+
+    public User(int id, String name, String address, int gender, String phone, String email,  String role, String status, String imagePath, String detail) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.gender = gender;
+        this.phone = phone;
+        this.email = email;
+        this.role = role;
+        this.status = status;
+        this.imagePath = imagePath;
+        this.detail = detail;
+    }
+    
     public User(int id, String name, String address, int gender, String phone, String email, String role, String imagePath) {
         this.id = id;
         this.name = name;
@@ -51,6 +65,16 @@ public class User {
         this.gender = gender;
         this.phone = phone;
         this.email = email;
+        this.role = role;
+        this.imagePath = imagePath;
+    }
+    public User(String name,String address, int gender, String phone, String email,String password, String role, String imagePath) {
+        this.name = name;
+        this.address = address;
+        this.gender = gender;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
         this.role = role;
         this.imagePath = imagePath;
     }

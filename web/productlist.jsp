@@ -113,6 +113,32 @@
     </footer>
 
     <script>
+        function filterProducts() {
+        // Get the search term from the input field and convert it to lowercase for case-insensitive search
+        const searchTerm = document.querySelector('.search-bar input').value.toLowerCase();
+
+        // Get all product elements (assumes products are in a section with class .products and each product has class .product)
+        const products = document.querySelectorAll('.products .product');
+
+        // Loop through each product
+        products.forEach(product => {
+            // Get the product name and convert it to lowercase for comparison
+            const productName = product.querySelector('h2').textContent.toLowerCase();
+
+            // Check if the search term is found in the product name
+            if (productName.includes(searchTerm)) {
+                // If it matches, show the product
+                product.style.display = 'block';
+            } else {
+                // If it doesn't match, hide the product
+                product.style.display = 'none';
+            }
+        });
+    }
+
+    // Add event listener to the search input to trigger filtering whenever the user types something
+    document.querySelector('.search-bar input').addEventListener('input', filterProducts);
+
         function toggleNavbar() {
             const navbar = document.getElementById('navbar');
             const content = document.getElementById('content');

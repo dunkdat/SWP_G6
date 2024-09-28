@@ -39,6 +39,7 @@ public class RegisterServlet extends HttpServlet {
         if (name != null && address != null && genderStr != null && phone != null && email != null && password != null && cfpassword != null) {
             try {
                 Validate v = new Validate();
+                DAOUser u = new DAOUser();
                 // Gender validation
                 int gender = Integer.parseInt(genderStr);
                  ss.setAttribute("name", name);
@@ -54,7 +55,11 @@ public class RegisterServlet extends HttpServlet {
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
-                
+                if(u.existedEmail(email)){
+                    request.setAttribute("message", "Existed email");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
+                }
                 // Validate password confirmation
                 if (!password.equals(cfpassword)) {
                     request.setAttribute("message", "Passwords do not match!");
@@ -69,8 +74,13 @@ public class RegisterServlet extends HttpServlet {
                     return;
                 }
                 
+                if(u.existedPhone(phone)){
+                    request.setAttribute("message", "Existed phone number");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
+                }
                
-                DAOUser u = new DAOUser();
+                
                 for(User x : u.getAllUser()){
                     if(x.getPhone()==null) continue;
                     if(x.getEmail().equals(email)){
