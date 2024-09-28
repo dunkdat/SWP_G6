@@ -209,11 +209,24 @@ public class DAOProduct extends DBContext {
         }
         return colors;
     }
-
+    public List<String> getShoesSize() {
+        List<String> sizes = new ArrayList<>();
+        String sql = "SELECT DISTINCT size FROM Products WHERE category = 'shoes'";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                sizes.add(rs.getString("size"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return sizes;
+    }
     public static void main(String[] args) {
         DAOProduct d = new DAOProduct();
-        List<String> colors = d.getColorsByProductName("Victor Ascaron 7000");
-        for (String color : colors) {
+        List<String> sizes = d.getShoesSize();
+        for (String color : sizes) {
             System.out.println("Available color: " + color);
         }
         System.out.println(d.getProductById("R001-B").getName());

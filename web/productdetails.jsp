@@ -54,14 +54,14 @@
             </div>
             <div class="product-info">
                 <h2>${product.name}</h2>
-                <p><strong>Price:</strong> ${product.price}</p>
+                <p style="color: red"><strong style="color: black; font-weight: bold;">Price:</strong>${product.price}</p>
                 <p><strong>Description:</strong> ${product.details}</p>
 
                 <!-- Add to Cart Section -->
                 <form action="cart" method="post">
                     <!-- Quantity Section -->
                     <div class="quantity-wrapper">
-                        <label for="quantity">Quantity:</label>
+                        <label for="quantity" style="font-weight: bold;">Quantity:</label>
                         <div class="quantity-control">
                             <button type="button" class="quantity-btn" onclick="changeQuantity(-1)">-</button>
                             <input type="input" id="quantity" name="quantity" value="1" min="1" max="10">
@@ -70,20 +70,55 @@
                     </div>
 
                     <!-- Color Selection -->
-                    <div class="color-wrapper">
+                    <div class="color-wrapper" ${product.category != "shuttlecock" ? '' : 'hidden'}>
+                        <label for="color" style="font-weight: bold;">Choose color: </label>
     <div class="color-options">
+        
         <c:forEach items="${requestScope.colors}" var="color">
             <div class="color-box" style="background-color: ${color};" 
                 onclick="selectColor('<c:out value='${color}'/>')"></div>
         </c:forEach>
     </div>
+        
+
+                   
 </div>
+                    <c:if test="${product.category == 'shoes'}">
+    <div class="size-wrapper">
+        <label for="size">Choose Size:</label>
+        <div class="size-options">
+            <c:forEach items="${requestScope.sizelist}" var="size">
+                <div class="size-box" data-size="${size}" onclick="selectSize('${size}')">${size}</div>
+            </c:forEach>
+        </div>
+        <input type="hidden" name="selectedSize" id="selected-size" value="">
+    </div>
+</c:if>
                     
                     <input type="hidden" name="color" id="selected-color" value="">
                     <input type="hidden" name="name" value="${product.name}">
                     <button type="submit" class="add-to-cart-btn">Add to Cart</button>
                 </form>
             </div>
+                    <section class="product-promotions">
+    <h3>Promotions and Special Offers</h3>
+    <ul>
+        <li>✔ Receive 2 free racket grips: VNB 001, VS002, or Joto 001</li>
+        <li>✔ Guaranteed authentic product</li>
+        <li>✔ Some products come with a single cover or velvet racket protector</li>
+        <li>✔ Pay after inspection and receiving the item (Frame only delivery)</li>
+        <li>✔ Official warranty from the manufacturer (Excluding domestic or hand-carried goods)</li>
+    </ul>
+
+    <h4>🎁 Additional Benefits at VNB Premium:</h4>
+    <ul>
+        <li>✅ Free racket logo painting</li>
+        <li>✅ 72-hour string warranty</li>
+        <li>✅ Free lifetime racket grommet replacement</li>
+        <li>✅ Earn Premium membership points</li>
+        <li>✅ Discount voucher for the next purchase</li>
+    </ul>
+</section>
         </div>
 
         <!-- Product Description and Feedback Section -->
@@ -290,6 +325,10 @@
     </footer>
 
     <script>
+       
+
+    // Add event listener for the search input
+    document.querySelector('.search-bar input').addEventListener('input', filterProducts);
         // Function to handle quantity increment and decrement
         function changeQuantity(delta) {
             const quantityInput = document.getElementById('quantity');
@@ -321,6 +360,18 @@
             content.classList.toggle('collapsed');
             header.classList.toggle('collapsed');
         }
+        function selectSize(size) {
+    // Set the value in the hidden input
+    document.getElementById('selected-size').value = size;
+
+    // Remove 'selected' class from all size boxes
+    const sizeBoxes = document.querySelectorAll('.size-box');
+    sizeBoxes.forEach(box => box.classList.remove('selected'));
+
+    // Add 'selected' class to the clicked size box
+    event.target.classList.add('selected');
+}
+
     </script>
     
 </body>

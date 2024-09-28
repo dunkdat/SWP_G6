@@ -24,6 +24,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import model.User;
+import util.Encode;
 import util.Validate;
 
 /**
@@ -186,7 +187,8 @@ public class ProfileServlet extends HttpServlet {
                 setCommonAttributes(request, response, mess, isSuccess, "Change password");
                 return;
               }
-               daoUser.updatePassword(Validate.getMd5(newPassword), user.getId());
+               Encode e = new Encode();
+               daoUser.updatePassword(e.toSHA1(newPassword), user.getId());
                mess = "change password success";
                isSuccess = true;
                setCommonAttributes(request, response, mess, isSuccess, "Change password");
