@@ -47,7 +47,7 @@ public class IConstant {
     public static final String REGEX_EMAIL = "^[\\w-\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
     public static final String REGEX_ADDRESS = "^[A-Za-z0-9 ,]+$";
     public static final String REGEX_TEXT = "^[A-Za-z0-9 ,\\.]+S";
-    public static final String REGEX_NAME = "^[A-Za-z ]+$";
+    public static final String REGEX_NAME = "^[A-Za-z ]+$"; 
     public static final String[] ORDER_STATUS = new String[]{"Chờ xác nhận",
         "Đang vận chyển", "Đặt hàng thành công", "Đã hủy"};
     public static final String[] WARRANTY_STATUS = new String[]{"Tiếp Nhận",

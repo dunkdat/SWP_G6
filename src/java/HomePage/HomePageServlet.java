@@ -73,5 +73,8 @@ public class HomePageServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+public static void main(String[] args) {
+         SliderDAO p = new SliderDAO();
+         System.out.println(p.getAllSlider());
+    }
 }

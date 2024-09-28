@@ -28,7 +28,7 @@ import util.Validate;
 
 /**
  *
- * @author HP
+ * @author Lenovo
  */
 @MultipartConfig
 public class ProfileServlet extends HttpServlet {
@@ -65,7 +65,7 @@ public class ProfileServlet extends HttpServlet {
         session.setAttribute("currentUser", daoUser.getUserById(1));
         User acc = (User)session.getAttribute("currentUser");
         String service = request.getParameter("Service");
-        
+        //neu da dang nhap
         if (acc != null) {
             if (service == null) {
                 service = listService[0];
