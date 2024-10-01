@@ -57,7 +57,7 @@ public class DAOUser extends DBContext{
                         rs.getInt("gender"),
                         rs.getString("phone"),
                         rs.getString("email"),
-                        rs.getString("detail"),
+                        rs.getString("role"),
                         rs.getString("imagePath"));
             }
         } catch (SQLException e) {

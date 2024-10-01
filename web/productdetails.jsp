@@ -31,15 +31,22 @@
     <div class="toggle-button" onclick="toggleNavbar()">☰</div>
 
     <nav class="navbar hidden" id="navbar">
-        <div class="logo">Online Shop</div>
+    <div class="logo">Online Shop</div>
+    <div class="dropdown">
         <a href="homepage">Home</a>
-        <a href="productlist?category=racket">Racket</a>
-        <a href="productlist?category=shoes">Shoes</a>
-        <a href="productlist?category=net">Net</a>
-        <a href="productlist?category=grip">Grip</a>
-        <a href="productlist?category=backpack">Back Pack</a>
-        <a href="productlist?category=shuttlecock">Shuttlecock</a>
-    </nav>
+    </div>
+    <div class="dropdown">
+        <a href="#">Category</a> <!-- Mục "Category" chính -->
+        <div class="dropdown-content">
+            <a href="productlist?category=racket">Racket</a>
+            <a href="productlist?category=shoes">Shoes</a>
+            <a href="productlist?category=net">Net</a>
+            <a href="productlist?category=grip">Grip</a>
+            <a href="productlist?category=backpack">Back Pack</a>
+            <a href="productlist?category=shuttlecock">Shuttlecock</a>
+        </div>
+    </div>
+</nav>
 
     <div class="content collapsed" id="content">
         <section class="hero">
@@ -321,8 +328,21 @@
     </div>
 
     <footer class="footer">
-        © 2024 Online Shop. All rights reserved.
-    </footer>
+    <div class="footer-content">
+        <p>© 2024 Online Shop. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/terms-of-service">Terms of Service</a></li>
+            <li><a href="/contact-us">Contact Us</a></li>
+            <li><a href="/about-us">About Us</a></li>
+        </ul>
+        <div class="social-media">
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://twitter.com" target="_blank">Twitter</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+        </div>
+    </div>
+</footer>
 
     <script>
        

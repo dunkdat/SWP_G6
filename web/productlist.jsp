@@ -31,15 +31,22 @@
     <div class="toggle-button" onclick="toggleNavbar()">☰</div>
 
     <nav class="navbar hidden" id="navbar">
-        <div class="logo">Online Shop</div>
+    <div class="logo">Online Shop</div>
+    <div class="dropdown">
         <a href="homepage">Home</a>
-        <a href="productlist?category=racket">Racket</a>
-        <a href="productlist?category=shoes">Shoes</a>
-        <a href="productlist?category=net">Net</a>
-        <a href="productlist?category=grip">Grip</a>
-        <a href="productlist?category=backpack">Back Pack</a>
-        <a href="productlist?category=shuttlecock">Shuttlecock</a>
-    </nav>
+    </div>
+    <div class="dropdown">
+        <a href="#">Category</a> <!-- Mục "Category" chính -->
+        <div class="dropdown-content">
+            <a href="productlist?category=racket">Racket</a>
+            <a href="productlist?category=shoes">Shoes</a>
+            <a href="productlist?category=net">Net</a>
+            <a href="productlist?category=grip">Grip</a>
+            <a href="productlist?category=backpack">Back Pack</a>
+            <a href="productlist?category=shuttlecock">Shuttlecock</a>
+        </div>
+    </div>
+</nav>
 
     <div class="content collapsed" id="content">
         <section class="hero">
@@ -81,7 +88,7 @@
                     <button type="submit" class="apply-filter-btn" name="submit" value="filter">Apply Filters</button>
                 </form>
             </div>
-
+                   
             <!-- Right Products Section -->
             <div class="products-section">
                 <div class="mess">${message}</div>
@@ -96,23 +103,44 @@
                     </c:forEach>
                 </section>
 
-                <section class="pagination">
-                    <c:if test="${pageNumber > 1}">
-                        <a href="productlist.jsp?page=${pageNumber - 1}" class="prev">Previous</a>
-                    </c:if>
-                    <c:if test="${pageNumber < totalPages}">
-                        <a href="productlist.jsp?page=${pageNumber + 1}" class="next">Next</a>
-                    </c:if>
-                </section>
-            </div>
-        </div>
+                            </div>
+                
+                
+        </div><div class="pagination">
+
+    <c:forEach begin="1" end="${totalPages}" var="i">
+        <c:choose>
+            <c:when test="${i == currentPage}">
+                <a href="#" data-page="${i}" class="active">${i}</a>
+            </c:when>
+            <c:otherwise>
+                <a href="#" data-page="${i}">${i}</a>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+
+</div>
     </div>
 
     <footer class="footer">
-        © 2024 Online Shop. All rights reserved.
-    </footer>
+    <div class="footer-content">
+        <p>© 2024 Online Shop. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/terms-of-service">Terms of Service</a></li>
+            <li><a href="/contact-us">Contact Us</a></li>
+            <li><a href="/about-us">About Us</a></li>
+        </ul>
+        <div class="social-media">
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://twitter.com" target="_blank">Twitter</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+        </div>
+    </div>
+</footer>
 
     <script>
+        
         function filterProducts() {
         // Get the search term from the input field and convert it to lowercase for case-insensitive search
         const searchTerm = document.querySelector('.search-bar input').value.toLowerCase();
@@ -151,6 +179,69 @@
             content.classList.toggle('collapsed');
             header.classList.toggle('collapsed');
         }
+        document.addEventListener("DOMContentLoaded", function () {
+    loadPagination();
+
+    function loadPagination() {
+        const paginationLinks = document.querySelectorAll('.pagination a');
+
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const page = this.getAttribute('data-page'); // Lấy số trang từ thuộc tính data-page
+                console.log('Page clicked:', page);
+                loadProducts(page);
+            });
+        });
+    }
+
+   function loadProducts(page) {
+    const xhr = new XMLHttpRequest();
+
+    // In ra URL đang được gửi đi
+    const url = `LoadListProductsServlet?page=` + page+`&category=${param.category}`;
+    console.log('Request URL:', url); // Kiểm tra URL trước khi gửi
+
+    xhr.open('GET', url, true);
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            document.querySelector('.products-section').innerHTML = xhr.responseText;
+
+            // Cập nhật trang hiện tại
+            currentPage = page;
+
+            // Cập nhật trạng thái 'active' cho trang hiện tại
+            updateActivePage(page);
+
+            // Tải lại phân trang để thêm sự kiện click cho các liên kết mới
+            loadPagination();
+        } else {
+            console.error('Failed to load products. Status:', xhr.status);
+        }
+    };
+
+    xhr.onerror = function () {
+        console.error('Error while loading data from server.');
+    };
+
+    xhr.send();
+}
+function updateActivePage(page) {
+    const paginationLinks = document.querySelectorAll('.pagination a');
+
+    // Xóa class 'active' khỏi tất cả các liên kết phân trang
+    paginationLinks.forEach(link => {
+        link.classList.remove('active');
+    });
+
+    // Gán class 'active' cho trang hiện tại
+    const activeLink = document.querySelector(`.pagination a[data-page="`+page+`"]`);
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
+}
+});
     </script>
 </body>
 </html>

@@ -52,6 +52,22 @@
         <servlet-name>UserDetailServlet</servlet-name>
         <servlet-class>controller.UserDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SettingListServlet</servlet-name>
+        <servlet-class>controller.SettingListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SettingDetailServlet</servlet-name>
+        <servlet-class>controller.SettingDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadProductsServlet</servlet-name>
+        <servlet-class>controller.LoadProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadListProductsServlet</servlet-name>
+        <servlet-class>controller.LoadListProductsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/NewsServlet</url-pattern>
@@ -119,5 +135,21 @@
     <servlet-mapping>
         <servlet-name>UserDetailServlet</servlet-name>
         <url-pattern>/userdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SettingListServlet</servlet-name>
+        <url-pattern>/settinglist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SettingDetailServlet</servlet-name>
+        <url-pattern>/settingdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadProductsServlet</servlet-name>
+        <url-pattern>/LoadProductsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadListProductsServlet</servlet-name>
+        <url-pattern>/LoadListProductsServlet</url-pattern>
     </servlet-mapping>
 </web-app>

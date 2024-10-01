@@ -29,6 +29,7 @@
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         
         <!-- Main Color CSS -->
+        <link rel="stylesheet" href="css/style.css"/>
         <style>
             :root {
                 --main-color: #ff6600;
@@ -76,7 +77,8 @@
             }
         </style>
     </head>
-
+    </head>
+    
     <%
         User cuss = null;
         if(session.getAttribute("currentUser") != null) {

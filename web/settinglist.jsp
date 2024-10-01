@@ -317,7 +317,7 @@
             <a href="settinglist">Setting Management</a>
         </nav>
         <div class="container">
-            <h1>User Management</h1>
+            <h1>Setting Management</h1>
 
             <!-- Search and Filter Section -->
             <div class="search-filter">
