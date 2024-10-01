@@ -29,11 +29,7 @@
               crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     </head>
-    <style>
-        .new_type.choose a::after {
-            display: block;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css"/>
 
     <body>
         

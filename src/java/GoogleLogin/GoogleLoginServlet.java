@@ -32,7 +32,6 @@ public class GoogleLoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
             String code = request.getParameter("code");
             GoogleLogin gg = new GoogleLogin();
             String acessToken = gg.getToken(code);
@@ -48,11 +47,15 @@ public class GoogleLoginServlet extends HttpServlet {
                 ss.setAttribute("user_email", acc.getEmail());
                 request.getRequestDispatcher("homepage").forward(request, response);
             }else{
-                
-                ss.setAttribute("user_email", acc.getEmail());
+                User user = u.getUserByEmail(acc.getEmail());
+                ss.setAttribute("current_user", user);
+                if(!user.getRole().equals("Admin")){
                 request.getRequestDispatcher("homepage").forward(request, response);
+                }else if(user.getRole().equals("Admin")){
+                    request.getRequestDispatcher("userlist").forward(request, response);
+                }
             }
-        }
+        
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

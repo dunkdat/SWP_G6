@@ -5,24 +5,18 @@
 
 package controller;
 
-import dal.DAONews;
-import dal.DAOProduct;
-import dal.SliderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Products;
 
 /**
  *
  * @author DAT
  */
-public class HomePageServlet extends HttpServlet {
+public class SettingListServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,34 +28,18 @@ public class HomePageServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-    SliderDAO sliderDAO = new SliderDAO();
-    DAONews newsDAO = new DAONews();
-    DAOProduct productDAO = new DAOProduct();
-
-    // Lấy số trang hiện tại
-    String pageParam = request.getParameter("page");
-    int currentPage = pageParam != null ? Integer.parseInt(pageParam) : 1;
-    int pageSize = 12; // Số sản phẩm trên mỗi trang
-    int offset = (currentPage - 1) * pageSize;
-
-    // Lấy tổng số sản phẩm và tính tổng số trang
-    int totalProducts = productDAO.getTotalProducts();
-    int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
-
-    // Lấy danh sách sản phẩm cho trang hiện tại
-    List<Products> productList = productDAO.getProductsByPage(offset, pageSize);
-
-    // Đặt các thuộc tính cho request
-    request.setAttribute("bloglist", newsDAO.getAllNews());
-    request.setAttribute("slider", sliderDAO.getAllSlider());
-    request.setAttribute("productlist", productList);
-    request.setAttribute("currentPage", currentPage);
-    request.setAttribute("totalPages", totalPages);
-
-    request.getRequestDispatcher("homepage.jsp").forward(request, response);
-            
-            
-        
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet SettingListServlet</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet SettingListServlet at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

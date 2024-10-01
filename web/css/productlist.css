@@ -108,38 +108,96 @@ body {
 
 /* Navbar Styling */
 .navbar {
-    background-color: #ff6600;
-    color: #fff;
-    padding: 2rem 1rem;
-    width: 220px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.3s ease-in-out;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+            background-color: #ff6600; /* Primary orange color */
+            color: #fff;
+            padding: 1rem;
+            width: 200px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+            z-index: 1000; /* Ensure navbar is on top */
+            gap: 2rem;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #ff9933; /* Lighter orange on hover */
+        }
+.navbar .dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%; /* Đảm bảo mục "Category" chiếm toàn bộ chiều rộng */
 }
 
-.navbar a {
-    color: #fff;
+.navbar .dropdown a {
+    color: #fff; /* Màu trắng cho chữ trong các mục của navbar */
     text-decoration: none;
-    margin: 1rem 0;
-    font-size: 1.1rem;
-    text-transform: uppercase;
+    padding: 1rem;
+    display: block;
+    text-align: left;
+    font-size: 1.2rem;
     font-weight: bold;
-    padding: 0.5rem 1.5rem;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.navbar a:hover {
-    background-color: #ff9933;
+/* Cấu trúc danh sách dropdown */
+.navbar .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff; /* Nền cam nhạt cho dropdown */
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng */
+    border-radius: 5px; /* Bo góc nhẹ */
+    padding: 0.5rem 0; /* Khoảng cách bên trong */
+    z-index: 1;
+    width: 100%; /* Chiều rộng danh sách bằng với chiều rộng navbar */
 }
 
+.navbar .dropdown-content a {
+    color: #333; /* Màu chữ đen cho các mục dropdown */
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left; /* Căn lề trái cho danh sách con */
+    font-size: 14px;
+    font-weight: normal; /* Mức độ đậm vừa phải */
+    gap:1rem;
+}
+
+/* Hover vào danh sách con */
+.navbar .dropdown-content a:hover {
+    background-color: #ff6600; /* Nền cam khi hover */
+    color: #fff; /* Chữ trắng khi hover */
+}
+
+/* Hiển thị danh sách khi hover vào mục chính */
+.navbar .dropdown:hover .dropdown-content {
+    display: block; /* Hiển thị danh sách khi hover */
+}
+
+/* Hiệu ứng hover cho mục chính */
+.navbar .dropdown:hover a {
+    color: #ff6600; /* Đổi màu chữ thành cam khi hover vào mục chính */
+    background-color: #fff; /* Nền trắng khi hover vào mục chính */
+    border-radius: 5px; /* Bo góc nhẹ */
+}
 /* Main Content Layout */
 .main-content {
     display: flex;
@@ -283,25 +341,35 @@ body {
     transition: background-color 0.3s ease;
 }
 
-/* Pagination */
 .pagination {
-    margin-top: 2rem;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3rem;
+    flex-wrap: wrap;
+    max-height: 90px; /* Giới hạn chiều cao tối đa để tạo 2 hàng */
+    overflow: hidden; /* Ẩn các phần vượt quá */
+    gap: 5px; /* Khoảng cách giữa các trang */
 }
 
 .pagination a {
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
     color: #ff6600;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
     border: 1px solid #ff6600;
     margin: 0 0.25rem;
-    text-decoration: none;
+    border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
 .pagination a:hover {
-    background-color: #ff9933;
-    color: white;
+    background-color: #ff6600;
+    color: #fff;
+}
+
+.pagination a.active {
+    background-color: #ff6600;
+    color: #fff;
 }
 
 /* Footer */
@@ -321,7 +389,7 @@ body {
 }
 
 .header.expanded, .content.expanded {
-    margin-left: 220px;
+    margin-left: 200px;
 }
 
 .header.collapsed, .content.collapsed {
@@ -349,4 +417,51 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+.footer {
+    background-color: #ffd1a3; /* Màu cam nhạt */
+    color: #333333; /* Màu chữ tối hơn để tạo độ tương phản */
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.footer-links {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.footer-links li {
+    display: inline;
+    margin: 0 15px;
+}
+
+.footer-links a {
+    color: #333333; /* Màu chữ tối để tương phản với nền cam nhạt */
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: #000000; /* Màu đen khi hover để nhấn mạnh */
+}
+
+.social-media {
+    margin-top: 10px;
+}
+
+.social-media a {
+    color: #333333; /* Màu chữ tối cho liên kết mạng xã hội */
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.social-media a:hover {
+    color: #000000; /* Màu đen khi hover */
 }

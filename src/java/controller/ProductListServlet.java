@@ -39,10 +39,10 @@ public class ProductListServlet extends HttpServlet {
             String brand = request.getParameter("brand");
             String price = request.getParameter("price");
             if (cat != null) {
-                    String lowPrice = null;
-                    String highPrice = null;
+                String lowPrice = null;
+                String highPrice = null;
                 if (sub != null) {
-                    
+
                     if (price != null) {
                         String[] prices = price.split("-");
                         lowPrice = prices[0];
@@ -51,16 +51,27 @@ public class ProductListServlet extends HttpServlet {
 
                 }
                 DAOProduct d = new DAOProduct();
-                List<Products>t= d.getAllProduct(cat, brand, lowPrice, highPrice);
-                if(t.size()==0){
+                String pageParam = request.getParameter("page");
+                int currentPage = pageParam != null ? Integer.parseInt(pageParam) : 1;
+                int pageSize = 12; // Số sản phẩm trên mỗi trang
+                int offset = (currentPage - 1) * pageSize;
+
+                // Lấy tổng số sản phẩm và tính tổng số trang
+                int totalProducts = d.getTotalProducts(cat);
+                int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
+                List<Products> t = d.getAllProduct(cat, brand, lowPrice, highPrice, pageSize, offset);
+                
+                if (t.size() == 0) {
                     request.setAttribute("message", "No product found!");
                     request.getRequestDispatcher("productlist.jsp").forward(request, response);
-                }else{
+                } else {
+                    request.setAttribute("currentPage", currentPage);
+                    request.setAttribute("totalPages", totalPages);
                     request.setAttribute("productlist", t);
                     request.getRequestDispatcher("productlist.jsp").forward(request, response);
                     return;
                 }
-                
+
             }
         }
     }

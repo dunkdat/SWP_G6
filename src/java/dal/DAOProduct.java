@@ -17,8 +17,37 @@ import model.Review;
  * @author DAT
  */
 public class DAOProduct extends DBContext {
-
-    public List<Products> getAllProduct(String category, String brand, String lowPrice, String highPrice) {
+    public List<Products> getAllProducts() {
+        List<Products> t = new ArrayList<>();
+        String sql = "SELECT p.*\n"
+                    + "FROM Products p\n"
+                    + "INNER JOIN (\n"
+                    + "    SELECT name, MIN(id) AS min_id\n"
+                    + "    FROM Products\n"
+                    + "    GROUP BY name\n"
+                    + ") AS unique_products\n"
+                    + "ON p.id = unique_products.min_id\n";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                t.add( new Products(rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("category"),
+                        rs.getString("brand"),
+                        rs.getFloat("price"),
+                        rs.getString("color"),
+                        rs.getInt("size"),
+                        rs.getInt("quantity"),
+                        rs.getString("details"),
+                        rs.getString("link_picture")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return t;
+    }
+    public List<Products> getAllProduct(String category, String brand, String lowPrice, String highPrice, int limit, int offset) {
         List<Products> t = new ArrayList<>();
         try {
             StringBuilder sql = new StringBuilder("SELECT p.*\n"
@@ -40,7 +69,7 @@ public class DAOProduct extends DBContext {
             if (lowPrice != null && highPrice != null) {
                 sql.append(" AND price BETWEEN ? AND ?");
             }
-
+            sql.append("limit ? offset ?");
             PreparedStatement st = connection.prepareStatement(sql.toString());
             st.setString(1, category);
 
@@ -52,9 +81,10 @@ public class DAOProduct extends DBContext {
 
             if (lowPrice != null && highPrice != null) {
                 st.setFloat(paramIndex++, Float.parseFloat(lowPrice));
-                st.setFloat(paramIndex, Float.parseFloat(highPrice));
+                st.setFloat(paramIndex++, Float.parseFloat(highPrice));
             }
-
+            st.setInt(paramIndex++, limit);
+            st.setInt(paramIndex, offset);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Products x = new Products(
@@ -223,13 +253,94 @@ public class DAOProduct extends DBContext {
         }
         return sizes;
     }
+   
+
+    // Phương thức lấy danh sách sản phẩm với phân trang
+    public List<Products> getProductsByPage(int offset, int pageSize) {
+    List<Products> productList = new ArrayList<>();
+    String sql = "SELECT p.*\n"
+                    + "FROM Products p\n"
+                    + "INNER JOIN (\n"
+                    + "    SELECT name, MIN(id) AS min_id\n"
+                    + "    FROM Products\n"
+                    + "    GROUP BY name\n"
+                    + ") AS unique_products\n"
+                    + "ON p.id = unique_products.min_id\n"
+            + "limit ? offset ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setInt(1, pageSize);
+        stmt.setInt(2, offset);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            String id = rs.getString("id");
+            String name = rs.getString("name");
+            String category = rs.getString("category");
+            String brand = rs.getString("brand");
+            float price = rs.getFloat("price");
+            String color = rs.getString("color");
+            int size = rs.getInt("size");
+            int quantity = rs.getInt("quantity");
+            String details = rs.getString("details");
+            String linkPicture = rs.getString("link_picture");
+
+            Products product = new Products(id, name, category, brand, price, color, size, quantity, details, linkPicture);
+            productList.add(product);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return productList;
+}
+
+public int getTotalProducts() {
+    String sql = "SELECT count(*) \n"
+                    + "FROM Products p\n"
+                    + "INNER JOIN (\n"
+                    + "    SELECT name, MIN(id) AS min_id\n"
+                    + "    FROM Products\n"
+                    + "    GROUP BY name\n"
+                    + ") AS unique_products\n"
+                    + "ON p.id = unique_products.min_id\n";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+public int getTotalProducts(String cat) {
+    String sql = "SELECT count(*) \n"
+                    + "FROM Products p\n"
+                    + "INNER JOIN (\n"
+                    + "    SELECT name, MIN(id) AS min_id\n"
+                    + "    FROM Products\n"
+                    + "    GROUP BY name\n"
+                    + ") AS unique_products\n"
+                    + "ON p.id = unique_products.min_id\n"
+            + "where category = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setString(1, cat);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
     public static void main(String[] args) {
         DAOProduct d = new DAOProduct();
-        List<String> sizes = d.getShoesSize();
-        for (String color : sizes) {
-            System.out.println("Available color: " + color);
+        List<Products> sizes = d.getProductsByPage(3, 12);
+        for (Products color : sizes) {
+            System.out.println(color.getName());
         }
-        System.out.println(d.getProductById("R001-B").getName());
+        int totalProducts = d.getTotalProducts("racket");
+                int totalPages = (int) Math.ceil((double) totalProducts / 12);
+        System.out.println(totalPages);
     }
 
 }
