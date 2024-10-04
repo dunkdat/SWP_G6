@@ -38,9 +38,7 @@ public class ProductDetailsServlet extends HttpServlet {
             request.setAttribute("averageRating", dp.getAverageStarRating(id));
             request.setAttribute("productReviews", dp.getProductReviews(id));
             request.setAttribute("relatedProducts", dp.getRelatedProductsByBrand(p.getBrand(),p.getCategory() ,id));
-            if(p.getCategory().equals("shoes")){
-                request.setAttribute("sizelist", dp.getShoesSize());
-            }
+            
             request.setAttribute("colors", dp.getColorsByProductName(p.getName()));
             request.getRequestDispatcher("productdetails.jsp").forward(request, response);
             }

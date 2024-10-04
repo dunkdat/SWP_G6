@@ -305,6 +305,7 @@
                 cursor: pointer;
                 z-index: 1100; /* Higher than the navbar */
             }
+            
         </style>
     </head>
     <body>
@@ -330,8 +331,8 @@
                     </select>
                     <select id="statusFilter" onchange="filterTable()">
                         <option value="">All Statuses</option>
-                        <option value="Online">Active</option>
-                        <option value="Offline">Inactive</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
                     </select>
                 </form>
             </div>
@@ -455,8 +456,8 @@
                             <td><strong>Status:</strong></td>
                             <td>
                                 <select id="detail-status" name="status">
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
                                 </select>
                             </td>
                         </tr>

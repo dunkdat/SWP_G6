@@ -196,16 +196,37 @@ body {
     background-color: #fff; /* Nền trắng khi hover vào mục chính */
     border-radius: 5px; /* Bo góc nhẹ */
 }
+.nav-bar {
+            background-color: #ff6600; /* Primary orange color */
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+            z-index: 1; /* Ensure navigation bar is behind the navbar */
+        }
+
+        .nav-bar a {
+            color: #fff;
+            margin: 0 1.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
 /* Main Content Layout */
 .content {
     transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
     z-index: 1;
 }
 
+.navbar.hidden {
+    transform: translateX(-100%);
+}
 .content.expanded {
     margin-left: 200px;
 }
-
 /* Hero Section */
 .hero {
     background-color: #ffe5cc;
@@ -580,7 +601,6 @@ body {
 }
 
 .product-promotions ul li:before {
-    content: '✔';
     color: #ff6600;
     font-weight: bold;
     margin-right: 0.5rem;
@@ -646,13 +666,6 @@ body {
     border-color: #ff6600;
 }
 
-.footer {
-    background-color: #ffd1a3; /* Màu cam nhạt */
-    color: #333333; /* Màu chữ tối hơn để tạo độ tương phản */
-    padding: 20px 0;
-    text-align: center;
-    font-size: 14px;
-}
 
 .footer-content {
     max-width: 1200px;
@@ -692,4 +705,96 @@ body {
 
 .social-media a:hover {
     color: #000000; /* Màu đen khi hover */
+}
+.icons {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    width: 160px;
+    padding: 12px 16px;
+}
+
+.dropdown-content a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    padding: 10px 0;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.avatar:hover + .dropdown-content,
+.dropdown-content:hover {
+    display: block;
+}
+
+.dropdown-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.header .right-section .dropdown-content {
+    position: absolute;
+    top: 50px; /* Adjust as needed */
+    right: 50px; /* Adjust as needed */
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 10;
+    display: none;
+    width: 200px; /* Adjust size if necessary */
+}
+
+.header .right-section .dropdown-content a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+}
+
+.header .right-section .dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.header .right-section .dropdown-content a:hover {
+    background-color: #f0f0f0;
+}
+
+.header .right-section .dropdown-avatar {
+    display: block;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 10px auto;
+}
+
+.header .right-section .avatar:hover + .dropdown-content {
+    display: block;
+}
+
+/* To prevent the dropdown from disappearing immediately */
+.header .right-section .dropdown-content:hover {
+    display: block;
+}
+.header .right-section .avatar {
+    width: 30px; /* Increase the size */
+    height: 30px; /* Ensure it's a square for a perfect circle */
+    border-radius: 50%; /* Makes it a circle */
+    object-fit: cover; /* Ensures the image scales properly inside the circle */
+    cursor: pointer; /* Adds a pointer cursor when hovering over the avatar */
 }
