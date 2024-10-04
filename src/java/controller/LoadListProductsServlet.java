@@ -57,57 +57,62 @@ public class LoadListProductsServlet extends HttpServlet {
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     try {
-        // Lấy tham số 'page' từ request
-        String pageParam = request.getParameter("page");
-        int page;
-        String cat = request.getParameter("category");
-            String sub = request.getParameter("submit");
-            String brand = request.getParameter("brand");
-            String price = request.getParameter("price");
-            String message = (String) request.getAttribute("message");
-        if (pageParam == null || pageParam.isEmpty()) {
-            page = 1; // Mặc định là trang 1 nếu không có tham số
-        } else {
-            page = Integer.parseInt(pageParam);
+        // Get parameters
+        String category = request.getParameter("category");
+        String brand = request.getParameter("brand");
+        String price = request.getParameter("price");
+        String query = request.getParameter("query");
+        String lowPrice = null;
+        String highPrice = null;
+
+        if (price != null) {
+            String[] prices = price.split("-");
+            if (prices.length == 2) {
+                lowPrice = prices[0];
+                highPrice = prices[1];
+            }
         }
 
-        int pageSize = 12; // Số sản phẩm mỗi trang
+        // Pagination logic
+        String pageParam = request.getParameter("page");
+        int page = (pageParam == null || pageParam.isEmpty()) ? 1 : Integer.parseInt(pageParam);
+        int pageSize = 12;
         int offset = (page - 1) * pageSize;
-
+        
+        // Fetch the filtered products
         DAOProduct productDAO = new DAOProduct();
+        // Tính tổng số sản phẩm sau khi áp dụng bộ lọc
+        int totalProducts = productDAO.getTotalFilteredProducts(category, brand, lowPrice, highPrice, query);
 
-        // Lấy tổng số sản phẩm và tính tổng số trang
-        int totalProducts = productDAO.getTotalProducts();
+        // Tính tổng số trang dựa trên số sản phẩm đã lọc
         int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
+        List<Products> productList = productDAO.getAllProduct(category, brand, lowPrice, highPrice,query, pageSize, offset);
 
-        // Lấy danh sách sản phẩm dựa trên trang hiện tại
-        List<Products> productList = productDAO.getAllProduct(cat, brand, price, price, pageSize, offset);
-        // Thiết lập nội dung trả về là HTML
-        response.setContentType("text/html;charset=UTF-8");
+        // Render the products
         PrintWriter out = response.getWriter();
-        
-if (message != null) {
-    out.println("<div class='mess'>" + message + "</div>");
-}
-
-// Bắt đầu phần danh sách sản phẩm
-out.println("<section class='products'>");
-        // Tạo HTML để hiển thị danh sách sản phẩm
+        out.println("<section class='products'>");
         for (Products product : productList) {
-        out.println("<div class='product'>");
-        out.println("<img src='" + product.getLink_picture() + "' alt='" + product.getName() + "'>");
-        out.println("<h2>" + product.getName() + "</h2>");
-        out.println("<p>" + product.getPrice() + "</p>");
-        out.println("<a href='productdetails?id=" + product.getId() + "' class='view-details-btn'>View Details</a>");
+            out.println("<div class='product'>");
+            out.println("<img src='" + product.getLink_picture() + "' alt='" + product.getName() + "'>");
+            out.println("<h2>" + product.getName() + "</h2>");
+            out.println("<p>" + product.getPrice() + "</p>");
+            out.println("<a href='productdetails?id=" + product.getId() + "' class='view-details-btn'>View Details</a>");
+            out.println("</div>");
+        }
+        out.println("</section>");
+        out.println("<div class='pagination'>");
+        for (int i = 1; i <= totalPages; i++) {
+            if (i == page) {
+                out.println("<a href='#' class='active' data-page='" + i + "'>" + i + "</a>");
+            } else {
+                out.println("<a href='#' data-page='" + i + "'>" + i + "</a>");
+            }
+        }
         out.println("</div>");
-    }
-
-        
-
         out.close();
     } catch (Exception e) {
-        e.printStackTrace();
-        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Có lỗi xảy ra trên server.");
+        e.printStackTrace(); // Log the error
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error processing the request.");
     }
 }
 

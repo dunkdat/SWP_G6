@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="css/homestyle.css"/> <!-- Link to homepage CSS -->
     <style>
         /* Specific styles for the About Us page */
-
         .container {
             max-width: 1200px;
             margin: auto;
@@ -18,7 +17,6 @@
         }
 
         h1 {
-            color: #2c3e50;
             text-align: center;
             margin-top: 20px;
         }
@@ -46,18 +44,7 @@
             width: 150px;
             height: 150px;
         }
-
-        /* Adjust the footer to match the homepage */
-        footer {
-            background-color: #ffe5cc; /* Same as homepage */
-            color: black;
-            text-align: center;
-            padding: 1rem;
-            position: relative;
-            width: 100%;
-            bottom: 0;
-            z-index: 100;
-        }
+        
     </style>
 </head>
 <body>
@@ -69,28 +56,48 @@
         <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
     </div>
     <div class="right-section">
-        <div class="search-bar">
-            <input type="text" placeholder="Tìm sản phẩm...">
-            <span class="search-icon">🔍</span>
-        </div>
         <div class="icons">
-            <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img src="images/profile.png" alt="Account"></a>
-            <img src="images/cart.png" alt="Cart">
-        </div>
+    <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+        <c:if test="${current_user == null}">
+            <img src="images/profile.png" alt="Account" class="avatar">
+        </c:if>
+        <c:if test="${current_user != null}">
+            <img src="images/User_img/${current_user.imagePath}" alt="Account" class="avatar">
+        </c:if>
+    </a>
+        <c:if test="${current_user != null}">
+            <div class="dropdown-content">
+             <img src="images/User_img/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+        <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+            Profile
+        </a>
+        <a href="logout">Logout</a>
+    </div>
+        </c:if>
+    
+    <img src="images/cart.png" alt="Cart">
+</div>
     </div>
 </header>
 
 <div class="toggle-button" onclick="toggleNavbar()">☰</div>
 
-<nav class="navbar hidden" id="navbar">
+    <nav class="navbar hidden" id="navbar">
     <div class="logo">Online Shop</div>
-    <a href="homepage">Home</a>
-    <a href="productlist?category=racket">Racket</a>
-    <a href="productlist?category=shoes">Shoes</a>
-    <a href="productlist?category=net">Net</a>
-    <a href="productlist?category=grip">Grip</a>
-    <a href="productlist?category=backpack">Back Pack</a>
-    <a href="productlist?category=shuttlecock">Shuttlecock</a>
+    <div class="dropdown">
+        <a href="homepage">Home</a>
+    </div>
+    <div class="dropdown">
+        <a href="#">Category</a> <!-- Mục "Category" chính -->
+        <div class="dropdown-content">
+            <a href="productlist?category=racket">Racket</a>
+            <a href="productlist?category=shoes">Shoes</a>
+            <a href="productlist?category=net">Net</a>
+            <a href="productlist?category=grip">Grip</a>
+            <a href="productlist?category=backpack">Back Pack</a>
+            <a href="productlist?category=shuttlecock">Shuttlecock</a>
+        </div>
+    </div>
 </nav>
 
 <div class="content collapsed" id="content">
@@ -136,10 +143,31 @@
 </div>
 
 <footer class="footer">
-    © 2024 Online Shop. All rights reserved.
+    <div class="footer-content">
+        <p>© 2024 Online Shop. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/terms-of-service">Terms of Service</a></li>
+            <li><a href="/contact-us">Contact Us</a></li>
+            <li><a href="/about-us">About Us</a></li>
+        </ul>
+        <div class="social-media">
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://twitter.com" target="_blank">Twitter</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+        </div>
+    </div>
 </footer>
 
+
 <script>
+    document.querySelector('.avatar').addEventListener('mouseover', function() {
+    document.querySelector('.dropdown-content').style.display = 'block';
+});
+
+document.querySelector('.dropdown-content').addEventListener('mouseleave', function() {
+    document.querySelector('.dropdown-content').style.display = 'none';
+});
     function toggleNavbar() {
         const navbar = document.getElementById('navbar');
         const content = document.getElementById('content');

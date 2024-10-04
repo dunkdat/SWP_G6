@@ -324,16 +324,7 @@ body {
             margin-top: 0;
         }
 
-        .footer {
-            background-color: #ffe5cc; /* Primary orange color */
-            color: black;
-            text-align: center;
-            padding: 1rem;
-            position: relative; /* Changed from fixed to relative */
-            width: 100%;
-            bottom: 0;
-            z-index: 100; /* Ensure footer is above other content */
-        }
+        
 
         /* Hide Navbar initially on small screens */
         .navbar.hidden {
@@ -341,11 +332,11 @@ body {
         }
 
         /* Adjust content and header when navbar is hidden */
-        .header.expanded, .content.expanded{
+        .header.expanded, .content.expanded, footer.expanded{
             margin-left: 200px;
         }
 
-        .header.collapsed, .content.collapsed{
+        .header.collapsed, .content.collapsed,footer.collapsed{
             margin-left: 0;
         }
 
@@ -359,14 +350,16 @@ body {
             cursor: pointer;
             z-index: 1100; /* Higher than the navbar */
         }
-        .footer {
-    background-color: #ffd1a3; /* Màu cam nhạt */
-    color: #333333; /* Màu chữ tối hơn để tạo độ tương phản */
-    padding: 20px 0;
-    text-align: center;
-    font-size: 14px;
-}
-
+.footer {
+            background-color: #ffe5cc; /* Primary orange color */
+            color: black;
+            text-align: center;
+            padding: 1rem;
+            position: relative; /* Changed from fixed to relative */
+            width: 100%;
+            bottom: 0;
+            z-index: 100; /* Ensure footer is above other content */
+        }
 .footer-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -508,4 +501,58 @@ body {
 .pagination a.active {
     background-color: #ff6600;
     color: #fff;
+}
+/* Profile dropdown styles */
+.header .right-section .dropdown-content {
+    position: absolute;
+    top: 50px; /* Adjust as needed */
+    right: 50px; /* Adjust as needed */
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 10;
+    display: none;
+    width: 200px; /* Adjust size if necessary */
+}
+
+.header .right-section .dropdown-content a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+}
+
+.header .right-section .dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.header .right-section .dropdown-content a:hover {
+    background-color: #f0f0f0;
+}
+
+.header .right-section .dropdown-avatar {
+    display: block;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 10px auto;
+}
+
+.header .right-section .avatar:hover + .dropdown-content {
+    display: block;
+}
+
+/* To prevent the dropdown from disappearing immediately */
+.header .right-section .dropdown-content:hover {
+    display: block;
+}
+.header .right-section .avatar {
+    width: 30px; /* Increase the size */
+    height: 30px; /* Ensure it's a square for a perfect circle */
+    border-radius: 50%; /* Makes it a circle */
+    object-fit: cover; /* Ensures the image scales properly inside the circle */
+    cursor: pointer; /* Adds a pointer cursor when hovering over the avatar */
 }

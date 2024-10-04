@@ -68,6 +68,18 @@
         <servlet-name>LoadListProductsServlet</servlet-name>
         <servlet-class>controller.LoadListProductsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetAvailableSizesServlet</servlet-name>
+        <servlet-class>controller.GetAvailableSizesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetColorOfProduct</servlet-name>
+        <servlet-class>controller.GetColorOfProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckToken</servlet-name>
+        <servlet-class>controller.CheckToken</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/NewsServlet</url-pattern>
@@ -151,5 +163,17 @@
     <servlet-mapping>
         <servlet-name>LoadListProductsServlet</servlet-name>
         <url-pattern>/LoadListProductsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAvailableSizesServlet</servlet-name>
+        <url-pattern>/GetAvailableSizesServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetColorOfProduct</servlet-name>
+        <url-pattern>/GetColorOfProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckToken</servlet-name>
+        <url-pattern>/CheckToken</url-pattern>
     </servlet-mapping>
 </web-app>

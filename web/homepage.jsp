@@ -16,14 +16,27 @@
             <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
         </div>
         <div class="right-section">
-            <div class="search-bar">
-                <input type="text" placeholder="Tìm sản phẩm...">
-                <span class="search-icon">🔍</span>
-            </div>
             <div class="icons">
-                <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img src="images/profile.png" alt="Account"></a>
-                <img src="images/cart.png" alt="Cart">
-            </div>
+    <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+        <c:if test="${current_user == null}">
+            <img src="images/profile.png" alt="Account" class="avatar">
+        </c:if>
+        <c:if test="${current_user != null}">
+            <img src="images/User_img/${current_user.imagePath}" alt="Account" class="avatar">
+        </c:if>
+    </a>
+        <c:if test="${current_user != null}">
+            <div class="dropdown-content">
+             <img src="images/User_img/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+        <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+            Profile
+        </a>
+        <a href="logout">Logout</a>
+    </div>
+        </c:if>
+    
+    <img src="images/cart.png" alt="Cart">
+</div>
         </div>
     </header>
 
@@ -49,7 +62,7 @@
 
     <div class="content collapsed" id="content">
         <section class="hero">
-            <h1>Welcome to Our Online Shop</h1>
+            <h1>Welcome to Bad Sport Shop</h1>
             <p>Find the best products here!</p>
         </section>
 
@@ -167,6 +180,13 @@
 </footer>
 
     <script>
+        document.querySelector('.avatar').addEventListener('mouseover', function() {
+    document.querySelector('.dropdown-content').style.display = 'block';
+});
+
+document.querySelector('.dropdown-content').addEventListener('mouseleave', function() {
+    document.querySelector('.dropdown-content').style.display = 'none';
+});
         function toggleNavbar() {
             const navbar = document.getElementById('navbar');
             const content = document.getElementById('content');

@@ -59,7 +59,7 @@ public class ProductListServlet extends HttpServlet {
                 // Lấy tổng số sản phẩm và tính tổng số trang
                 int totalProducts = d.getTotalProducts(cat);
                 int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
-                List<Products> t = d.getAllProduct(cat, brand, lowPrice, highPrice, pageSize, offset);
+                List<Products> t = d.getAllProduct(cat, brand, lowPrice, highPrice,null, pageSize, offset);
                 
                 if (t.size() == 0) {
                     request.setAttribute("message", "No product found!");
