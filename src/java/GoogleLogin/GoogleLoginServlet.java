@@ -48,12 +48,25 @@ public class GoogleLoginServlet extends HttpServlet {
                 request.getRequestDispatcher("homepage").forward(request, response);
             }else{
                 User user = u.getUserByEmail(acc.getEmail());
-                ss.setAttribute("current_user", user);
-                if(!user.getRole().equals("Admin")){
-                request.getRequestDispatcher("homepage").forward(request, response);
-                }else if(user.getRole().equals("Admin")){
-                    request.getRequestDispatcher("userlist").forward(request, response);
+                if(user.getStatus().equals("inactive")){
+                    request.setAttribute("message", "Your account no more available!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
                 }
+                ss.setAttribute("current_user", user);
+            switch (user.getRole()) {
+                case "Customer":
+                    request.getRequestDispatcher("homepage").forward(request, response);
+                    break;
+                case "Admin":
+                    request.getRequestDispatcher("userlist").forward(request, response);
+                    break;
+                case "Staff":
+                    request.getRequestDispatcher("staffproductlist").forward(request, response);
+                    break;
+                default:
+                    break;
+            }
             }
         
     } 

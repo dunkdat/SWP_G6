@@ -9,16 +9,19 @@ import dal.DAOProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Products;
+import jakarta.servlet.http.HttpSession;
+import model.User;
 
 /**
  *
  * @author DAT
  */
-public class ProductDetailsServlet extends HttpServlet {
+@MultipartConfig
+public class StaffProductListServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -30,20 +33,43 @@ public class ProductDetailsServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-            String id = request.getParameter("id");
-            if(id!=null){
-            DAOProduct dp = new DAOProduct();
-            Products p = dp.getProductById(id);
-            request.setAttribute("product", p);
-            request.setAttribute("averageRating", dp.getAverageStarRating(dp.getProductById(id).getName()));
-            request.setAttribute("productReviews", dp.getProductReviews(dp.getProductById(id).getName()));
-            request.setAttribute("relatedProducts", dp.getRelatedProductsByBrand(p.getBrand(),p.getCategory() ,id));
+            DAOProduct d = new DAOProduct();
+            String submit = request.getParameter("submit");
             
-            request.setAttribute("colors", dp.getColorsByProductName(p.getName()));
-            request.getRequestDispatcher("productdetails.jsp").forward(request, response);
+        if(submit!=null){
+            String id = request.getParameter("id");
+        String linkPicture = request.getParameter("link_picture");
+        String name = request.getParameter("name");
+        String category = request.getParameter("category");
+        String brand = request.getParameter("brand");
+        String color = request.getParameter("color");
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        String details = request.getParameter("details");
+        String sizeStr = request.getParameter("size"); // Size có thể là null nếu không phải shoes
+        int size = 0;
+        double price = Double.parseDouble(request.getParameter("price"));
+        if (sizeStr != null && !sizeStr.isEmpty()) {
+            size = Integer.parseInt(sizeStr);
+        }
+            if(submit.equals("add")){
+                d.addProduct(id, linkPicture, name, category, brand, color, quantity, details, size, price);
             }
         }
-    
+        
+
+            int currentPage =  1;
+                int pageSize = 10; // Số sản phẩm trên mỗi trang
+                int offset = (currentPage - 1) * pageSize;
+
+                // Lấy tổng số sản phẩm và tính tổng số trang
+                int totalProducts = d.getTotalProductsStaff();
+                int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
+                request.setAttribute("currentPage", currentPage);
+                    request.setAttribute("totalPages", totalPages);
+            request.setAttribute("productlist", d.getAllStaffProducts(offset, pageSize));
+            request.getRequestDispatcher("stafflistproduct.jsp").forward(request, response);
+        
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

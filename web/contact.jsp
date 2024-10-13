@@ -77,7 +77,7 @@
 
 <header class="header collapsed">
     <div class="left-section">
-        <img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;">
+        <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
         <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
         <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
     </div>
@@ -85,7 +85,7 @@
         <div class="icons">
     <a href="ProfileServlet?current_user=${sessionScope.current_user}">
         <c:if test="${current_user == null}">
-            <img src="images/profile.png" alt="Account" class="avatar">
+            <img src="images/profile.png" alt="Account">
         </c:if>
         <c:if test="${current_user != null}">
             <img src="images/User_img/${current_user.imagePath}" alt="Account" class="avatar">
@@ -100,30 +100,63 @@
         <a href="logout">Logout</a>
     </div>
         </c:if>
-    
-    <img src="images/cart.png" alt="Cart">
+    <c:if test="${current_user == 'Customer'}">
+        <img src="images/cart.png" alt="Cart">
+    </c:if>
 </div>
     </div>
 </header>
 <div class="toggle-button" onclick="toggleNavbar()">☰</div>
 
     <nav class="navbar hidden" id="navbar">
-    <div class="logo">Online Shop</div>
-    <div class="dropdown">
-        <a href="homepage">Home</a>
-    </div>
-    <div class="dropdown">
-        <a href="#">Category</a> <!-- Mục "Category" chính -->
-        <div class="dropdown-content">
-            <a href="productlist?category=racket">Racket</a>
-            <a href="productlist?category=shoes">Shoes</a>
-            <a href="productlist?category=net">Net</a>
-            <a href="productlist?category=grip">Grip</a>
-            <a href="productlist?category=backpack">Back Pack</a>
-            <a href="productlist?category=shuttlecock">Shuttlecock</a>
-        </div>
-    </div>
-</nav>
+            <div class="logo">Online Shop</div>
+            <div class="dropdown">
+                <a href="homepage">Home</a>
+            </div>
+            <div class="dropdown">
+                <a href="#">Category</a> <!-- Mục "Category" chính -->
+                <div class="dropdown-content">
+                    <a href="productlist">All</a>
+                    <a href="productlist?category=racket">Racket</a>
+                    <a href="productlist?category=shoes">Shoes</a>
+                    <a href="productlist?category=net">Net</a>
+                    <a href="productlist?category=grip">Grip</a>
+                    <a href="productlist?category=backpack">Back Pack</a>
+                    <a href="productlist?category=shuttlecock">Shuttlecock</a>
+                </div></div>
+                <c:if test="${current_user.role == 'Staff'}">
+                    <div class="dropdown">
+                        <a href="dashboard?role=${current_user.role}">Dashboard</a>
+
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="staffproductlist">Products List</a>  
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="onsale">On Sale Product</a>
+                    </div>
+
+                </c:if>
+                <c:if test="${current_user.role == 'Admin'}">
+                    <div class="dropdown">
+                        <a href="dashboard?role=${current_user.role}">Dashboard</a>
+
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="userlist">User Management</a>
+                
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="settinglist">Setting Management</a>
+                    </div>
+
+                </c:if>
+            
+        </nav>
 
 <div class="content collapsed" id="content">
     <section class="hero">
@@ -177,13 +210,15 @@
 
 
 <script>
-    document.querySelector('.avatar').addEventListener('mouseover', function() {
-    document.querySelector('.dropdown-content').style.display = 'block';
-});
-
-document.querySelector('.dropdown-content').addEventListener('mouseleave', function() {
-    document.querySelector('.dropdown-content').style.display = 'none';
-});
+    const avatarElement = document.querySelector('.avatar');
+if (avatarElement) {
+    avatarElement.addEventListener('mouseover', function () {
+        document.querySelector('.dropdown-content').style.display = 'block';
+    });
+}
+            document.querySelector('.dropdown-content').addEventListener('mouseleave', function () {
+                document.querySelector('.dropdown-content').style.display = 'none';
+            });
     function toggleNavbar() {
         const navbar = document.getElementById('navbar');
         const content = document.getElementById('content');

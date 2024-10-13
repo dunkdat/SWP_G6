@@ -63,7 +63,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         String pageParam = request.getParameter("page");
         int page;
         if (pageParam == null || pageParam.isEmpty()) {
-            page = 123123123; // Mặc định là trang 1 nếu không có tham số
+            page = 1; // Mặc định là trang 1 nếu không có tham số
         } else {
             page = Integer.parseInt(pageParam);
         }
@@ -95,7 +95,34 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             out.println("</div>");
         }
 
-        
+        out.println("<div class='pagination'>");
+
+        // Nút "Prev" (chỉ hiển thị nếu không phải là trang đầu tiên)
+        if (page > 1) {
+    out.println("<a href='#' data-page='" + (page - 1) + "'>Prev</a>");
+}
+
+// Tính toán trang bắt đầu và kết thúc
+int startPage = Math.max(1, page - 2); // Trang bắt đầu, tối thiểu là 1
+int endPage = Math.min(startPage + 4, totalPages); // Trang kết thúc, tối đa là 5 trang
+startPage = Math.max(1, endPage - 4); // Điều chỉnh lại trang bắt đầu nếu trang kết thúc quá gần cuối
+
+// Hiển thị các liên kết phân trang
+for (int i = startPage; i <= endPage; i++) {
+    if (i == page) {
+        out.println("<a href='#' data-page='" + i + "' class='active'>" + i + "</a>");
+    } else {
+        out.println("<a href='#' data-page='" + i + "'>" + i + "</a>");
+    }
+}
+
+// Nút "Next" (chỉ hiển thị nếu trang hiện tại nhỏ hơn tổng số trang)
+if (page < totalPages) {
+    out.println("<a href='#' data-page='" + (page + 1) + "'>Next</a>");
+}
+
+        out.println("</div>"); // Kết thúc phần phân trang
+
 
         out.close();
     } catch (Exception e) {

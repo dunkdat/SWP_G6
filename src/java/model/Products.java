@@ -12,8 +12,24 @@ public class Products {
     String id, name, category, brand;
     float price;
     String color;
-    int size, quantity;
-    String details, link_picture;
+    int size, quantity, salePercent;
+    String details, link_picture,status;
+    public int getSalePercent() {
+        return salePercent;
+    }
+
+    public void setSalePercent(int salePercent) {
+        this.salePercent = salePercent;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
 
     public Products() {
     }
@@ -30,7 +46,20 @@ public class Products {
         this.details = details;
         this.link_picture = link_picture;
     }
-
+    public Products(String id, String name, String category, String brand, float price, String color, int size, int quantity, String details, String link_picture,String status, int salePercent) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.brand = brand;
+        this.price = price;
+        this.color = color;
+        this.size = size;
+        this.quantity = quantity;
+        this.details = details;
+        this.link_picture = link_picture;
+        this.status = status;
+        this.salePercent = salePercent;
+    }
     public String getId() {
         return id;
     }
@@ -109,6 +138,11 @@ public class Products {
 
     public void setLink_picture(String link_picture) {
         this.link_picture = link_picture;
+    }
+
+    @Override
+    public String toString() {
+        return "Products{" + "id=" + id + ", name=" + name + ", category=" + category + ", brand=" + brand + ", price=" + price + ", color=" + color + ", size=" + size + ", quantity=" + quantity + ", salePercent=" + salePercent + ", details=" + details + ", link_picture=" + link_picture + ", status=" + status + '}';
     }
     
     

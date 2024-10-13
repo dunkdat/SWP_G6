@@ -27,6 +27,6 @@ public class Encode {
     }
     public static void main(String[] args) {
         Encode e = new Encode();
-        System.out.println(e.toSHA1("datdeptrai"));
+        System.out.println(e.toSHA1("12345"));
     }
 }

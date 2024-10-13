@@ -58,7 +58,9 @@ public class DAOUser extends DBContext{
                         rs.getString("phone"),
                         rs.getString("email"),
                         rs.getString("role"),
-                        rs.getString("imagePath"));
+                        rs.getString("status"),
+                        rs.getString("imagePath"),
+                        rs.getString("detail"));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -202,7 +204,7 @@ public class DAOUser extends DBContext{
     }
     public void addUser(User x){
         try{
-            String sql = "insert Users(name, address, gender, phone, email, password, role, status,imagePath) values(?,?,?,?,?,?,?,'inactive',? );";
+            String sql = "insert Users(name, address, gender, phone, email, password, role, status,imagePath) values(?,?,?,?,?,?,?,'active',? );";
             PreparedStatement   statement = connection.prepareStatement(sql);
             statement.setString(1, x.getName());
             statement.setString(2, x.getAddress());
@@ -266,7 +268,7 @@ public class DAOUser extends DBContext{
 Encode e = new Encode();
 
     // Create one staff manager
-    User manager = new User("Chu Quang Dang", null, 1, "0912333546", "chuquangdang04@gmail.com", e.toSHA1("333"), "Staff", "dvbvb at.jpg");
+    User manager = new User("Chu Quang Dang", null, 1, "0912333546", "chuquangdang04@gmail.com", e.toSHA1("333"),"","asdasd");
     daoUser.addUser(manager);
         
 }
