@@ -78,28 +78,77 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         int page = (pageParam == null || pageParam.isEmpty()) ? 1 : Integer.parseInt(pageParam);
         int pageSize = 12;
         int offset = (page - 1) * pageSize;
-        
+
         // Fetch the filtered products
         DAOProduct productDAO = new DAOProduct();
-        // Tính tổng số sản phẩm sau khi áp dụng bộ lọc
         int totalProducts = productDAO.getTotalFilteredProducts(category, brand, lowPrice, highPrice, query);
 
-        // Tính tổng số trang dựa trên số sản phẩm đã lọc
+        // Calculate total pages based on the number of products
         int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
-        List<Products> productList = productDAO.getAllProduct(category, brand, lowPrice, highPrice,query, pageSize, offset);
+        List<Products> productList = productDAO.getAllProduct(category, brand, lowPrice, highPrice, query, pageSize, offset);
 
-        // Render the products
+        // Render the products with JSP-style formatting
         PrintWriter out = response.getWriter();
-        out.println("<section class='products'>");
-        for (Products product : productList) {
-            out.println("<div class='product'>");
-            out.println("<img src='" + product.getLink_picture() + "' alt='" + product.getName() + "'>");
-            out.println("<h2>" + product.getName() + "</h2>");
-            out.println("<p>" + product.getPrice() + "</p>");
-            out.println("<a href='productdetails?id=" + product.getId() + "' class='view-details-btn'>View Details</a>");
-            out.println("</div>");
+        if(productList.isEmpty()){
+            out.println("<div class='mess'>No product founds</div>");
         }
+        
+        out.println("<section class='products'>");
+        
+        // Iterate through products and display product information
+        for (Products product : productList) {
+            out.println("<a href='productdetails?id=" + product.getId() + "'>");
+            out.println("<div class='product'>");
+
+            // Display product image
+            out.println("<img src='" + product.getLink_picture() + "' alt='" + product.getName() + "'>");
+
+            // Display sale badge if salePercent > 0
+            if (product.getSalePercent() > 0) {
+                out.println("<div class='sale-badge'>-" + product.getSalePercent() + "%</div>");
+            }
+
+            // Display product name
+            out.println("<h2>" + product.getName() + "</h2>");
+
+            // Display price (original and sale if applicable)
+            if (product.getSalePercent() > 0) {
+                out.println("<div class='price-container'>");
+                out.println("<p class='original-price'>$" + product.getPrice() + "</p>");
+                double discountedPrice = product.getPrice() - (product.getPrice() * product.getSalePercent() / 100);
+                out.println("<p class='sale-price'>$" + String.format("%.2f", discountedPrice) + "</p>");
+                out.println("</div>");
+            } else {
+                out.println("<p class='sale-price'>$" + product.getPrice() + "</p>");
+            }
+
+            // Fetch and display star rating
+            float averageRating = productDAO.getAverageStarRating(product.getName());
+            out.println("<div class='product-rating'>");
+if(averageRating !=0){
+            for (int i = 1; i <= 5; i++) {
+                if (i <= averageRating) {
+                    out.println("<span class='star filled'>⭐</span>");
+                } else {
+                    out.println("<span class='star empty'>⭐</span>");
+                }
+            }
+            
+                out.println("<span class='rating-value'>(" + averageRating + ")</span>");
+            }
+            
+            out.println("</div>");
+
+            // View details link
+           
+
+            out.println("</div>"); // Close product div 
+            out.println("</a>");
+        }
+
         out.println("</section>");
+
+        // Render pagination
         out.println("<div class='pagination'>");
         for (int i = 1; i <= totalPages; i++) {
             if (i == page) {
@@ -109,12 +158,16 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             }
         }
         out.println("</div>");
+
         out.close();
+
     } catch (Exception e) {
         e.printStackTrace(); // Log the error
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error processing the request.");
     }
 }
+
+
 
     /** 
      * Handles the HTTP <code>POST</code> method.

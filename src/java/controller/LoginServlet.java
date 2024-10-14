@@ -46,10 +46,23 @@ public class LoginServlet extends HttpServlet {
                     response.addCookie(emailCookie);
                     response.addCookie(passwordCookie);
                 }
-                if(!currentUser.getRole().equals("Admin")){
-                    request.getRequestDispatcher("homepage").forward(request, response);
-                }else if(currentUser.getRole().equals("Admin")){
-                    request.getRequestDispatcher("userlist").forward(request, response);
+                if(currentUser.getStatus().equals("inactive")){
+                    request.setAttribute("message", "Your account no more available!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+                }
+                switch (currentUser.getRole()) {
+                    case "Customer":
+                        request.getRequestDispatcher("homepage").forward(request, response);
+                        break;
+                    case "Admin":
+                        request.getRequestDispatcher("userlist").forward(request, response);
+                        break;
+                    case "Staff":
+                        request.getRequestDispatcher("staffproductlist").forward(request, response);
+                        break;
+                    default:
+                        break;
                 }
                 
             } else {

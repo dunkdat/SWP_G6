@@ -29,8 +29,110 @@
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         
         <!-- Main Color CSS -->
-        <link rel="stylesheet" href="css/style.css"/>
+        
         <style>
+            .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 3rem; /* Tăng kích thước padding nhiều hơn */
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    transition: margin-left 0.3s ease-in-out;
+    position: relative;
+    z-index: 100;
+}
+
+.header .left-section img {
+    height: 80px; /* Tăng kích thước logo hơn nữa */
+    margin-right: 2rem;
+}
+
+.header .hotline {
+    font-weight: bold;
+    color: #ff0000;
+    font-size: 1.5rem; /* Tăng kích thước font của hotline */
+}
+
+.header .store-locator {
+    margin-left: 2.5rem;
+    font-weight: bold;
+    color: #ff6600;
+    font-size: 1.5rem; /* Tăng kích thước font */
+}
+
+.header .right-section img {
+    height: 50px; /* Tăng kích thước avatar */
+    margin-left: 2rem;
+}
+.footer {
+    background-color: #ffe5cc;
+    color: black;
+    text-align: center;
+    padding: 2.5rem; /* Tăng padding để footer cao hơn */
+    margin-top: 2.5rem;
+    position: relative;
+    width: 100%;
+    z-index: 100;
+}
+
+.footer .footer-content {
+    max-width: 1300px; /* Tăng chiều rộng tối đa của phần footer */
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+.footer .footer-links {
+    list-style-type: none;
+    padding: 0;
+    margin: 2rem 0; /* Tăng margin để giãn cách giữa các link */
+}
+
+.footer .footer-links li {
+    display: inline;
+    margin: 0 30px; /* Tăng khoảng cách giữa các link */
+}
+
+.footer .footer-links a {
+    color: #333333;
+    font-size: 1.3rem; /* Tăng kích thước chữ */
+    text-decoration: none;
+}
+
+.footer .footer-links a:hover {
+    color: #000000;
+}
+
+.footer .social-media a {
+    color: #333333;
+    margin: 0 20px; /* Tăng khoảng cách giữa các icon mạng xã hội */
+    font-size: 1.8rem; /* Tăng kích thước icon */
+}
+.nav-bar {
+    background-color: #ff6600; /* Màu nền chính */
+    padding: 1.5rem 0; /* Tăng kích thước padding để làm cho nav-bar cao hơn */
+    display: flex;
+    justify-content: center;
+    gap: 2rem; /* Khoảng cách giữa các liên kết */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Tạo bóng cho phần nav-bar */
+}
+
+.nav-bar a {
+    color: #fff; /* Màu chữ */
+    font-size: 1.5rem; /* Tăng kích thước font chữ */
+    text-decoration: none; /* Loại bỏ gạch chân */
+    font-weight: bold;
+    padding: 0.5rem 1.5rem; /* Tăng khoảng cách bên trong giữa chữ và khung */
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Thêm hiệu ứng khi hover */
+}
+
+.nav-bar a:hover {
+    background-color: #e65c00;  /* Phóng to nhẹ khi hover */
+}
+
+
             :root {
                 --main-color: #ff6600;
             }
@@ -51,32 +153,26 @@
                 color: var(--main-color);
             }
 
-            a {
-                color: var(--main-color);
-            }
+         
+            .btn-main {
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none; /* Ensure no underline on the link */
+}
 
-            a:hover {
-                color: #e65c00;
-            }
+.btn-main:hover {
+    background-color: #e65c00;
+    border-color: #e65c00;
+    color: white;
+} 
 
-            .navbar {
-                background-color: var(--main-color);
-                padding: 10px;
-            }
 
-            .navbar .btn-logout, .navbar .btn-homepage {
-                background-color: white;
-                color: var(--main-color);
-                border-color: var(--main-color);
-                margin-left: 10px;
-            }
-
-            .navbar .btn-logout:hover, .navbar .btn-homepage:hover {
-                background-color: #e65c00;
-                color: white;
-            }
         </style>
-    </head>
+        <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" href="css/homestyle.css"/>
+        
     </head>
     
     <%
@@ -87,22 +183,44 @@
     %>
 
     <body>
-        <!-- Navbar with Logout and Homepage Button -->
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container-fluid">
-                <a class="navbar-brand text-white" href="#">My Profile</a>
-
-                <div class="ms-auto d-flex">
-                    <!-- Back to Homepage Button -->
-                    <a href="homepage" class="btn btn-homepage">Home</a>
-
-                    <!-- Logout Button -->
-                    <form action="logout" method="POST">
-                        <button type="submit" class="btn btn-logout">Logout</button>
-                    </form>
-                </div>
+         <!-- Header Section -->
+    <header class="header collapsed">
+        <div class="left-section">
+            <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
+            <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
+            <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
+        </div>
+        <div class="right-section">
+            <div class="icons">
+                <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+                    <c:if test="${current_user == null}">
+                        <img src="images/profile.png" alt="Account" class="avatar">
+                    </c:if>
+                    <c:if test="${current_user != null}">
+                        <img src="images/User_img/${current_user.imagePath}" alt="Account" class="avatar">
+                    </c:if>
+                </a>
+                <c:if test="${current_user != null}">
+                    <div class="dropdown-content">
+                        <img src="images/User_img/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+                        <a href="ProfileServlet?current_user=${sessionScope.current_user}">Profile</a>
+                        <a href="logout">Logout</a>
+                    </div>
+                </c:if>
+                <c:if test="${current_user == 'Customer'}">
+                    <img src="images/cart.png" alt="Cart">
+                </c:if>
             </div>
-        </nav>
+        </div>
+    </header>
+    <section class="nav-bar">
+            <a href="homepage">Home Page</a>
+            <a href="#">Sale</a>
+            <a href="#">Voucher</a>
+            <a href="aboutus.jsp">About Us</a>
+            <a href="contact.jsp">Contact</a>
+        </section>
+    
 
         <section>
             <div class="container">
@@ -197,9 +315,14 @@
                                                     <input type="radio" name="gender" value="0" <%= (cuss.getGender() == 0) ? "checked" : "" %>>
                                                 </div>
                                             </div>
-                                            <div class="mt-5">
-                                                <button type="submit" class="btn btn-main text-white fs-4 fw-bold">Update Information</button>
-                                            </div>
+                                            <div class="mt-5 d-flex justify-content-between">
+    <!-- Update Information Button -->
+    <button type="submit" class="btn btn-main text-white fs-4 fw-bold">Update Information</button>
+    
+    <!-- Logout Button as Link -->
+    <a href="logout" class="btn btn-main text-white fs-4 fw-bold">Logout</a>
+</div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -246,7 +369,22 @@
                 </div>
             </div>
         </section>
-
+<footer class="footer">
+        <div class="footer-content">
+            <p>© 2024 Online Shop. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/terms-of-service">Terms of Service</a></li>
+                <li><a href="/contact-us">Contact Us</a></li>
+                <li><a href="/about-us">About Us</a></li>
+            </ul>
+            <div class="social-media">
+                <a href="https://facebook.com" target="_blank">Facebook</a> |
+                <a href="https://twitter.com" target="_blank">Twitter</a> |
+                <a href="https://instagram.com" target="_blank">Instagram</a>
+            </div>
+        </div>
+    </footer>
         <!-- Include Bootstrap JS and Popper.js -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
@@ -276,6 +414,17 @@
                 var fileExtension = fileName.split('.').pop();
                 return imageExtensions.includes(fileExtension);
             }
+            function toggleNavbar() {
+            const navbar = document.getElementById('navbar');
+            const content = document.getElementById('content');
+            const header = document.querySelector('.header');
+            navbar.classList.toggle('hidden');
+            navbar.classList.toggle('visible');
+            content.classList.toggle('expanded');
+            header.classList.toggle('expanded');
+            content.classList.toggle('collapsed');
+            header.classList.toggle('collapsed');
+        }
         </script>
     </body>
 </html>

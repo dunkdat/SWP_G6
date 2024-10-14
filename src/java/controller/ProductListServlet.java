@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import model.Products;
 
 /**
@@ -38,7 +39,7 @@ public class ProductListServlet extends HttpServlet {
             String sub = request.getParameter("submit");
             String brand = request.getParameter("brand");
             String price = request.getParameter("price");
-            if (cat != null) {
+
                 String lowPrice = null;
                 String highPrice = null;
                 if (sub != null) {
@@ -68,11 +69,15 @@ public class ProductListServlet extends HttpServlet {
                     request.setAttribute("currentPage", currentPage);
                     request.setAttribute("totalPages", totalPages);
                     request.setAttribute("productlist", t);
+                     Map<String, Float> averageRatings = d.getAllAverageStarRatings();
+
+        // Set the average ratings in the request scope
+        request.setAttribute("averageRatings", averageRatings);
                     request.getRequestDispatcher("productlist.jsp").forward(request, response);
                     return;
                 }
 
-            }
+            
         }
     }
 

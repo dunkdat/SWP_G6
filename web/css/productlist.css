@@ -13,7 +13,10 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
 }
-
+ a {
+            color: black;
+            text-decoration: none; /* Optional: Removes underline */
+        }
 /* Header Styling */
 .header {
     display: flex;
@@ -307,16 +310,25 @@ body {
 }
 
 .product {
-    padding: 1rem;
-    text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s;
     display: flex;
-    flex-direction: column; /* Xếp các phần tử theo cột */
-    justify-content: space-between; /* Đẩy các phần tử xuống dưới */
-    height: 100%; /* Chiều cao đầy đủ của khung */
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Đảm bảo chiều cao của sản phẩm bao trọn */
+    padding: 10px;
+    margin: 10px;
+    transition: transform 0.3s;
 }
+
+.product img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.price-container, .product-rating {
+    margin-top: 10px;
+}
+
 
 .product:hover {
     transform: translateY(-10px);
@@ -333,17 +345,16 @@ body {
 .product h2 {
     font-size: 1.5rem;
     margin: 1rem 0;
-    color: red;
 }
 
 .product p {
     font-size: 1.2rem;
-    color: #ff6600; /* Cam cho giá sản phẩm */
     font-weight: bold;
     margin-top: auto; /* Đẩy phần giá xuống dưới */
 }
 
 .view-details-btn {
+    margin-top: auto;
     background-color: #ff6600; /* Cam cho nút chi tiết */
     color: white;
     padding: 0.5rem 1rem;
@@ -524,4 +535,63 @@ body {
     border-radius: 50%; /* Makes it a circle */
     object-fit: cover; /* Ensures the image scales properly inside the circle */
     cursor: pointer; /* Adds a pointer cursor when hovering over the avatar */
+}
+.price-container {
+    display: flex;
+    align-items: center; /* Đảm bảo cả giá cũ và giá mới căn giữa theo chiều dọc */
+    gap: 10px; /* Khoảng cách giữa giá cũ và giá mới */
+}
+
+/* Gạch bỏ giá gốc */
+.original-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 14px;
+}
+
+/* Định dạng giá mới */
+.sale-price {
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Tạo nhãn "On Sale" */
+.sale-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+/* Định dạng sản phẩm để có vị trí tương đối */
+.product {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    width: 200px;
+}
+.product-rating {
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.product-rating .star {
+    color: #ccc; /* Màu của sao rỗng */
+}
+
+.product-rating .star.filled {
+    color: #f39c12; /* Màu của sao đã đánh giá */
+}
+
+.product-rating .rating-value {
+    margin-left: 5px;
+    font-size: 16px;
+    color: #333;
 }

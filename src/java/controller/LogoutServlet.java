@@ -37,7 +37,7 @@ public class LogoutServlet extends HttpServlet {
             if(ss!=null){
                 User currentUser = (User) ss.getAttribute("current_user");
                 ss.invalidate();
-                request.getRequestDispatcher("homepage").forward(request, response);
+                response.sendRedirect("homepage");
             }
             
         }

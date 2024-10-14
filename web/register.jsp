@@ -12,14 +12,14 @@
     <body>
         <header class="header collapsed">
         <div class="left-section">
-            <img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;">
+           <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
             <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
             <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
         </div>
         <div class="right-section">
             <div class="icons">
                 <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img src="images/profile.png" alt="Account"></a>
-                <img src="images/cart.png" alt="Cart">
+             
             </div>
         </div>
     </header>
@@ -35,6 +35,7 @@
         <div class="dropdown">
             <a href="#">Category</a> <!-- Main Category -->
             <div class="dropdown-content">
+                <a href="productlist">All</a>
                 <a href="productlist?category=racket">Racket</a>
                 <a href="productlist?category=shoes">Shoes</a>
                 <a href="productlist?category=net">Net</a>

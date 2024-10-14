@@ -80,6 +80,26 @@
         <servlet-name>CheckToken</servlet-name>
         <servlet-class>controller.CheckToken</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffProductListServlet</servlet-name>
+        <servlet-class>controller.StaffProductListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffProductDetailServlet</servlet-name>
+        <servlet-class>controller.StaffProductDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadProductListStaff</servlet-name>
+        <servlet-class>controller.LoadProductListStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OnsaleProducts</servlet-name>
+        <servlet-class>controller.OnsaleProducts</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadOnSaleProductsServlet</servlet-name>
+        <servlet-class>controller.LoadOnSaleProductsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/NewsServlet</url-pattern>
@@ -175,5 +195,25 @@
     <servlet-mapping>
         <servlet-name>CheckToken</servlet-name>
         <url-pattern>/CheckToken</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffProductListServlet</servlet-name>
+        <url-pattern>/staffproductlist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffProductDetailServlet</servlet-name>
+        <url-pattern>/staffproductdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadProductListStaff</servlet-name>
+        <url-pattern>/LoadProductListStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OnsaleProducts</servlet-name>
+        <url-pattern>/onsale</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadOnSaleProductsServlet</servlet-name>
+        <url-pattern>/LoadOnSaleProductsServlet</url-pattern>
     </servlet-mapping>
 </web-app>
