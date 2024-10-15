@@ -142,7 +142,7 @@
 
     <section class="nav-bar">
         <a href="homepage">Home Page</a>
-        <a href="#">Sale</a>
+        <a href="salelist">Sale</a>
         <a href="#">Voucher</a>
         <a href="aboutus.jsp">About Us</a>
         <a href="contact.jsp">Contact</a>

@@ -12,12 +12,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
+import model.Products;
 
 /**
  *
  * @author DAT
  */
-public class OnsaleProducts extends HttpServlet {
+public class OnsaleLists extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -30,23 +33,49 @@ public class OnsaleProducts extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            DAOProduct d = new DAOProduct();
-            String name = request.getParameter("productName");
-            String salePercent = request.getParameter("salePercent");
-            if(name !=null && salePercent !=null){
-                d.updateSale(name, salePercent);
-            }
-            int currentPage =  1;
-                int pageSize = 10; // Số sản phẩm trên mỗi trang
+            String cat = request.getParameter("category");
+            String sub = request.getParameter("submit");
+            String brand = request.getParameter("brand");
+            String price = request.getParameter("price");
+
+                String lowPrice = null;
+                String highPrice = null;
+                if (sub != null) {
+
+                    if (price != null) {
+                        String[] prices = price.split("-");
+                        lowPrice = prices[0];
+                        highPrice = prices[1];
+                    }
+
+                }
+                DAOProduct d = new DAOProduct();
+                String pageParam = request.getParameter("page");
+                int currentPage = pageParam != null ? Integer.parseInt(pageParam) : 1;
+                int pageSize = 12; // Số sản phẩm trên mỗi trang
                 int offset = (currentPage - 1) * pageSize;
 
                 // Lấy tổng số sản phẩm và tính tổng số trang
-                int totalProducts = d.getTotalProducts();
+                int totalProducts = d.getTotalSaleProducts();
                 int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
-                request.setAttribute("page", currentPage);
+                List<Products> t = d.getAllSaleProduct(cat, brand, lowPrice, highPrice,null, pageSize, offset);
+                
+                if (t.size() == 0) {
+                    request.setAttribute("message", "No product found!");
+                    request.getRequestDispatcher("salelist.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("currentPage", currentPage);
                     request.setAttribute("totalPages", totalPages);
-            request.setAttribute("productlist", d.getAllProduct(null, null, null, null, null, pageSize, offset));
-            request.getRequestDispatcher("onsale.jsp").forward(request, response);
+                    request.setAttribute("productlist", t);
+                     Map<String, Float> averageRatings = d.getAllAverageStarRatings();
+
+        // Set the average ratings in the request scope
+        request.setAttribute("averageRatings", averageRatings);
+                    request.getRequestDispatcher("salelist.jsp").forward(request, response);
+                    return;
+                }
+
+            
         }
     } 
 

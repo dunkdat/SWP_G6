@@ -264,7 +264,7 @@ if (avatarElement) {
                     const categoryRadios = filterForm.querySelectorAll('input[name="category"]');
                     const brandRadios = filterForm.querySelectorAll('input[name="brand"]');
                     const priceRadios = filterForm.querySelectorAll('input[name="price"]');
-                    document.getElementById('searchInput').value = '';
+
                     // Uncheck brand and price radio buttons
                     categoryRadios.forEach(radio => radio.checked = false);
                     brandRadios.forEach(radio => radio.checked = false);
@@ -272,7 +272,7 @@ if (avatarElement) {
 
                     // Remove brand and price from URL by reloading products without those parameters
                     const xhr = new XMLHttpRequest();
-                    const url = `LoadListProductsServlet`;
+                    const url = `LoadOnsaleLists?`;
                     console.log('Clear Filters URL:', url); // Debug the URL
 
                     xhr.open('GET', url, true);
@@ -303,7 +303,7 @@ if (avatarElement) {
                     const price = document.querySelector('input[name="price"]:checked') ? document.querySelector('input[name="price"]:checked').value : '';
 
                     const xhr = new XMLHttpRequest();
-                    const url = `LoadListProductsServlet?category=` + category + `&brand=` + brand + `&price=` + price + `&query=` + searchQuery;
+                    const url = `LoadOnsaleLists?brand=` + brand+ `&category=` + category + `&price=` + price + `&query=` + searchQuery;
                     console.log(url);
                     xhr.open('GET', url, true);
 
@@ -350,7 +350,7 @@ if (avatarElement) {
                     const xhr = new XMLHttpRequest();
 
                     // Correctly format the URL with page, category, brand, and price filters
-                    const url = `LoadListProductsServlet?page=` + page + `&category=` + category + `&brand=` + brand + `&price=` + price + `&query=` + searchQuery;
+                    const url = `LoadOnsaleLists?page=` + page+ `&category=` + category + `&brand=` + brand + `&price=` + price + `&query=` + searchQuery;
                     console.log('Request URL:', url); // Debug the URL
 
                     xhr.open('GET', url, true);
