@@ -94,11 +94,19 @@
     </servlet>
     <servlet>
         <servlet-name>OnsaleProducts</servlet-name>
-        <servlet-class>controller.OnsaleProducts</servlet-class>
+        <servlet-class>controller.StaffOnsaleLists</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoadOnSaleProductsServlet</servlet-name>
         <servlet-class>controller.LoadOnSaleProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadOnsaleLists</servlet-name>
+        <servlet-class>controller.LoadOnsaleLists</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OnsaleLists</servlet-name>
+        <servlet-class>controller.OnsaleLists</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
@@ -215,5 +223,13 @@
     <servlet-mapping>
         <servlet-name>LoadOnSaleProductsServlet</servlet-name>
         <url-pattern>/LoadOnSaleProductsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadOnsaleLists</servlet-name>
+        <url-pattern>/LoadOnsaleLists</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OnsaleLists</servlet-name>
+        <url-pattern>/salelist</url-pattern>
     </servlet-mapping>
 </web-app>

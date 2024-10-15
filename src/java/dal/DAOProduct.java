@@ -440,7 +440,91 @@ public List<Products> getAllFilterProductsStaff( String category, String status,
     }
     return productList;
 }
+public List<Products> getAllSaleProduct(String category, String brand, String lowPrice, String highPrice, String searchQuery, int limit, int offset) {
+    List<Products> productList = new ArrayList<>();
+    try {
+        // Start building the SQL query 
+        StringBuilder sql = new StringBuilder("SELECT p.* FROM Products p INNER JOIN "
+                + "( SELECT name, MIN(id) AS min_id FROM Products WHERE status = 'active' GROUP BY name ) AS unique_products\n" +
+"                   ON p.id = unique_products.min_id "
+                + "WHERE salePercent > 0");
 
+        // Add brand filter if provided
+        if(category != null && !category.isEmpty()){
+            sql.append(" AND p.category = ?");
+        }
+        if (brand != null && !brand.isEmpty()) {
+            sql.append(" AND p.brand = ?");
+        }
+
+        // Add price filter if both lowPrice and highPrice are provided
+        if (lowPrice != null && highPrice != null) {
+            sql.append(" AND p.price BETWEEN ? AND ?");
+        }
+
+        // Add search query filter if provided
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            sql.append(" AND p.name LIKE ?");
+        }
+
+        // Add limit and offset for pagination
+        sql.append(" LIMIT ? OFFSET ?");
+
+        // Prepare the statement
+        PreparedStatement st = connection.prepareStatement(sql.toString());
+
+        // Set the category
+
+        int paramIndex = 1; // Start index for optional parameters
+        
+        if (category != null && !category.isEmpty()){
+            st.setString(paramIndex++, category);
+        }
+        // Set brand parameter if provided
+        if (brand != null && !brand.isEmpty()) {
+            st.setString(paramIndex++, brand);
+        }
+
+        // Set price range parameters if provided
+        if (lowPrice != null && highPrice != null) {
+            st.setFloat(paramIndex++, Float.parseFloat(lowPrice));
+            st.setFloat(paramIndex++, Float.parseFloat(highPrice));
+        }
+
+        // Set search query parameter if provided
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            st.setString(paramIndex++, "%" + searchQuery + "%"); // Using LIKE with wildcards
+        }
+
+        // Set the limit and offset for pagination
+        st.setInt(paramIndex++, limit);
+        st.setInt(paramIndex, offset);
+
+        // Execute the query and process the results
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            Products product = new Products(
+                    rs.getString("id"),
+                    rs.getString("name"),
+                    rs.getString("category"),
+                    rs.getString("brand"),
+                    rs.getFloat("price"),
+                    rs.getString("color"),
+                    rs.getInt("size"),
+                    rs.getInt("quantity"),
+                    rs.getString("details"),
+                    rs.getString("link_picture"),
+                    rs.getString("status"),
+                    rs.getInt("salePercent")
+            );
+            productList.add(product);
+        }
+    } catch (SQLException e) {
+        // Log the exception for debugging
+        System.err.println("SQL Error: " + e.getMessage());
+    }
+    return productList;
+}
 
     public int getTotalFilteredProducts(String category, String brand, String lowPrice, String highPrice, String searchQuery) {
     int totalProducts = 0;
@@ -448,6 +532,65 @@ public List<Products> getAllFilterProductsStaff( String category, String status,
         // Start building the SQL query
         StringBuilder sql = new StringBuilder(
             "SELECT Count(*) FROM Products p INNER JOIN ( SELECT name, MIN(id) AS min_id FROM Products GROUP BY name) AS unique_products ON p.id = unique_products.min_id where 1=1"
+        );
+
+        // Add brand filter if provided
+        if(category != null && !category.isEmpty()){
+            sql.append(" AND p.category = ?");
+        }
+        if (brand != null && !brand.isEmpty()) {
+            sql.append(" AND p.brand = ?");
+        }
+
+        // Add price filter if both lowPrice and highPrice are provided
+        if (lowPrice != null && highPrice != null) {
+            sql.append(" AND p.price BETWEEN ? AND ?");
+        }
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            sql.append(" AND p.name LIKE ?");
+        }
+
+        // Prepare the statement
+        PreparedStatement st = connection.prepareStatement(sql.toString());
+        
+
+        int paramIndex = 1;
+         if (category != null && !category.isEmpty()){
+            st.setString(paramIndex++, category);
+        }
+        // Set brand parameter if provided
+        if (brand != null && !brand.isEmpty()) {
+            st.setString(paramIndex++, brand);
+        }
+
+        // Set price range parameters if provided
+        if (lowPrice != null && highPrice != null) {
+            st.setFloat(paramIndex++, Float.parseFloat(lowPrice));
+            st.setFloat(paramIndex++, Float.parseFloat(highPrice));
+        }
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            st.setString(paramIndex++, "%" + searchQuery + "%"); // Using LIKE with wildcards
+        }
+
+        // Execute query and get total number of products
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+            totalProducts = rs.getInt(1); // Get the total count of filtered products
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return totalProducts;
+}
+    
+    public int getTotalFilteredSaleProducts(String category, String brand, String lowPrice, String highPrice, String searchQuery) {
+    int totalProducts = 0;
+    try {
+        // Start building the SQL query
+        StringBuilder sql = new StringBuilder(
+            "SELECT Count(*) FROM Products p INNER JOIN ( SELECT name, MIN(id) AS min_id FROM Products GROUP BY name) AS unique_products ON p.id = unique_products.min_id where p.salePercent > 0"
         );
 
         // Add brand filter if provided
@@ -830,6 +973,20 @@ public Map<String, Float> getAllAverageStarRatings() {
         String sql = "SELECT Count(*) FROM Products p INNER JOIN "
                 + "( SELECT name, MIN(id) AS min_id FROM Products GROUP BY name) AS unique_products\n" +
 "                   ON p.id = unique_products.min_id ";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public int getTotalSaleProducts() {
+        String sql = "SELECT Count(*) FROM Products p INNER JOIN "
+                + "( SELECT name, MIN(id) AS min_id FROM Products GROUP BY name) AS unique_products\n" +
+"                   ON p.id = unique_products.min_id where p.salePercent > 0";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
