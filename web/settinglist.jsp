@@ -551,18 +551,6 @@
                     modal.style.display = "none";
                 }
             }
-            function toggleNavbar() {
-                const navbar = document.getElementById('navbar');
-                const content = document.getElementById('content');
-                const header = document.querySelector('.header');
-
-                navbar.classList.toggle('hidden');
-                navbar.classList.toggle('visible');
-                content.classList.toggle('expanded');
-                header.classList.toggle('expanded');
-                content.classList.toggle('collapsed');
-                header.classList.toggle('collapsed');
-            }
         </script>
     </body>
 </html>
