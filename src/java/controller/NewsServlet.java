@@ -14,9 +14,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import static java.util.Collections.list;
-import java.util.List;
 import model.News;
 import model.NewsGroup;
 //import org.json.JSONObject;
@@ -88,14 +85,7 @@ public class NewsServlet extends HttpServlet {
             int hasNext = (dao.getAllNews(indexPage + IConstant.NUMBER_PER_PAGE)).size();
             request.setAttribute("hasNext", hasNext > 0);
             if (indexPage_raw != null) {
-//                JSONObject jsonResponse = new JSONObject();
-//                try {
-//                    jsonResponse.put("newsResponse", getNewsResponse(listnews));
-//                    jsonResponse.put("hasNext", hasNext);
-//                    response.getWriter().write(jsonResponse.toString());
-//                } catch (Exception e) {
-//                    System.out.println(e);
-//                }
+
             } else {
                 Vector<NewsGroup> listnewsgroup = DAO.getAllNewsGroup();
                 Vector<News> topNews = dao.getTopNews();

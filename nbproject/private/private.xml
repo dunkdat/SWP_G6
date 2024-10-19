@@ -3,15 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/ResetPassword.java</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/NewsManagerServlet.java</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/RegisterServlet.java</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/web/news.jsp</file>
             <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/NewsServlet.java</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/ProfileServlet.java</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/util/Validate.java</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/model/User.java</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/web/WEB-INF/web.xml</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/web/cart.jsp</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/CartServlet.java</file>
             <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/LoginServlet.java</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/web/profile.jsp</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/UserVerify.java</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/dal/DAONews.java</file>
         </group>
     </open-files>
 </project-private>

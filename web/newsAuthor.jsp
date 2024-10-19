@@ -23,6 +23,7 @@
         <title>News Author</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+          <link rel="stylesheet" href="css/homestyle.css"/>
         <link rel="stylesheet" href="./css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
               integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
@@ -32,6 +33,21 @@
     
 
     <body>
+    <header class="header collapsed">
+        <div class="left-section">
+            <a href="homepage">
+                <img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px; width: 60px;">
+            </a>
+            <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
+            <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
+        </div>
+        <div class="right-section">
+            <div class="icons">
+                <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img src="images/profile.png" style="width: 30px;" alt="Account"></a>
+                <a href="cart"><img src="images/cart.png" style="width: 30px;" alt="Cart"></a>
+            </div>
+        </div>
+    </header>
         <c:set var="news" value="${requestScope.listnew}"/>
         <section>
             <div class="author_page">

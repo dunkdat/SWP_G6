@@ -12,7 +12,7 @@ public class User {
     int id;
     String name, address;
     int gender;
-    String phone, email, password, role, status, imagePath;
+    String phone, email, password,detail, role, status, imagePath;
 
     public User() {
     }
@@ -35,6 +35,16 @@ public class User {
         this.status = status;
     }
 
+    public User(int id, String name, String address, int gender, String phone, String email, String imagePath) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.gender = gender;
+        this.phone = phone;
+        this.email = email;
+        this.imagePath = imagePath;
+    }
+
     public User(String name, String address, int gender, String phone, String email, String password, String role) {
         this.name = name;
         this.address = address;
@@ -44,6 +54,20 @@ public class User {
         this.password = password;
         this.role = role;
     }
+
+    public User(int id, String name, String address, int gender, String phone, String email,  String role, String status, String imagePath, String detail) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.gender = gender;
+        this.phone = phone;
+        this.email = email;
+        this.role = role;
+        this.status = status;
+        this.imagePath = imagePath;
+        this.detail = detail;
+    }
+    
     public User(int id, String name, String address, int gender, String phone, String email, String role, String imagePath) {
         this.id = id;
         this.name = name;
@@ -51,6 +75,16 @@ public class User {
         this.gender = gender;
         this.phone = phone;
         this.email = email;
+        this.role = role;
+        this.imagePath = imagePath;
+    }
+    public User(String name,String address, int gender, String phone, String email,String password, String role, String imagePath) {
+        this.name = name;
+        this.address = address;
+        this.gender = gender;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
         this.role = role;
         this.imagePath = imagePath;
     }
@@ -141,5 +175,9 @@ public class User {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", name=" + name + ", address=" + address + ", gender=" + gender + ", phone=" + phone + ", email=" + email + ", password=" + password + ", detail=" + detail + ", role=" + role + ", status=" + status + ", imagePath=" + imagePath + '}';
+    }
 }

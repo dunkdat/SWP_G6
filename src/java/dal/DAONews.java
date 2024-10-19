@@ -617,15 +617,15 @@ public class DAONews extends DBContext {
     }
 
     public Vector<News> getTopNews() {
-        String sql = "SELECT TOP 5 News.id, News.newsTitle, News.shortContent, "
-                + "Users.name as userName,Users.id as userId, Users.imagePath as avatar, "
-                + "NewsGroup.newsGroupName, News.newsGroupId, "
-                + "News.createDate , News.modifiedDate, News.createBy, "
-                + "News.modifiedBy, News.imagePath, News.viewsCount "
-                + "FROM News "
-                + "INNER JOIN Users ON News.createBy = Users.id"
-                + "JOIN NewsGroup ON News.newsGroupId = NewsGroup.id "
-                + "ORDER BY News.viewsCount DESC";
+        String sql = "SELECT News.id, News.newsTitle, News.shortContent,\n"
+                + "Users.name as userName,Users.id as userId, Users.imagePath as avatar,\n"
+                + "NewsGroup.newsGroupName, News.newsGroupId, \n"
+                + "News.createDate , News.modifiedDate, News.createBy,\n"
+                + "News.modifiedBy, News.imagePath, News.viewsCount\n"
+                + "FROM News\n"
+                + "INNER JOIN Users ON News.createBy = Users.id\n"
+                + "JOIN NewsGroup ON News.newsGroupId = NewsGroup.id \n"
+                + "ORDER BY News.viewsCount DESC LIMIT 5";
         Vector<News> list = new Vector<>();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -669,13 +669,13 @@ public class DAONews extends DBContext {
     
 
     public Vector<News> getTop5NewsByViewsAndAdminId(int userId) {
-        String sql = "SELECT TOP 5 News.id, News.newsTitle, News.shortContent, Users.name as userName, NewsGroup.newsGroupName, News.newsGroupId, "
+        String sql = "SELECT News.id, News.newsTitle, News.shortContent, Users.name as userName, NewsGroup.newsGroupName, News.newsGroupId, "
                 + "News.createDate , News.modifiedDate, News.createBy, News.modifiedBy, News.imagePath, News.viewsCount "
                 + "FROM News "
                 + "INNER JOIN Users ON News.createBy = Users.id"
                 + "JOIN NewsGroup ON News.newsGroupId = NewsGroup.id "
                 + "WHERE Users.id= ? "
-                + "ORDER BY News.viewsCount DESC";
+                + "ORDER BY News.viewsCount DESC LIMIT 5";
         Vector<News> list = new Vector<>();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -704,13 +704,13 @@ public class DAONews extends DBContext {
     }
 
     public Vector<News> getTop5NewsByViewsAndGroupId(int newsGroupId) {
-        String sql = "SELECT TOP 5 News.id, News.newsTitle, News.shortContent, Users.name as userName, NewsGroup.newsGroupName, News.newsGroupId, "
+        String sql = "SELECT News.id, News.newsTitle, News.shortContent, Users.name as userName, NewsGroup.newsGroupName, News.newsGroupId, "
                 + "News.createDate , News.modifiedDate, News.createBy, News.modifiedBy, News.imagePath, News.viewsCount "
                 + "FROM News "
                 + "INNER JOIN Users ON News.createBy = Users.id"
                 + "JOIN NewsGroup ON News.newsGroupId = NewsGroup.id "
                 + "WHERE News.newsGroupId = ? "
-                + "ORDER BY News.viewsCount DESC";
+                + "ORDER BY News.viewsCount DESC LIMIT 5";
         Vector<News> list = new Vector<>();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -737,6 +737,39 @@ public class DAONews extends DBContext {
         }
         return list;
     }
+    public List<News> getAllNews(){
+        List<News> newsList = new ArrayList<>();
 
+        String query = "SELECT * FROM News";
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery(query)) {
 
+            while (rs.next()) {
+                News news = new News();
+                news.setNewsId(rs.getInt("id"));
+                news.setNewsTitle(rs.getString("newsTitle"));
+                news.setShortContent(rs.getString("shortContent"));
+                news.setDescription(rs.getString("description"));
+                news.setNewsGroupId(rs.getInt("newsGroupId"));
+                news.setCreateDate(rs.getDate("createDate"));
+                news.setModifiedDate(rs.getDate("modifiedDate"));
+                news.setCreateBy(rs.getInt("createBy"));
+                news.setImagePath(rs.getString("imagePath"));
+                news.setViewCount(rs.getInt("viewsCount"));
+
+                newsList.add(news);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return newsList;
+    }
+    public static void main(String[] args) {
+        DAONews d = new DAONews();
+        System.out.println(d.getAllNews().get(0).getShortContent());
+    }
 }
+    
+
+

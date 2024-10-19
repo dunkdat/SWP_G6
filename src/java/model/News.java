@@ -206,6 +206,14 @@ public class News {
         this.imagePath = imagePath;
     }
 
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
+    }
+
     @Override
     public String toString() {
         return "News{" + "newsId=" + newsId + ", newsTitle=" + newsTitle + ", description=" + description + ", shortContent=" + shortContent + ", adminName=" + adminName + ", newsGroupId=" + newsGroupId + ", newsGroupName=" + newsGroupName + ", createDate=" + createDate + ", modifiedDate=" + modifiedDate + ", createBy=" + createBy + ", modifiedBy=" + modifiedBy + ", imagePath=" + imagePath + ", admin=" + admin + '}';

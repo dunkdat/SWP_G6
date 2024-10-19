@@ -1,6 +1,6 @@
 package controller;
 
-import dal.UserDAO;
+import dal.DAOUser;
 import model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import util.Validate;
 
 /**
  * RegisterServlet handles user registration logic.
@@ -34,8 +35,11 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
         String cfpassword = request.getParameter("cfpassword");
         
+                
         if (name != null && address != null && genderStr != null && phone != null && email != null && password != null && cfpassword != null) {
             try {
+                Validate v = new Validate();
+                DAOUser u = new DAOUser();
                 // Gender validation
                 int gender = Integer.parseInt(genderStr);
                  ss.setAttribute("name", name);
@@ -46,12 +50,16 @@ public class RegisterServlet extends HttpServlet {
                 ss.setAttribute("password", password);
                 ss.setAttribute("cfpassword", cfpassword);
                 // Validate email format
-                if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+                if (!Validate.isValidEmail(email)) {
                     request.setAttribute("message", "Please enter a valid email format!");
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
-                
+                if(u.existedEmail(email)){
+                    request.setAttribute("message", "Existed email");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
+                }
                 // Validate password confirmation
                 if (!password.equals(cfpassword)) {
                     request.setAttribute("message", "Passwords do not match!");
@@ -60,14 +68,19 @@ public class RegisterServlet extends HttpServlet {
                 }
                 
                 // Validate phone number length
-                if (phone.length() != 10 || !phone.matches("\\d+")) {
+                if (!Validate.isValidPhoneNumber(phone)) {
                     request.setAttribute("message", "Please enter a valid 10-digit phone number!");
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
                 
+                if(u.existedPhone(phone)){
+                    request.setAttribute("message", "Existed phone number");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
+                }
                
-                UserDAO u = new UserDAO();
+                
                 for(User x : u.getAllUser()){
                     if(x.getPhone()==null) continue;
                     if(x.getEmail().equals(email)){

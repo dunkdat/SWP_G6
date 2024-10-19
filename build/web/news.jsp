@@ -21,6 +21,7 @@
               crossorigin="anonymous">
         <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+                <link rel="stylesheet" href="css/homestyle.css"/>
         <link rel="stylesheet" href="./css/style.css">
         <link rel="stylesheet" href="./js/app.js">
         <link rel="stylesheet"
@@ -36,7 +37,21 @@
     </style>
 
     <body>
-        
+        <header class="header collapsed">
+        <div class="left-section">
+            <a href="homepage">
+                <img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px; width: 60px;">
+            </a>
+            <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
+            <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
+        </div>
+        <div class="right-section">
+            <div class="icons">
+                <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img src="images/profile.png" style="width: 30px;" alt="Account"></a>
+                <a href="cart"><img src="images/cart.png" style="width: 30px;" alt="Cart"></a>
+            </div>
+        </div>
+    </header>
         <div class="container">
             <div class="address-page">
             </div>

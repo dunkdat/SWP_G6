@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page import="constant.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,8 +22,8 @@
                 <span class="search-icon">🔍</span>
             </div>
             <div class="icons">
-                <img src="images/profile.png" alt="Account">
-                <img src="images/cart.png" alt="Cart">
+                <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img src="images/profile.png" alt="Account"></a>
+                <a href="cart"><img src="images/cart.png" alt="Cart"></a>
             </div>
         </div>
     </header>
@@ -31,15 +32,13 @@
 
     <nav class="navbar hidden" id="navbar">
         <div class="logo">Online Shop</div>
-        <a href="#">Home</a>
-        <a href="#">Racket</a>
-        <a href="#">Shoes</a>
-        <a href="#">Net</a>
-        <a href="#">Grip</a>
-        <a href="#">Back Pack</a>
-        <a href="#">Shuttlecock</a>
-        <a href="#">Contact</a>
-        <a href="#">Cart</a>
+        <a href="homepage">Home</a>
+        <a href="productlist?category=racket">Racket</a>
+        <a href="productlist?category=shoes">Shoes</a>
+        <a href="productlist?category=net">Net</a>
+        <a href="productlist?category=grip">Grip</a>
+        <a href="productlist?category=backpack">Back Pack</a>
+        <a href="productlist?category=shuttlecock">Shuttlecock</a>
     </nav>
 
     <div class="content collapsed" id="content">
@@ -49,11 +48,11 @@
         </section>
 
         <section class="nav-bar">
-            <a href="#">Home Page</a>
+            <a href="homepage">Home Page</a>
             <a href="#">Sale</a>
             <a href="#">Voucher</a>
-            <a href="#">About Us</a>
-            <a href="#">Contact</a>
+            <a href="aboutus.jsp">About Us</a>
+            <a href="contact.jsp">Contact</a>
         </section>
 
         <section class="slider">
@@ -70,37 +69,42 @@
 
         <section class="blog-section">
             <h2>Latest Blog Posts</h2>
-            <div class="blog-post">
-                <img src="https://via.placeholder.com/150" alt="Blog Post 1">
-                <div>
-                    <h3>How to Find the Best Deals</h3>
-                    <p>Discover tips and tricks to save money on your favorite products. Learn how to compare prices and find the best deals online.</p>
-                </div>
-            </div>
-            <div class="blog-post">
-                <img src="https://via.placeholder.com/150" alt="Blog Post 2">
-                <div>
-                    <h3>Top 10 Products of 2024</h3>
-                    <p>Check out our curated list of the top products to watch in 2024. From gadgets to household items, these products are a must-have.</p>
-                </div>
-            </div>
+            <c:forEach var="blog" items="${bloglist}" varStatus="status">
+                <c:if test="${status.index < 2}">
+                    <div class="blog-post">
+                        <a href="NewsServlet"><img src="${IConstant.PATH_NEWS}/${blog.imagePath}" alt="Blog Post Image"></a>
+                        <div>
+                            <h3>${blog.newsTitle}</h3>
+                            <p>${blog.shortContent}</p>
+                        </div>
+                    </div>
+                </c:if>
+            </c:forEach>
         </section>
 
         <section class="products">
+            
             <div class="product">
-                <img src="" alt="Product 1">
-                <h2>Product 1</h2>
-                <p>$10.00</p>
+                <a href="productlist?category=racket">
+                    <img src="images/racket.jpg" alt="Product 1">
+                </a>
+                <h2>Rackets</h2>
+                <p>Choose your partner !!!</p>
+            </div>
+            
+            <div class="product">
+                <a href="productlist?category=backpack">
+                    <img src="images/bag.jpg" alt="Product 2">
+                </a>
+                <h2>Back Packs</h2>
+                <p>Be professional</p>
             </div>
             <div class="product">
-                <img src="" alt="Product 2">
-                <h2>Product 2</h2>
-                <p>$20.00</p>
-            </div>
-            <div class="product">
-                <img src="" alt="Product 3">
-                <h2>Product 3</h2>
-                <p>$30.00</p>
+                <a href="productlist?category=shoes">
+                    <img src="images/shoes.jpg" alt="Product 3">
+                </a>
+                <h2>Shoes</h2>
+                <p>Confident and speed</p>
             </div>
         </section>
     </div>
@@ -122,19 +126,7 @@
             content.classList.toggle('collapsed');
             header.classList.toggle('collapsed');
         }
-
-        function toggleProductDropdown(event) {
-            event.stopPropagation(); // Prevent click from propagating to the document
-            const dropdown = document.getElementById('product-dropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Hide dropdown if clicking outside of it
-        document.addEventListener('click', function() {
-            const dropdown = document.getElementById('product-dropdown');
-            dropdown.style.display = 'none';
-        });
-
+        
         // Slider functionality
         let slideIndex = 0;
         showSlides();
@@ -147,7 +139,7 @@
             slideIndex++;
             if (slideIndex > slides.length) { slideIndex = 1 }
             slides[slideIndex - 1].style.display = "block";
-            setTimeout(showSlides, 3000);
+            setTimeout(showSlides, 3000); // Change slide every 3 seconds
         }
 
         function plusSlides(n) {

@@ -5,7 +5,7 @@
 
 package GoogleLogin;
 
-import dal.UserDAO;
+import dal.DAOUser;
 import model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import util.Encode;
 
 /**
  *
@@ -36,12 +37,13 @@ public class GoogleLoginServlet extends HttpServlet {
             GoogleLogin gg = new GoogleLogin();
             String acessToken = gg.getToken(code);
             GoogleAccount acc = gg.getUserInfo(acessToken);
-            UserDAO u = new UserDAO();
+            DAOUser u = new DAOUser();
             HttpSession ss = request.getSession();
             if(acc.getName()==null) return;
             if(!u.existedEmail(acc.getEmail())){
                 SendVerify s = new SendVerify();
-                String pass = s.getRandom();
+                Encode e = new Encode();
+                String pass = e.toSHA1(s.getRandom());
                 u.addUser(new User(acc.getName(),null,1 ,null, acc.getEmail(), pass, "customer"));
                 ss.setAttribute("user_email", acc.getEmail());
                 request.getRequestDispatcher("homepage").forward(request, response);
