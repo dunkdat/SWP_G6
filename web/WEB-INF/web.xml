@@ -108,6 +108,22 @@
         <servlet-name>OnsaleLists</servlet-name>
         <servlet-class>controller.OnsaleLists</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RoleListServlet</servlet-name>
+        <servlet-class>controller.RoleListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RoleDetailServlet</servlet-name>
+        <servlet-class>controller.RoleDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadSettingListServlet</servlet-name>
+        <servlet-class>controller.LoadSettingListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadRoleListServlet</servlet-name>
+        <servlet-class>controller.LoadRoleListServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/NewsServlet</url-pattern>
@@ -231,5 +247,29 @@
     <servlet-mapping>
         <servlet-name>OnsaleLists</servlet-name>
         <url-pattern>/salelist</url-pattern>
+    </servlet-mapping>
+    <filter>
+        <filter-name>AuthorizationFilter</filter-name>
+        <filter-class>util.AuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthorizationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <servlet-mapping>
+        <servlet-name>RoleListServlet</servlet-name>
+        <url-pattern>/rolelist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RoleDetailServlet</servlet-name>
+        <url-pattern>/roledetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadSettingListServlet</servlet-name>
+        <url-pattern>/LoadSettingListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadRoleListServlet</servlet-name>
+        <url-pattern>/LoadRoleListServlet</url-pattern>
     </servlet-mapping>
 </web-app>

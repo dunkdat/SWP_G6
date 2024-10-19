@@ -86,6 +86,15 @@ public class User {
         this.phone = phone;
         this.imagePath = imagePath;
     }
+    public User(int id, String name, String address, int gender, String phone, String role, String imagePath) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.gender = gender;
+        this.phone = phone;
+        this.role = role;
+        this.imagePath = imagePath;
+    }
     public String getImagePath() {
         return imagePath;
     }

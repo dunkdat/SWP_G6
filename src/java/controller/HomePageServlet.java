@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.DAOCategory;
 import dal.DAONews;
 import dal.DAOProduct;
 import dal.SliderDAO;
@@ -37,6 +38,8 @@ public class HomePageServlet extends HttpServlet {
     SliderDAO sliderDAO = new SliderDAO();
     DAONews newsDAO = new DAONews();
     DAOProduct productDAO = new DAOProduct();
+        DAOCategory c = new DAOCategory();
+        
 
     // Lấy số trang hiện tại
     String pageParam = request.getParameter("page");
@@ -57,6 +60,7 @@ public class HomePageServlet extends HttpServlet {
     request.setAttribute("productlist", productList);
     request.setAttribute("currentPage", currentPage);
     request.setAttribute("totalPages", totalPages);
+    request.setAttribute("categoryList", c.getAllCategory());
 
     request.getRequestDispatcher("homepage.jsp").forward(request, response);
             

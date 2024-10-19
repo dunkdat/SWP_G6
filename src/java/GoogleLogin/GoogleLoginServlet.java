@@ -43,7 +43,7 @@ public class GoogleLoginServlet extends HttpServlet {
                 SendVerify s = new SendVerify();
                 Encode e = new Encode();
                 String pass = e.toSHA1(s.getRandom());
-                u.addUser(new User(acc.getName(),null,1 ,null, acc.getEmail(), pass, "customer"));
+                u.addUser(new User(acc.getName(),null,1 ,null, acc.getEmail(), pass, "Customer"));
                 ss.setAttribute("user_email", acc.getEmail());
                 request.getRequestDispatcher("homepage").forward(request, response);
             }else{

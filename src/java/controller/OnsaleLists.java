@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.DAOCategory;
 import dal.DAOProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -50,6 +51,7 @@ public class OnsaleLists extends HttpServlet {
 
                 }
                 DAOProduct d = new DAOProduct();
+                DAOCategory c = new DAOCategory();
                 String pageParam = request.getParameter("page");
                 int currentPage = pageParam != null ? Integer.parseInt(pageParam) : 1;
                 int pageSize = 12; // Số sản phẩm trên mỗi trang
@@ -62,11 +64,13 @@ public class OnsaleLists extends HttpServlet {
                 
                 if (t.size() == 0) {
                     request.setAttribute("message", "No product found!");
+                    request.setAttribute("categoryList", c.getAllCategory());
                     request.getRequestDispatcher("salelist.jsp").forward(request, response);
                 } else {
                     request.setAttribute("currentPage", currentPage);
                     request.setAttribute("totalPages", totalPages);
                     request.setAttribute("productlist", t);
+                    request.setAttribute("categoryList", c.getAllCategory());
                      Map<String, Float> averageRatings = d.getAllAverageStarRatings();
 
         // Set the average ratings in the request scope

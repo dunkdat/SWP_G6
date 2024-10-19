@@ -1,5 +1,6 @@
 package controller;
 
+import dal.DAOCategory;
 import dal.DAOUser;
 import model.User;
 import java.io.IOException;
@@ -40,6 +41,8 @@ public class RegisterServlet extends HttpServlet {
             try {
                 Validate v = new Validate();
                 DAOUser u = new DAOUser();
+                DAOCategory c = new DAOCategory();
+                request.setAttribute("categoryList", c.getAllCategory());
                 // Gender validation
                 int gender = Integer.parseInt(genderStr);
                  ss.setAttribute("name", name);
@@ -49,6 +52,7 @@ public class RegisterServlet extends HttpServlet {
                 ss.setAttribute("email", email);
                 ss.setAttribute("password", password);
                 ss.setAttribute("cfpassword", cfpassword);
+                
                 // Validate email format
                 if (!Validate.isValidEmail(email)) {
                     request.setAttribute("message", "Please enter a valid email format!");

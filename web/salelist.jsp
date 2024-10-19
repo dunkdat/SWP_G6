@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page import="constant.*" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +10,7 @@
         <title>Product List - Online Shop</title>
         <link rel="stylesheet" href="css/productlist.css"/>
     </head>
+    
     <body>
         <!-- Copy the header and navbar from homepage -->
         <header class="header collapsed">
@@ -18,37 +20,39 @@
                 <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
             </div>
             <div class="right-section">
-                <!-- Search Bar Section in the header -->
-                <!-- Search Bar Section in the header -->
-                <div class="search-bar">
-                    <input type="text" id="searchInput" class="searching" placeholder="Tìm sản phẩm..." autocomplete="off">
-                    <span class="search-icon">🔍</span>
-                </div>
-
-
-                <div class="icons">
-                    <a href="ProfileServlet?current_user=${sessionScope.current_user}">
-                        <c:if test="${current_user == null}">
-                            <img src="images/profile.png" alt="Account">
-                        </c:if>
-                        <c:if test="${current_user != null}">
-                            <img src="images/User_img/${current_user.imagePath}" alt="Account" class="avatar">
-                        </c:if>
-                    </a>
-                    <c:if test="${current_user != null}">
-                        <div class="dropdown-content">
-                            <img src="images/User_img/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
-                            <a href="ProfileServlet?current_user=${sessionScope.current_user}">
-                                Profile
-                            </a>
-                            <a href="logout">Logout</a>
-                        </div>
-                    </c:if>
-
-                    <c:if test="${current_user == 'Customer'}">
-                        <img src="images/cart.png" alt="Cart">
-                    </c:if>
-                </div>        </div>
+            <div class="icons">
+    <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+        <c:if test="${current_user == null}">
+            <img src="images/profile.png" alt="Account" >
+            </c:if>
+        <c:if test="${current_user != null}">
+            <c:if test="${current_user.imagePath == null}">
+                <img src="images/profile.png" alt="Account" class="avatar">
+            </c:if>
+                <c:if test="${current_user.imagePath != null}">
+                 <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Account" class="avatar">   
+            </c:if>
+            
+        </c:if>
+    </a>
+        <c:if test="${current_user != null}">
+            <div class="dropdown-content">
+                <c:if test="${current_user.imagePath != null}">
+                    <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+            </c:if>
+             
+        <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+            Profile
+        </a>
+        <a href="logout">Logout</a>
+    </div>
+        </c:if>
+    
+    <c:if test="${current_user == 'Customer'}">
+        <img src="images/cart.png" alt="Cart">
+    </c:if>
+</div>
+        </div>
         </header>
 
         <div class="toggle-button" onclick="toggleNavbar()">☰</div>
@@ -62,12 +66,9 @@
                 <a href="#">Category</a> <!-- Mục "Category" chính -->
                 <div class="dropdown-content">
                     <a href="productlist">All</a>
-                    <a href="productlist?category=racket">Racket</a>
-                    <a href="productlist?category=shoes">Shoes</a>
-                    <a href="productlist?category=net">Net</a>
-                    <a href="productlist?category=grip">Grip</a>
-                    <a href="productlist?category=backpack">Back Pack</a>
-                    <a href="productlist?category=shuttlecock">Shuttlecock</a>
+                    <c:forEach items="${requestScope.categoryList}" var="n">
+                        <a href="productlist?category=${n.id}">${n.id.toUpperCase()}</a>
+                    </c:forEach>
                 </div></div>
                 <c:if test="${current_user.role == 'Staff'}">
                 <div class="dropdown">
@@ -126,12 +127,9 @@
                     <form action="productlist" method="get" id="filterForm">
                         <h4>Category</h4>
                         <!-- Filter by Category -->
-                        <input type="radio" name="category" value="racket" <c:if test="${param.category == 'racket'}">checked</c:if> /> Racket<br>
-                        <input type="radio" name="category" value="shoes" <c:if test="${param.category == 'shoes'}">checked</c:if> /> Shoes<br>
-                        <input type="radio" name="category" value="net" <c:if test="${param.category == 'net'}">checked</c:if> /> Net<br>
-                        <input type="radio" name="category" value="grip" <c:if test="${param.category == 'grip'}">checked</c:if> /> Grip<br>
-                        <input type="radio" name="category" value="backpack" <c:if test="${param.category == 'backpack'}">checked</c:if> /> Backpack<br>
-                        <input type="radio" name="category" value="shuttlecock" <c:if test="${param.category == 'shuttlecock'}">checked</c:if> /> Shuttlecock<br>
+                        <c:forEach items="${requestScope.categoryList}" var="n">
+                        <input type="radio" name="category" value="${n.id}" <c:if test="${param.category == n.id}">checked</c:if> /> ${n.id}<br>
+                    </c:forEach>
                         <h4>Brand</h4>
                         <!-- Filter by Brand -->
                         <input type="radio" name="brand" value="Yonex" <c:if test="${param.brand == 'Yonex'}">checked</c:if> /> Yonex<br>

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page import="constant.*" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +10,7 @@
         <title>Product Details - Online Shop</title>
         <link rel="stylesheet" href="css/productdetail.css"/>
     </head>
+    
     <body>
         <!-- Header Section -->
         <header class="header collapsed">
@@ -18,18 +20,27 @@
                 <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
             </div>
             <div class="right-section">
-                <div class="icons">
+            <div class="icons">
     <a href="ProfileServlet?current_user=${sessionScope.current_user}">
         <c:if test="${current_user == null}">
-            <img src="images/profile.png" alt="Account">
-        </c:if>
+            <img src="images/profile.png" alt="Account" >
+            </c:if>
         <c:if test="${current_user != null}">
-            <img src="images/User_img/${current_user.imagePath}" alt="Account" class="avatar">
+            <c:if test="${current_user.imagePath == null}">
+                <img src="images/profile.png" alt="Account" class="avatar">
+            </c:if>
+                <c:if test="${current_user.imagePath != null}">
+                 <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Account" class="avatar">   
+            </c:if>
+            
         </c:if>
     </a>
         <c:if test="${current_user != null}">
             <div class="dropdown-content">
-             <img src="images/User_img/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+                <c:if test="${current_user.imagePath != null}">
+                    <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+            </c:if>
+             
         <a href="ProfileServlet?current_user=${sessionScope.current_user}">
             Profile
         </a>
@@ -37,10 +48,11 @@
     </div>
         </c:if>
     
-   <c:if test="${current_user == 'Customer'}">
+    <c:if test="${current_user == 'Customer'}">
         <img src="images/cart.png" alt="Cart">
     </c:if>
-</div>            </div>
+</div>
+        </div>
         </header>
 
         <div class="toggle-button" onclick="toggleNavbar()">☰</div>
@@ -55,12 +67,9 @@
                 <a href="#">Category</a> <!-- Mục "Category" chính -->
                 <div class="dropdown-content">
                     <a href="productlist">All</a>
-                    <a href="productlist?category=racket">Racket</a>
-                    <a href="productlist?category=shoes">Shoes</a>
-                    <a href="productlist?category=net">Net</a>
-                    <a href="productlist?category=grip">Grip</a>
-                    <a href="productlist?category=backpack">Back Pack</a>
-                    <a href="productlist?category=shuttlecock">Shuttlecock</a>
+                    <c:forEach items="${requestScope.categoryList}" var="n">
+                        <a href="productlist?category=${n.id}">${n.id.toUpperCase()}</a>
+                    </c:forEach>
                 </div></div>
                 <c:if test="${current_user.role == 'Staff'}">
                     <div class="dropdown">

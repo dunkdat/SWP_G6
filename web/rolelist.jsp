@@ -6,7 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Category Settings</title>
+        <title>Roles Settings</title>
         <style>
             /* Basic styling */
             body {
@@ -109,12 +109,12 @@ table tr td {
 }
 
 /* Style for the Add New Category button */
-.add-new-category {
+.add-new-role {
     text-align: right;
     margin-bottom: 20px;
 }
 
-.add-new-category a {
+.add-new-role a {
     padding: 15px 30px; /* Make the button larger */
     background-color: #ff6600;
     color: white;
@@ -126,7 +126,7 @@ table tr td {
     transition: background-color 0.3s ease;
 }
 
-.add-new-category a:hover {
+.add-new-role a:hover {
     background-color: #ff9933; /* Change the background color on hover */
     transition: 0.3s;
 }
@@ -416,37 +416,6 @@ table tr td {
                 cursor: pointer;
                 z-index: 1100; /* Higher than the navbar */
             }
-            .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2rem;
-    flex-wrap: wrap;
-    max-height: 90px; /* Giới hạn chiều cao tối đa để tạo 2 hàng */
-    overflow: hidden; /* Ẩn các phần vượt quá */
-    gap: 5px; /* Khoảng cách giữa các trang */
-}
-
-.pagination a {
-    color: #ff6600;
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    border: 1px solid #ff6600;
-    margin: 0 0.25rem;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.pagination a:hover {
-    background-color: #ff6600;
-    color: #fff;
-}
-
-.pagination a.active {
-    background-color: #ff6600;
-    color: #fff;
-}
-
             
         </style>
         <link rel="stylesheet" href="css/homestyle.css"/>
@@ -507,11 +476,12 @@ table tr td {
             
         </nav>
         <div class="container">
-            <h1>Category Settings</h1>
+            <h1>Role Settings</h1>
             <label for="choice">Manage: </label>
         <select id="choice">
-            <option value="category">Category</option>
             <option value="role">Role</option>
+            <option value="category">Category</option>
+            
         </select>
             <label for="searchInput">Search: </label>
         <input type="text" id="searchInput" placeholder="Search by name">
@@ -521,28 +491,28 @@ table tr td {
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
         </select>
-        <div class="category-section">
-            <table id="categoryTable">
+            <div class="role-section">
+            <table id="roleTable">
                 <thead>
                     <tr>
-                        <th>Category Name</th>
+                        <th>Role Name</th>
                         <th>Details</th>
-                        <th>Inventory</th>
+                        <th>Employees</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="categoryTableBody">
-                    <c:forEach var="category" items="${requestScope.categoryList}">
+                <tbody id="roleTableBody">
+                    <c:forEach var="role" items="${requestScope.roleList}">
                         <tr>
-                            <td>${category.id}</td>
-                            <td>${category.details}</td>
-                            <td>${category.inventory}</td>
+                            <td>${role.id}</td>
+                            <td>${role.details}</td>
+                            <td>${role.employee}</td>
                           
-                        <td style="color: ${category.status == 'inactive' ? 'red' : 'green'}">${category.status == 'active' ? 'Active' : 'Inactive'}</td>
+                        <td style="color: ${role.status == 'inactive' ? 'red' : 'green'}">${role.status == 'active' ? 'Active' : 'Inactive'}</td>
                     
                             <td>
-                                <button onclick="editCategory('${category.id}', '${category.details}','${category.inventory}', '${category.status}')">Details</button>
+                                <button onclick="editRole('${role.id}', '${role.details}','${role.employee}', '${role.status}')">Details</button>
                             </td>
                         </tr>
                     </c:forEach>
@@ -577,52 +547,53 @@ table tr td {
         <a href="#" data-page="${currentPage + 1}">Next &raquo;</a>
     </c:if>
 </div>
-    </div>
-    <div class="add-new-category">
-                <a href="#" id="openModal">Add New Category</a>
+            </div>
+            <div class="add-new-role">
+                <a href="#" id="openModal">Add New Role</a>
             </div>
         </div>
-<!-- Modal for Editing Category Details (ID, Details, and Inventory) -->
-<div id="editCategoryModal" class="modal">
+            
+<!-- Modal for Editing Role Details (ID, Details, and employee) -->
+<div id="editRoleModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeEditModal">&times;</span>
-        <h2 id="editModalTitle">Category Details</h2>
-        <form id="editCategoryForm" action="settingdetail">
-            <!-- Hidden Category ID Input -->
-            <label for="editCategoryId">Category Name</label>
-            <input type="text" id="editCategoryId" name="id" readonly="">
+        <h2 id="editModalTitle">Role Details</h2>
+        <form id="editRoleForm" action="roledetail">
+            <!-- Hidden Role ID Input -->
+            <label for="editRoleId">Role Name</label>
+            <input type="text" id="editRoleId" name="id" readonly="">
 
-            <!-- Category Name Input -->
-            <label for="editCategoryDetails">Category Details</label>
-            <input type="text" id="editCategoryDetails" name="details" required>
+            <!-- Role Name Input -->
+            <label for="editRoleDetails">Role Details</label>
+            <input type="text" id="editRoleDetails" name="details" required>
 
-            <!-- Inventory Input -->
-            <label for="editInventory">Inventory</label>
-            <input type="number" id="editInventory" name="inventory" min="0" readonly="">
-            <label for="editStatus">Inventory</label>
+            <!-- employee Input -->
+            <label for="editEmployee">Employee</label>
+            <input type="number" id="editEmployee" name="Employee" min="0" readonly="">
+            <label for="editStatus">Employee</label>
             <select name="status" id="editStatus">
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
             <!-- Submit Button -->
-            <button type="submit" name="submit" value="update" class="submit-btn" id="saveEditCategoryBtn" onclick=" confirmUpdate()">Update</button>
-            <button type="submit" name="submit" value="delete" class="submit-btn" id="saveEditCategoryBtn"onclick=" confirmDelete()">Delete</button>
+            <button type="submit" name="submit" value="update" class="submit-btn" id="saveEditRoleBtn" onclick=" confirmUpdate()">Update</button>
+            <button type="submit" name="submit" value="delete" class="submit-btn" id="saveEditRoleBtn"onclick=" confirmDelete()">Delete</button>
         </form>
     </div>
 </div>
-<div id="addCategoryModal" class="modal">
+<div id="addRoleModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeAddModal">&times;</span>
-        <h2 id="addModalTitle">Add New Category</h2>
-        <form id="addCategoryForm" action="settinglist">
-            <label for="addCategoryId">Category Name</label>
-            <input type="text" id="addCategoryId" name="id">
-            <!-- Category Name Input -->
-            <label for="addCategoryDetails">Category Name</label>
-            <input type="text" id="addCategoryDetails" name="details" required>
+        <h2 id="addModalTitle">Add New Role</h2>
+        <form id="addRoleForm" action="rolelist">
+            <label for="addRoleId">Role Name</label>
+            <input type="text" id="addRoleId" name="id">
+            <!-- Role Name Input -->
+            <label for="addRoleDetails">Role Details</label>
+            <input type="text" id="addRoleDetails" name="details" required>
 
             <!-- Submit Button -->
-            <button type="submit" name="submit" value="add" class="submit-btn" id="saveAddCategoryBtn">Add Category</button>
+            <button type="submit" name="submit" value="add" class="submit-btn" id="saveAddRoleBtn">Add Role</button>
         </form>
     </div>
 </div>
@@ -649,11 +620,11 @@ if (avatarElement) {
         }
     });
             function confirmDelete() {
-                return confirm("Are you sure you want to delete this category ?");
+                return confirm("Are you sure you want to delete this role ?");
             }
 
             function confirmUpdate() {
-                return confirm("Are you sure you want to update this category ?");
+                return confirm("Are you sure you want to update this role ?");
             }
             function toggleNavbar() {
                 const navbar = document.getElementById('navbar');
@@ -667,21 +638,21 @@ if (avatarElement) {
                 content.classList.toggle('collapsed');
                 header.classList.toggle('collapsed');
             }
-        // Function to open the Add Category modal
+        // Function to open the Add Role modal
 document.getElementById('openModal').addEventListener('click', function (event) {
     event.preventDefault();
-    document.getElementById('addCategoryModal').style.display = 'block';
+    document.getElementById('addRoleModal').style.display = 'block';
 });
 
-// Function to open the Edit Category modal
-function editCategory(id, details, inventory, status) {
-    // Populate modal fields with category data
-    document.getElementById('editCategoryId').value = id;
-    document.getElementById('editCategoryDetails').value = details;
-    document.getElementById('editInventory').value = inventory;
+// Function to open the Edit Role modal
+function editRole(id, details, Employee, status) {
+    // Populate modal fields with Role data
+    document.getElementById('editRoleId').value = id;
+    document.getElementById('editRoleDetails').value = details;
+    document.getElementById('editEmployee').value = Employee;
     document.getElementById('editStatus').value = status;
-    // Display the Edit Category modal
-    document.getElementById('editCategoryModal').style.display = 'block';
+    // Display the Edit Role modal
+    document.getElementById('editRoleModal').style.display = 'block';
 }
 
 // Function to close modals
@@ -689,51 +660,51 @@ function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
 }
 
-// Add event listener for closing Add Category modal
+// Add event listener for closing Add Role modal
 document.getElementById('closeAddModal').addEventListener('click', function () {
-    closeModal('addCategoryModal');
+    closeModal('addRoleModal');
 });
 
-// Add event listener for closing Edit Category modal
+// Add event listener for closing Edit Role modal
 document.getElementById('closeEditModal').addEventListener('click', function () {
-    closeModal('editCategoryModal');
+    closeModal('editRoleModal');
 });
 
 // Close modal if the user clicks outside of the modal content
 window.onclick = function (event) {
-    const addModal = document.getElementById('addCategoryModal');
-    const editModal = document.getElementById('editCategoryModal');
+    const addModal = document.getElementById('addRoleModal');
+    const editModal = document.getElementById('editRoleModal');
     
     if (event.target == addModal) {
-        closeModal('addCategoryModal');
+        closeModal('addRoleModal');
     } else if (event.target == editModal) {
-        closeModal('editCategoryModal');
+        closeModal('editRoleModal');
     }
 }
 document.addEventListener("DOMContentLoaded", function () {
                 loadPagination();
-                document.getElementById('searchInput').addEventListener('input', filterCategory);
-document.querySelector('#statusFilter').addEventListener('change', filterCategory);
+                document.getElementById('searchInput').addEventListener('input', filterRole);
+document.querySelector('#statusFilter').addEventListener('change', filterRole);
             
-            function filterCategory() {
+            function filterRole() {
     const searchQuery = document.getElementById('searchInput').value !== null ? document.getElementById('searchInput').value : ''; // Search query
 const status = document.getElementById('statusFilter').value !== null ? document.getElementById('statusFilter').value : ''; // Selected status
 
 
     const xhr = new XMLHttpRequest();
-    const url = `LoadSettingListServlet?status=` + status + `&query=` + searchQuery;
+    const url = `LoadRoleListServlet?status=` + status + `&query=` + searchQuery;
     console.log(url);
     xhr.open('GET', url, true);
 
     xhr.onload = function () {
         if (xhr.status === 200) {
             // Update the product section with the filtered products
-            document.querySelector('.category-section').innerHTML = xhr.responseText;
+            document.querySelector('.role-section').innerHTML = xhr.responseText;
 
             // Reattach pagination and other listeners if needed
             loadPagination();
         } else {
-            console.error('Failed to load category. Status:', xhr.status);
+            console.error('Failed to load role. Status:', xhr.status);
         }
     };
 
@@ -756,18 +727,18 @@ const status = document.getElementById('statusFilter').value !== null ? document
                 });
             }
 
-            function loadSettingList(page) {
+            function loadRoleList(page) {
                 const searchQuery = document.getElementById('searchInput').value !== null ? document.getElementById('searchInput').value : ''; // Search query
 const status = document.getElementById('statusFilter').value !== null ? document.getElementById('statusFilter').value : ''; // Selected status
 
                 const xhr = new XMLHttpRequest();
-                const url = `LoadSettingListServlet?page=` + page+ `&status=` + status + `&query=` + searchQuery;
+                const url = `LoadRoleListServlet?page=` + page+ `&status=` + status + `&query=` + searchQuery;
                 console.log(url);
                 xhr.open('GET', url, true);
 
                 xhr.onload = function () {
                     if (xhr.status === 200) {
-                        document.querySelector('.category-section').innerHTML = xhr.responseText;
+                        document.querySelector('.role-section').innerHTML = xhr.responseText;
                         updateActivePage(page);
                         loadPagination();
                     }
@@ -797,19 +768,19 @@ const status = document.getElementById('statusFilter').value !== null ? document
     let statusFilter = document.getElementById("statusFilter").value.toLowerCase();
 
     // Get the table and rows
-    let table = document.getElementById("categoryTable");
+    let table = document.getElementById("roleTable");
     let rows = table.getElementsByTagName("tr");
 
     // Loop through all table rows, excluding the header row
     for (let i = 0; i < rows.length; i++) {
         let cells = rows[i].getElementsByTagName("td");
-        let categoryName = cells[0];
-        let categoryStatus = cells[3];
+        let roleName = cells[0];
+        let roleStatus = cells[3];
 
         // Ensure all cells are present
-        if (categoryName && categoryStatus) {
-            let nameValue = categoryName.textContent.toLowerCase();
-            let statusValue = categoryStatus.textContent.toLowerCase();
+        if (roleName && roleStatus) {
+            let nameValue = roleName.textContent.toLowerCase();
+            let statusValue = roleStatus.textContent.toLowerCase();
 
             // Check if the row matches the filters
             let matchesSearch = nameValue.includes(searchInput);
@@ -824,7 +795,6 @@ const status = document.getElementById('statusFilter').value !== null ? document
         }
     }
 }
-
         </script>
     </body>
 </html> 

@@ -95,7 +95,7 @@ public class ProfileServlet extends HttpServlet {
             throws ServletException, IOException {
         String service = request.getParameter("Service");
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("currentUser");
+        User user = (User) session.getAttribute("current_user");
         System.out.println("currsess: "+user);
         String mess = "";
         String filename = null;
@@ -137,12 +137,12 @@ public class ProfileServlet extends HttpServlet {
              String folderPath = getServletContext().getRealPath("") + File.separator + IConstant.PATH_USER;
              saveImage(cusImage, folderPath, filename);
              User cussChange = new User(user.getId(), name,  address, 
-             gender,  phone,  filename);
+             gender,  phone, filename);
              
              boolean haveUpdate = daoUser.updateCustomer(cussChange);
              User updatedUser = daoUser.getUserById(user.getId());
-             session.removeAttribute("currentUser"); // Xóa đối tượng cũ khỏi phiên
-             session.setAttribute("currentUser", updatedUser); // Thêm đối tượng mới vào phiên
+             session.removeAttribute("current_user"); // Xóa đối tượng cũ khỏi phiên
+             session.setAttribute("current_user", updatedUser); // Thêm đối tượng mới vào phiên
             if (haveUpdate) {
                 isSuccess = true;
                 mess = "update success";

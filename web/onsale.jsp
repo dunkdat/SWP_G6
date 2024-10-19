@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page import="constant.*" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -409,6 +410,7 @@
         </style>
         <link rel="stylesheet" href="css/homestyle.css"/>
     </head>
+    
     <body>
         <header class="header collapsed">
         <div class="left-section">
@@ -420,15 +422,24 @@
             <div class="icons">
     <a href="ProfileServlet?current_user=${sessionScope.current_user}">
         <c:if test="${current_user == null}">
-            <img src="images/profile.png" alt="Account" class="avatar">
-        </c:if>
+            <img src="images/profile.png" alt="Account" >
+            </c:if>
         <c:if test="${current_user != null}">
-            <img src="images/User_img/${current_user.imagePath}" alt="Account" class="avatar">
+            <c:if test="${current_user.imagePath == null}">
+                <img src="images/profile.png" alt="Account" class="avatar">
+            </c:if>
+                <c:if test="${current_user.imagePath != null}">
+                 <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Account" class="avatar">   
+            </c:if>
+            
         </c:if>
     </a>
         <c:if test="${current_user != null}">
             <div class="dropdown-content">
-             <img src="images/User_img/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+                <c:if test="${current_user.imagePath != null}">
+                    <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+            </c:if>
+             
         <a href="ProfileServlet?current_user=${sessionScope.current_user}">
             Profile
         </a>
@@ -436,7 +447,9 @@
     </div>
         </c:if>
     
-  
+    <c:if test="${current_user == 'Customer'}">
+        <img src="images/cart.png" alt="Cart">
+    </c:if>
 </div>
         </div>
     </header>
@@ -455,15 +468,12 @@
             <h1>Sale Products Management</h1>
             <div class="filterForm">
     <form id="searchForm" style="width: 100%; display: flex; justify-content: space-between;">
-        <input type="text" id="searchInput" placeholder="Search by id, name">
+        <input type="text" id="searchInput" placeholder="Search by name">
         <select id="categoryFilter" name="categoryFilter">
             <option value="">All Category</option>
-            <option value="racket">Racket</option>
-            <option value="shoes">Shoes</option>
-            <option value="net">Net</option>
-            <option value="grip">Grip</option>
-            <option value="backpack">Back Pack</option>
-            <option value="shuttlecock">Shuttlecock</option>
+            <c:forEach items="${requestScope.categoryList}" var="n">
+                        <a href="productlist?category=${n.id}">${n.id.toUpperCase()}</a>
+                    </c:forEach>
         </select>
     </form>
 </div>

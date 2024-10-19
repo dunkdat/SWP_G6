@@ -35,7 +35,7 @@ public class DAOUser extends DBContext{
                         rs.getInt("gender"),
                         rs.getString("phone"),
                         rs.getString("email"),
-                        rs.getString("detail"),
+                        rs.getString("role"),
                         rs.getString("imagePath"));
             }
         } catch (SQLException e) {
@@ -178,30 +178,36 @@ public class DAOUser extends DBContext{
         }
 
     }
-    public List<User> getAllSatff() {
-        List<User> t = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM Users where role = 'Staff' or role = 'Staff Manager'";
-            PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                User x = new User(rs.getInt("id"), 
-                        rs.getString("name"), 
-                        rs.getString("address"), 
-                        rs.getInt("gender"), 
-                        rs.getString("phone"), 
-                        rs.getString( "email"),
-                        rs.getString("role"),
-                        rs.getString("status"), 
-                        rs.getString("imagePath"),
-                        rs.getString("detail"));
-                t.add(x);
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
+    public List<User> getAllStaff() {
+    List<User> t = new ArrayList<>();
+    try {
+        // Câu lệnh SQL đã chỉnh sửa với JOIN vào bảng Role
+        String sql = "SELECT u.* FROM Users u " +
+                     "JOIN Role r ON u.role = r.id " +
+                     "WHERE u.role != 'Customer' AND u.role != 'Admin' AND r.status = 'active'";
+        
+        PreparedStatement st = connection.prepareStatement(sql);
+        ResultSet rs = st.executeQuery();
+        
+        // Duyệt qua kết quả
+        while (rs.next()) {
+            User x = new User(rs.getInt("id"), 
+                    rs.getString("name"), 
+                    rs.getString("address"), 
+                    rs.getInt("gender"), 
+                    rs.getString("phone"), 
+                    rs.getString("email"),
+                    rs.getString("role"),
+                    rs.getString("status"), 
+                    rs.getString("imagePath"),
+                    rs.getString("detail"));
+            t.add(x);
         }
-        return t;
+    } catch (SQLException e) {
+        System.out.println(e);
     }
+    return t;
+}
     public void addUser(User x){
         try{
             String sql = "insert Users(name, address, gender, phone, email, password, role, status,imagePath) values(?,?,?,?,?,?,?,'active',? );";
