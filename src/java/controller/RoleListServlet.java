@@ -5,21 +5,20 @@
 
 package controller;
 
-import dal.DAOCategory;
-import dal.DAOProduct;
+
+import dal.DAORole;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Products;
 
 /**
  *
  * @author DAT
  */
-public class ProductDetailsServlet extends HttpServlet {
+public class RoleListServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -31,21 +30,32 @@ public class ProductDetailsServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+            DAORole c = new DAORole();
+            String submit = request.getParameter("submit");
+            
+        if(submit!=null){
             String id = request.getParameter("id");
-            if(id!=null){
-            DAOProduct dp = new DAOProduct();
-                DAOCategory c = new DAOCategory();
-            Products p = dp.getProductById(id);
-            request.setAttribute("product", p);
-            request.setAttribute("averageRating", dp.getAverageStarRating(dp.getProductById(id).getName()));
-            request.setAttribute("productReviews", dp.getProductReviews(dp.getProductById(id).getName()));
-            request.setAttribute("relatedProducts", dp.getRelatedProductsByBrand(p.getBrand(),p.getCategory() ,id));
-                    request.setAttribute("categoryList", c.getAllCategory());
-            request.setAttribute("colors", dp.getColorsByProductName(p.getName()));
-            request.getRequestDispatcher("productdetails.jsp").forward(request, response);
+        String details = request.getParameter("details");
+            if(submit.equals("add")){
+                c.addRole(id, details);
             }
         }
-    
+        
+
+            int currentPage =  1;
+                int pageSize = 10; // Số sản phẩm trên mỗi trang
+                int offset = (currentPage - 1) * pageSize;
+
+                // Lấy tổng số sản phẩm và tính tổng số trang
+                int totalCategories = c.countAllRoles();
+                int totalPages = (int) Math.ceil((double) totalCategories / pageSize);
+                request.setAttribute("currentPage", currentPage);
+                    request.setAttribute("totalPages", totalPages);
+            request.setAttribute("roleList", c.getAllRoleQuantities());
+            request.getRequestDispatcher("rolelist.jsp").forward(request, response);
+        
+        
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

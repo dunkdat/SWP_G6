@@ -251,8 +251,11 @@ public List<Products> getAllStaffProducts() {
 public List<Products> getAllStaffProducts(int offset, int limit) {
     List<Products> products = new ArrayList<>();
     
-    // Query to select distinct names along with other information
-    String sql = "SELECT * From products limit ? offset ?";
+    // Query để lấy sản phẩm với danh mục có trạng thái 'active'
+    String sql = "SELECT p.* FROM products p " +
+                 "JOIN categories c ON p.category = c.id " +
+                 "WHERE c.status = 'active' " +
+                 "LIMIT ? OFFSET ?";
     
     try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
         preparedStatement.setInt(1, limit);
@@ -260,7 +263,7 @@ public List<Products> getAllStaffProducts(int offset, int limit) {
         ResultSet resultSet = preparedStatement.executeQuery();
       
         while (resultSet.next()) {
-            // Map the result set to Product object
+            // Ánh xạ kết quả thành đối tượng Products
             Products product = new Products(
                     resultSet.getString("id"),
                     resultSet.getString("name"),
@@ -283,35 +286,37 @@ public List<Products> getAllStaffProducts(int offset, int limit) {
 
     return products;
 }
-public List<Products> getAllFilterProductsStaff( String category, String status, String searchQuery, int limit, int offset) {
+
+public List<Products> getAllFilterProductsStaff(String category, String status, String searchQuery, int limit, int offset) {
     List<Products> productList = new ArrayList<>();
     try {
-        // Start building the SQL query
-        StringBuilder sql = new StringBuilder("SELECT * FROM Products WHERE 1=1"); // 1=1 allows easy appending of AND conditions
+        // Bắt đầu xây dựng câu truy vấn SQL
+        StringBuilder sql = new StringBuilder("SELECT p.* FROM Products p " +
+                                              "JOIN Categories c ON p.category = c.id " +
+                                              "WHERE c.status = 'active'"); // Chỉ lấy danh mục có trạng thái 'active'
 
-        // Add filters based on provided parameters
-
+        // Thêm bộ lọc dựa trên các tham số được cung cấp
         if (category != null && !category.isEmpty()) {
-            sql.append(" AND category = ?");
+            sql.append(" AND p.category = ?");
         }
 
         if (status != null && !status.isEmpty()) {
-            sql.append(" AND status = ?");
-        }
-        if (searchQuery != null && !searchQuery.isEmpty()) {
-            sql.append(" AND name LIKE ?");
+            sql.append(" AND p.status = ?");
         }
 
-        // Add limit and offset for pagination
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            sql.append(" AND p.name LIKE ?");
+        }
+
+        // Thêm limit và offset cho phân trang
         sql.append(" LIMIT ? OFFSET ?");
 
-        // Prepare the statement
+        // Chuẩn bị câu lệnh
         PreparedStatement st = connection.prepareStatement(sql.toString());
 
-        int paramIndex = 1; // Start index for parameters
+        int paramIndex = 1; // Chỉ số bắt đầu cho các tham số
 
-        // Set the parameters based on the filters
-
+        // Thiết lập các tham số dựa trên các bộ lọc
         if (category != null && !category.isEmpty()) {
             st.setString(paramIndex++, category);
         }
@@ -321,14 +326,14 @@ public List<Products> getAllFilterProductsStaff( String category, String status,
         }
 
         if (searchQuery != null && !searchQuery.isEmpty()) {
-            st.setString(paramIndex++, "%" + searchQuery + "%"); // Using LIKE with wildcards
+            st.setString(paramIndex++, "%" + searchQuery + "%"); // Sử dụng LIKE với ký tự đại diện
         }
 
-        // Set the limit and offset for pagination
+        // Thiết lập limit và offset cho phân trang
         st.setInt(paramIndex++, limit);
         st.setInt(paramIndex, offset);
 
-        // Execute the query and process the results
+        // Thực thi truy vấn và xử lý kết quả
         ResultSet rs = st.executeQuery();
         while (rs.next()) {
             Products product = new Products(
@@ -348,11 +353,12 @@ public List<Products> getAllFilterProductsStaff( String category, String status,
             productList.add(product);
         }
     } catch (SQLException e) {
-        // Log the exception for debugging
+        // Ghi log lỗi SQL để phục vụ việc gỡ lỗi
         System.err.println("SQL Error: " + e.getMessage());
     }
     return productList;
-    }
+}
+
 
 
    public List<Products> getAllProduct(String category, String brand, String lowPrice, String highPrice, String searchQuery, int limit, int offset) {
@@ -643,32 +649,33 @@ public List<Products> getAllSaleProduct(String category, String brand, String lo
 
     return totalProducts;
 }
-public int getTotalFilterProductsStaff( String category, String status, String searchQuery) {
+public int getTotalFilterProductsStaff(String category, String status, String searchQuery) {
     int totalProducts = 0;
     try {
-        // Start building the SQL query
-        StringBuilder sql = new StringBuilder("SELECT Count(*) FROM Products where 1 = 1"); // 1=1 allows easy appending of AND conditions
+        // Bắt đầu xây dựng câu truy vấn SQL
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Products p " +
+                                              "JOIN Categories c ON p.category = c.id " +
+                                              "WHERE c.status = 'active'"); // Chỉ lấy danh mục có trạng thái 'active'
 
-        // Add filters based on provided parameters
-
+        // Thêm bộ lọc dựa trên các tham số được cung cấp
         if (category != null && !category.isEmpty()) {
-            sql.append(" AND category = ?");
+            sql.append(" AND p.category = ?");
         }
 
         if (status != null && !status.isEmpty()) {
-            sql.append(" AND status = ?");
-        }
-        if (searchQuery != null && !searchQuery.isEmpty()) {
-            sql.append(" AND name LIKE ?");
+            sql.append(" AND p.status = ?");
         }
 
-        // Prepare the statement
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            sql.append(" AND p.name LIKE ?");
+        }
+
+        // Chuẩn bị câu lệnh
         PreparedStatement st = connection.prepareStatement(sql.toString());
 
-        int paramIndex = 1; // Start index for parameters
+        int paramIndex = 1; // Chỉ số bắt đầu cho các tham số
 
-        // Set the parameters based on the filters
-
+        // Thiết lập các tham số dựa trên các bộ lọc
         if (category != null && !category.isEmpty()) {
             st.setString(paramIndex++, category);
         }
@@ -678,20 +685,21 @@ public int getTotalFilterProductsStaff( String category, String status, String s
         }
 
         if (searchQuery != null && !searchQuery.isEmpty()) {
-            st.setString(paramIndex++, "%" + searchQuery + "%"); // Using LIKE with wildcards
+            st.setString(paramIndex++, "%" + searchQuery + "%"); // Sử dụng LIKE với ký tự đại diện
         }
 
-        // Execute the query and process the results
+        // Thực thi truy vấn và xử lý kết quả
         ResultSet rs = st.executeQuery();
         if (rs.next()) {
-           totalProducts = rs.getInt(1);
+            totalProducts = rs.getInt(1);
         }
     } catch (SQLException e) {
-        // Log the exception for debugging
+        // Ghi log lỗi SQL để phục vụ việc gỡ lỗi
         System.err.println("SQL Error: " + e.getMessage());
     }
     return totalProducts;
-    }
+}
+
 public List<Integer> getProductSizesByNameAndColor(String productName, String color) {
         List<Integer> sizes = new ArrayList<>();
         PreparedStatement pstmt = null;
@@ -998,17 +1006,21 @@ public Map<String, Float> getAllAverageStarRatings() {
         return 0;
     }
     public int getTotalProductsStaff() {
-        String sql = "SELECT Count(*) FROM Products";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    String sql = "SELECT COUNT(*) FROM Products p " +
+                 "JOIN Categories c ON p.category = c.id " +
+                 "WHERE c.status = 'active'"; // Chỉ lấy các sản phẩm có danh mục 'active'
+    
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1);
         }
-        return 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return 0;
+}
+
     public int getTotalProducts(String cat) {
     StringBuilder sql = new StringBuilder("SELECT Count(*) FROM Products p INNER JOIN ( SELECT name, MIN(id) AS min_id FROM Products GROUP BY name) AS unique_products ON p.id = unique_products.min_id");
     

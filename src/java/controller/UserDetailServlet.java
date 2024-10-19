@@ -43,7 +43,7 @@ public class UserDetailServlet extends HttpServlet {
                     du.deleteUser(Integer.parseInt(id));
                 }
                 
-                request.setAttribute("userlist", du.getAllSatff());
+                request.setAttribute("userlist", du.getAllStaff());
                 request.getRequestDispatcher("userlist.jsp").forward(request, response);
         }
         

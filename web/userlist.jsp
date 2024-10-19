@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page import="constant.*" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -441,6 +442,7 @@
         </style>
         <link rel="stylesheet" href="css/homestyle.css"/>
     </head>
+    
     <body>
         <header class="header collapsed">
         <div class="left-section">
@@ -452,15 +454,24 @@
             <div class="icons">
     <a href="ProfileServlet?current_user=${sessionScope.current_user}">
         <c:if test="${current_user == null}">
-            <img src="images/profile.png" alt="Account" class="avatar">
-        </c:if>
+            <img src="images/profile.png" alt="Account" >
+            </c:if>
         <c:if test="${current_user != null}">
-            <img src="images/User_img/${current_user.imagePath}" alt="Account" class="avatar">
+            <c:if test="${current_user.imagePath == null}">
+                <img src="images/profile.png" alt="Account" class="avatar">
+            </c:if>
+                <c:if test="${current_user.imagePath != null}">
+                 <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Account" class="avatar">   
+            </c:if>
+            
         </c:if>
     </a>
         <c:if test="${current_user != null}">
             <div class="dropdown-content">
-             <img src="images/User_img/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+                <c:if test="${current_user.imagePath != null}">
+                    <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+            </c:if>
+             
         <a href="ProfileServlet?current_user=${sessionScope.current_user}">
             Profile
         </a>
@@ -468,6 +479,9 @@
     </div>
         </c:if>
     
+    <c:if test="${current_user == 'Customer'}">
+        <img src="images/cart.png" alt="Cart">
+    </c:if>
 </div>
         </div>
     </header>
@@ -520,7 +534,7 @@
                 <tbody>
                     <c:forEach var="user" items="${userlist}">
                         <tr>
-                            <td><img src="images/User_img/${user.imagePath}" alt="Avatar" width="50" height="50"></td>
+                            <td><img src="${IConstant.PATH_USER}/${user.imagePath}" alt="Avatar" width="50" height="50"></td>
                             <td>${user.name}</td>
                             <td>${user.email}</td>
                             <td>${user.phone}</td>
@@ -539,45 +553,52 @@
         </div>
 
         <!-- Modal for Adding New User -->
-        <div id="myModal" class="modal" style="display: ${message != null ? 'block' : 'none'}">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Add New User</h2>
-                <form action="userlist" method="post" enctype="multipart/form-data">
-                    <div>
-                        <label for="avatar">Avatar:</label>
-                        <input type="file" id="avatar" name="avatar" required="">
-                    </div>
-                    <label for="name">Full Name:</label>
-                    <input type="text" id="name" name="name" required>
-
-                    <div style="display: flex;">
-                        <label for="gender">Gender:</label>
-                        <input type="radio" id="gender" name="gender" value="1" required> Male
-                        <input type="radio" id="gender" name="gender" value="0" required> Female
-                    </div>
-                    <div>
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div>
-                        <label for="phone">Mobile:</label>
-                        <input type="text" id="mobile" name="phone" required>
-                    </div>
-                    <div>
-                        <label for="role">Role:</label>
-                        <select id="role" name="role">
-                            <option value="Staff Manager">Staff Manager</option>
-                            <option value="Staff">Staff</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button type="submit" name="submit" value="add" class="submit-btn">Add User</button>
-                    </div>
-                </form>
-                <div class="message">${message}</div>
+       <div id="myModal" class="modal" style="display: ${message != null ? 'block' : 'none'}">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add New User</h2>
+        <form action="userlist" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="avatar">Avatar:</label>
+                <input type="file" id="avatar" name="avatar" required="">
             </div>
-        </div>
+
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" value="${name != null ? name : ''}" required>
+
+            <div style="display: flex;">
+                <label for="gender">Gender:</label>
+                <input type="radio" id="gender_male" name="gender" value="1" ${gender == 1 ? 'checked' : ''} required> Male
+                <input type="radio" id="gender_female" name="gender" value="0" ${gender == 0 ? 'checked' : ''} required> Female
+            </div>
+
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="${email != null ? email : ''}" required>
+            </div>
+
+            <div>
+                <label for="phone">Mobile:</label>
+                <input type="text" id="mobile" name="phone" value="${phone != null ? phone : ''}" required>
+            </div>
+
+            <div>
+                <label for="role">Role:</label>
+                <select id="detail-role" name="role">
+                    <c:forEach items="${requestScope.roleList}" var="n">
+                                        <option value="${n.id}" ${role == n.id ? 'checked' : ''}>${n.id}</option>
+                                    </c:forEach>
+                                </select>
+            </div>
+
+            <div>
+                <button type="submit" name="submit" value="add" class="submit-btn">Add User</button>
+            </div>
+        </form>
+
+        <div class="message">${message}</div>
+    </div>
+</div>
 
         <!-- Detail Modal -->
         <div id="detailModal" class="detail-modal">
@@ -614,8 +635,9 @@
                             <td><strong>Role:</strong></td>
                             <td>
                                 <select id="detail-role" name="role">
-                                    <option value="Staff Manager">Staff Manager</option>
-                                    <option value="Staff">Staff</option>
+                                    <c:forEach items="${requestScope.roleList}" var="n">
+                                        <option value="${n.id}">${n.id}</option>
+                                    </c:forEach>
                                 </select>
                             </td>
                         </tr>
@@ -713,7 +735,7 @@ document.querySelector('.dropdown-content').addEventListener('mouseleave', funct
             // Function to show the details and populate the modal with current user information
             function showDetails(id, avatar, name, phone, email, role, status) {
                 document.getElementById('detail-id').value = id;
-                document.getElementById('detail-avatar').src = "images/User_img/" + avatar;
+                document.getElementById('detail-avatar').src = "${IConstant.PATH_USER}/" + avatar;
                 document.getElementById('detail-name').value = name;
                 document.getElementById('detail-mobile').value = phone;
                 document.getElementById('detail-email').value = email;

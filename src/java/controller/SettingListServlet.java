@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.DAOCategory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -29,16 +30,29 @@ public class SettingListServlet extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SettingListServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SettingListServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            DAOCategory c = new DAOCategory();
+            String submit = request.getParameter("submit");
+            
+        if(submit!=null){
+            String id = request.getParameter("id");
+        String details = request.getParameter("details");
+            if(submit.equals("add")){
+                c.addCategory(id, details);
+            }
+        }
+        
+
+            int currentPage =  1;
+                int pageSize = 10; // Số sản phẩm trên mỗi trang
+                int offset = (currentPage - 1) * pageSize;
+
+                // Lấy tổng số sản phẩm và tính tổng số trang
+                int totalCategories = c.countAllCategories();
+                int totalPages = (int) Math.ceil((double) totalCategories / pageSize);
+                request.setAttribute("currentPage", currentPage);
+                    request.setAttribute("totalPages", totalPages);
+            request.setAttribute("categoryList", c.getAllCategoryQuantities());
+            request.getRequestDispatcher("settinglist.jsp").forward(request, response);
         }
     } 
 

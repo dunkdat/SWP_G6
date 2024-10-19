@@ -1,5 +1,6 @@
 package controller;
 
+import dal.DAOCategory;
 import dal.DAOUser;
 import model.User;
 import java.io.IOException;
@@ -23,6 +24,8 @@ public class LoginServlet extends HttpServlet {
         
         DAOUser u = new DAOUser();
         Encode e = new Encode();
+        DAOCategory c = new DAOCategory();
+                request.setAttribute("categoryList", c.getAllCategory());
         
         if(email != null && password != null){
             // Validate user credentials

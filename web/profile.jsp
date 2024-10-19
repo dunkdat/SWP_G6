@@ -177,8 +177,8 @@
     
     <%
         User cuss = null;
-        if(session.getAttribute("currentUser") != null) {
-            cuss = (User)session.getAttribute("currentUser");
+        if(session.getAttribute("current_user") != null) {
+            cuss = (User)session.getAttribute("current_user");
         }
     %>
 
@@ -192,25 +192,37 @@
         </div>
         <div class="right-section">
             <div class="icons">
-                <a href="ProfileServlet?current_user=${sessionScope.current_user}">
-                    <c:if test="${current_user == null}">
-                        <img src="images/profile.png" alt="Account" class="avatar">
-                    </c:if>
-                    <c:if test="${current_user != null}">
-                        <img src="images/User_img/${current_user.imagePath}" alt="Account" class="avatar">
-                    </c:if>
-                </a>
-                <c:if test="${current_user != null}">
-                    <div class="dropdown-content">
-                        <img src="images/User_img/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
-                        <a href="ProfileServlet?current_user=${sessionScope.current_user}">Profile</a>
-                        <a href="logout">Logout</a>
-                    </div>
-                </c:if>
-                <c:if test="${current_user == 'Customer'}">
-                    <img src="images/cart.png" alt="Cart">
-                </c:if>
-            </div>
+    <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+        <c:if test="${current_user == null}">
+            <img src="images/profile.png" alt="Account" >
+            </c:if>
+        <c:if test="${current_user != null}">
+            <c:if test="${current_user.imagePath == null}">
+                <img src="images/profile.png" alt="Account" class="avatar">
+            </c:if>
+                <c:if test="${current_user.imagePath != null}">
+                 <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Account" class="avatar">   
+            </c:if>
+            
+        </c:if>
+    </a>
+        <c:if test="${current_user != null}">
+            <div class="dropdown-content">
+                <c:if test="${current_user.imagePath != null}">
+                    <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+            </c:if>
+             
+        <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+            Profile
+        </a>
+        <a href="logout">Logout</a>
+    </div>
+        </c:if>
+    
+    <c:if test="${current_user == 'Customer'}">
+        <img src="images/cart.png" alt="Cart">
+    </c:if>
+</div>
         </div>
     </header>
     <section class="nav-bar">
@@ -392,6 +404,15 @@
         <!-- Custom JS -->
         <script src="./js/app.js"></script>
         <script>
+            const avatarElement = document.querySelector('.avatar');
+if (avatarElement) {
+    avatarElement.addEventListener('mouseover', function () {
+        document.querySelector('.dropdown-content').style.display = 'block';
+    });
+}
+            document.querySelector('.dropdown-content').addEventListener('mouseleave', function () {
+                document.querySelector('.dropdown-content').style.display = 'none';
+            });
             function previewImage(input) {
                 var imagePreview = document.getElementById('boxImage');
                 var file = input.files[0];
