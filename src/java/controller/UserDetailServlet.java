@@ -5,6 +5,8 @@
 
 package controller;
 
+import dal.DAOCategory;
+import dal.DAORole;
 import dal.DAOUser;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,6 +34,7 @@ public class UserDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
             String action = request.getParameter("submit");
             DAOUser du = new DAOUser();
+            DAORole r = new DAORole();
             if(action!=null){
                String id = request.getParameter("id");
                String role = request.getParameter("role");
@@ -42,7 +45,7 @@ public class UserDetailServlet extends HttpServlet {
                 if(action.equals("delete")){
                     du.deleteUser(Integer.parseInt(id));
                 }
-                
+                request.setAttribute("roleList", r.getAllRoles());
                 request.setAttribute("userlist", du.getAllStaff());
                 request.getRequestDispatcher("userlist.jsp").forward(request, response);
         }

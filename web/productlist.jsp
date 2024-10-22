@@ -171,8 +171,8 @@
                                 <c:if test="${product.salePercent > 0}">
                                     <!-- Hiển thị giá cũ bị gạch bỏ và giá mới -->
                                     <div  class="price-container">
-                                        <p class="original-price">$${product.price}</p>
-                                        <p class="sale-price">$<fmt:formatNumber value="${product.price - (product.price * product.salePercent / 100)}" minFractionDigits="2" maxFractionDigits="2" /></p>
+                                        <p class="original-price">$${product.price+product.price*product.salePercent/100}</p>
+                                        <p class="sale-price">$<fmt:formatNumber value="${product.price}" minFractionDigits="2" maxFractionDigits="2" /></p>
                                     </div>
                                 </c:if>
 

@@ -584,9 +584,9 @@
 
             <div>
                 <label for="role">Role:</label>
-                <select id="detail-role" name="role">
+                <select name="role">
                     <c:forEach items="${requestScope.roleList}" var="n">
-                                        <option value="${n.id}" ${role == n.id ? 'checked' : ''}>${n.id}</option>
+                                        <option value="${n.id}" ${role == n.id ? 'selected' : ''}>${n.id}</option>
                                     </c:forEach>
                                 </select>
             </div>
@@ -733,17 +733,25 @@ document.querySelector('.dropdown-content').addEventListener('mouseleave', funct
             }
 
             // Function to show the details and populate the modal with current user information
-            function showDetails(id, avatar, name, phone, email, role, status) {
-                document.getElementById('detail-id').value = id;
-                document.getElementById('detail-avatar').src = "${IConstant.PATH_USER}/" + avatar;
-                document.getElementById('detail-name').value = name;
-                document.getElementById('detail-mobile').value = phone;
-                document.getElementById('detail-email').value = email;
-                document.getElementById('detail-role').value = role;
-                document.getElementById('detail-status').value = status;
+           function showDetails(id, avatar, name, phone, email, role, status) {
+    document.getElementById('detail-id').value = id;
+    document.getElementById('detail-avatar').src = "${IConstant.PATH_USER}/" + avatar;
+    document.getElementById('detail-name').value = name;
+    document.getElementById('detail-mobile').value = phone;
+    document.getElementById('detail-email').value = email;
+    document.getElementById('detail-status').value = status;
 
-                document.getElementById('detailModal').style.display = "block";
-            }
+    // Find the role option that matches the user's role and set it as selected
+    const roleDropdown = document.getElementById('detail-role');
+    for (let i = 0; i < roleDropdown.options.length; i++) {
+        if (roleDropdown.options[i].value === role) {
+            roleDropdown.selectedIndex = i;
+            break;
+        }
+    }
+
+    document.getElementById('detailModal').style.display = "block";
+}
 
             function closeDetailModal() {
                 document.getElementById('detailModal').style.display = "none";

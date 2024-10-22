@@ -219,7 +219,7 @@
     </div>
         </c:if>
     
-    <c:if test="${current_user == 'Customer'}">
+    <c:if test="${current_user.role == 'Customer'}">
         <img src="images/cart.png" alt="Cart">
     </c:if>
 </div>

@@ -114,8 +114,8 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             // Display price (original and sale if applicable)
             if (product.getSalePercent() > 0) {
                 out.println("<div class='price-container'>");
-                out.println("<p class='original-price'>$" + product.getPrice() + "</p>");
-                double discountedPrice = product.getPrice() - (product.getPrice() * product.getSalePercent() / 100);
+                out.println("<p class='original-price'>$" + String.format("%.2f", product.getPrice() + product.getPrice() * product.getSalePercent() / 100)  + "</p>");
+                double discountedPrice = product.getPrice();
                 out.println("<p class='sale-price'>$" + String.format("%.2f", discountedPrice) + "</p>");
                 out.println("</div>");
             } else {

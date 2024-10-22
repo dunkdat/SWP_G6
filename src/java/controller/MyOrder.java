@@ -5,20 +5,24 @@
 
 package controller;
 
-import dal.DAOCategory;
-import dal.DAOProduct;
+import dal.DAOOrder;
+import dal.DAOUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Order;
+import model.User;
 
 /**
  *
- * @author DAT
+ * @author Lenovo
  */
-public class StaffOnsaleLists extends HttpServlet {
+public class MyOrder extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -31,26 +35,16 @@ public class StaffOnsaleLists extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            DAOProduct d = new DAOProduct();
-            DAOCategory c = new DAOCategory();
-                    
-            String name = request.getParameter("productName");
-            String salePercent = request.getParameter("salePercent");
-            if(name !=null && salePercent !=null){
-                d.updateSale(name, salePercent);
-            }
-            int currentPage =  1;
-                int pageSize = 10; // Số sản phẩm trên mỗi trang
-                int offset = (currentPage - 1) * pageSize;
-
-                // Lấy tổng số sản phẩm và tính tổng số trang
-                int totalProducts = d.getTotalProducts();
-                int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
-                request.setAttribute("page", currentPage);
-                    request.setAttribute("totalPages", totalPages);
-            request.setAttribute("productlist", d.getAllProduct(null, null, null, null, null, pageSize, offset));
-            request.setAttribute("categoryList", c.getAllCategory());
-            request.getRequestDispatcher("onsale.jsp").forward(request, response);
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet MyOrder</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet MyOrder at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     } 
 
@@ -65,7 +59,12 @@ public class StaffOnsaleLists extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        DAOOrder daoOrder = new DAOOrder();
+        HttpSession ss = request.getSession();
+        User user =  (User)ss.getAttribute("current_user");
+        List<Order> list = daoOrder.getAllOrderByCus(user.getId());
+        request.setAttribute("orders", list);
+        request.getRequestDispatcher("myOrder.jsp").forward(request, response);
     } 
 
     /** 
@@ -89,5 +88,8 @@ public class StaffOnsaleLists extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+public static void main(String[] args) {
+       DAOOrder daoOrder = new DAOOrder();
+       System.out.println(daoOrder.getAllOrderByCus(1));
+    }
 }
