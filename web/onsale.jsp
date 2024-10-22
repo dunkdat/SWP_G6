@@ -472,7 +472,7 @@
         <select id="categoryFilter" name="categoryFilter">
             <option value="">All Category</option>
             <c:forEach items="${requestScope.categoryList}" var="n">
-                        <a href="productlist?category=${n.id}">${n.id.toUpperCase()}</a>
+                        <option value="${n.id}">${n.id.toUpperCase()}</option>
                     </c:forEach>
         </select>
     </form>
@@ -763,7 +763,7 @@ const category = document.getElementById('categoryFilter').value !== null ? docu
     // Set the product details in the modal
     document.getElementById('modalProductName').textContent = productName;
     document.getElementById('modalThumbnail').src = thumbnailSrc;
-    document.getElementById('modalOldPrice').textContent = oldPrice.toFixed(2) + " VND";
+    document.getElementById('modalOldPrice').textContent = oldPrice.toFixed(2) + " $";
     document.getElementById('salePercentInput').value = salePercent;
 
     // Update the new price based on salePercent
@@ -780,9 +780,9 @@ function updatePrice() {
     
     if (salePercent > 0 && salePercent <= 100) {
         let newPrice = oldPrice * (1 - salePercent / 100);
-        document.getElementById('modalNewPrice').textContent = newPrice.toFixed(2) + " VND";
+        document.getElementById('modalNewPrice').textContent = newPrice.toFixed(2) + " $";
     } else {
-        document.getElementById('modalNewPrice').textContent = oldPrice.toFixed(2) + " VND";
+        document.getElementById('modalNewPrice').textContent = oldPrice.toFixed(2) + " $";
     }
 }
 

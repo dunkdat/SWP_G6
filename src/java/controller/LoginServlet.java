@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
             
             if(currentUser != null){
                 HttpSession ss = request.getSession();
-                ss.setAttribute("current_user", currentUser);
+                
                 
                 // Handle Remember Me functionality
                 if("on".equals(remember)) { 
@@ -54,6 +54,7 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
                 }
+                ss.setAttribute("current_user", currentUser);
                 switch (currentUser.getRole()) {
                     case "Customer":
                         request.getRequestDispatcher("homepage").forward(request, response);
