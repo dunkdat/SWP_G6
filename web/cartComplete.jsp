@@ -6,24 +6,25 @@
 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.*" %>
 <%@page import="java.util.*" %>
 <%@ page session="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" 
            prefix="fn" %> 
 <%@page import="constant.*" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <title>Payment info</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-       <link rel="stylesheet" href="css/homestyle.css"/>
-        <link rel="stylesheet" href="./css/style_1.css">
+        <link rel="stylesheet" href="css/homestyle.css"/>
+        <link rel="stylesheet" href="./css/style_1.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
               integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -224,51 +225,74 @@
             .box-info_orders {
                 transition: all 0.5s linear;
             }
+            .box-info_address input[type="radio"] {
+                margin-right: 10px; /* Tạo khoảng cách giữa input và văn bản */
+            }
+
+            .box-info_address .d-flex {
+                align-items: center; /* Đảm bảo các thành phần cùng hàng với nhau */
+            }
+
+            .box-info_address p {
+                margin-bottom: 0; /* Loại bỏ khoảng cách dưới của phần tử <p> */
+            }
+
+            .box-info_address input[type="radio"] {
+                float: left; /* Đảm bảo input nằm bên trái */
+                margin-top: 0; /* Điều chỉnh vị trí để thẳng hàng với văn bản */
+            }
+
+            /* Sử dụng !important để đảm bảo override Bootstrap nếu cần */
+            .box-info_address input[type="radio"],
+            .box-info_address p {
+                display: inline-block !important; /* Đảm bảo input và văn bản nằm trên cùng một hàng */
+            }
+
         </style>
     </head>
 
     <body>
-<header class="header collapsed">
-        <div class="left-section">
-            <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
-            <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
-            <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
-        </div>
-        <div class="right-section">
-            <div class="icons">
-    <a href="ProfileServlet?current_user=${sessionScope.current_user}">
-        <c:if test="${current_user == null}">
-            <img src="images/profile.png" alt="Account" >
-            </c:if>
-        <c:if test="${current_user != null}">
-            <c:if test="${current_user.imagePath == null}">
-                <img src="images/profile.png" alt="Account" class="avatar">
-            </c:if>
-                <c:if test="${current_user.imagePath != null}">
-                 <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Account" class="avatar">   
-            </c:if>
-            
-        </c:if>
-    </a>
-        <c:if test="${current_user != null}">
-            <div class="dropdown-content">
-                <c:if test="${current_user.imagePath != null}">
-                    <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
-            </c:if>
-             
-        <a href="ProfileServlet?current_user=${sessionScope.current_user}">
-            Profile
-        </a>
-        <a href="logout">Logout</a>
-    </div>
-        </c:if>
-    
-    <c:if test="${current_user.role == 'Customer'}">
-        <a href="cart"><img src="images/cart.png" alt="Cart"></a> 
-    </c:if>
-</div>
-        </div>
-    </header>
+        <header class="header collapsed">
+            <div class="left-section">
+                <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px; width: 60px;"></a>
+                <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
+                <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
+            </div>
+            <div class="right-section">
+                <div class="icons">
+                    <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+                        <c:if test="${current_user == null}">
+                            <img src="images/profile.png" alt="Account" >
+                        </c:if>
+                        <c:if test="${current_user != null}">
+                            <c:if test="${current_user.imagePath == null}">
+                                <img src="images/profile.png" alt="Account" class="avatar">
+                            </c:if>
+                            <c:if test="${current_user.imagePath != null}">
+                                <img src="${IConstant.PATH_USER}${current_user.imagePath}" alt="Account" class="avatar">   
+                            </c:if>
+
+                        </c:if>
+                    </a>
+                    <c:if test="${current_user != null}">
+                        <div class="dropdown-content">
+                            <c:if test="${current_user.imagePath != null}">
+                                <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+                            </c:if>
+
+                            <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+                                Profile
+                            </a>
+                            <a href="logout">Logout</a>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${current_user.role == 'Customer'}">
+                       <a href="cart"><img src="images/cart.png" style="width: auto;" alt="Cart"></a> 
+                    </c:if>
+                </div>
+            </div>
+        </header>
         <div class="block-info">
             <div class="">
                 <div class="py-4 position-relative block_header">
@@ -331,8 +355,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <c:set var="totalPrice" value="${product.price * product.quantity}" />
-                                                        <c:set var="total" value="${total + totalPrice}"/>
+                                                        <c:set var="total" value="${total}"/>
 
                                                         <div class="">
                                                             <span class="fs-4">
@@ -387,49 +410,29 @@
                         </div>
                     </div>
                 </c:if>
-                <h4 class="my-5 fs-3">THÔNG TIN NHẬN HÀNG</h4>
-                <div class="box-info_address rounded-lg p-5">
+                <h4 class="mt-5 fs-3">THÔNG TIN NHẬN HÀNG: </h4>
+                <div class="rounded-lg p-5 bg-white">
                     <div class="row gy-5">
-                        <div class="col-6">
-                            <div class="customer_box-info">
-                                <p class="info-label">TỈNH / THÀNH PHỐ</p>
-                                <select id="city" class="box-location" class="fs-3">
-                                    <option value="" selected>Chọn tỉnh thành</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="customer_box-info">
-                                <p class="info-label">QUẬN / HUYỆN</p>
-                                <select id="district" class="box-location" class="fs-3">
-                                    <option value="" selected>Chọn quận huyện</option>
-                                </select>
-                            </div>
-                        </div>
                         <div class="col-12">
-                            <div class="customer_box-info">
-                                <p class="info-label">PHƯỜNG / XÃ</p>
-                                <select id="ward" class="box-location" class="fs-3">
-                                    <option value="" selected>Chọn phường xã</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="customer_box-info">
-                                <p class="info-label">CHI TIẾT ĐỊA CHỈ NHẬN</p>
-                                <input type="text" class="border-0" id="address-detail">
-                            </div>
+                            <c:forEach var="add" items="${requestScope.address}"> 
+                                <div class="d-flex align-items-center mb-5 border-bottom">
+                                    <input type="radio" checked name="address" value="${add.city}, ${add.district}, ${add.ward}, ${add.detail}"/>
+                                    <p> ${add.city}, ${add.district}, ${add.ward}, ${add.detail}</p>
+                                </div>
+                            </c:forEach>
+                            <a class="btn btn-primary" href="addAddress">Add new address</a>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-3 mt-5 " >
+
+                <div class="bg-white p-3 mt-5 rounded" >
                     <input name="payment_type" type="radio" checked style="color: green;"/> <span>Thanh toan khi nhan hang</span>
                 </div>
-                <div data-mdb-input-init class="form-outline form-white mb-4">
+                <div data-mdb-input-init class="form-outline form-white mb-4 p-3 mt-5 rounded">
                     <label class="form-label my-5 fs-3" for="typeText">Shippment</label>
                     <select name="shipment"  style="width: 100%; height: 30px; border: none">
                         <c:forEach var="ship" items="${shipments}">
-                            <option value="${ship.id}">${ship.name}</option>
+                            <option value="${ship.id}">${ship.name} - ${ship.type} - ${ship.price}$</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -438,7 +441,7 @@
         <div class="bottom-bar p-4">
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <h3 class="fw-bold">Tổng tiền tạm tính:</h3>
-                <span class="text-danger fw-bold fs-4"><fmt:formatNumber value="${total}" type="number" maxFractionDigits="2" minFractionDigits="2" />$</span>
+                <span class="text-danger fw-bold fs-4 totalCost"><fmt:formatNumber value="${total}" type="number" maxFractionDigits="2" minFractionDigits="2" />$</span>
             </div>
             <button id="pay_btn" class="text-white bg-danger w-100 border-0 py-3 px-2 fs-4 rounded-sm">Thanh toán</button>
         </div>
@@ -462,72 +465,6 @@
                 document.body.style.height = '';
                 $('body').removeClass('hiddenPadding');
             });
-            const host = "https://vietnamese-administration.vercel.app/city";
-            const hostDistricts = "https://vietnamese-administration.vercel.app/district?cityId=";
-            const hostWards = "https://vietnamese-administration.vercel.app/ward?districtId=";
-            var callAPIProvinces = (api) => {
-                fetch(api)
-                        .then((response) => {
-                            return response.json()
-                        })
-                        .then((data) => {
-                            renderProvince(data, "city");
-                        })
-            }
-            callAPIProvinces(host)
-
-            var callApiDistrict = (api) => {
-                return fetch(api)
-                        .then((response) => {
-                            return response.json()
-                        })
-                        .then((data) => {
-                            renderDistrict(data, "district");
-                            console.log(data);
-                        })
-            }
-
-            var callApiWard = (api) => {
-                return fetch(api)
-                        .then((response) => {
-                            return response.json()
-                        })
-                        .then((data) => {
-                            renderWard(data, "ward");
-                            console.log(data);
-                        })
-            }
-
-            var renderProvince = function (data, select) {
-                let options = '<option value="" selected>Chọn tỉnh thành</option>';
-                data.forEach(element => {
-                    options += `<option value="` + element.name + `" data-id="` + element.cityId + `">` + element.name + `</option>`;
-                });
-                document.querySelector("#" + select).innerHTML = options;
-            }
-            var renderDistrict = function (data, select) {
-                let options = '<option value="" selected>Chọn quận huyện</option>';
-                data.forEach(element => {
-                    options += `<option value="` + element.name + `" data-id="` + element.districtId + `">` + element.name + `</option>`;
-                });
-                document.querySelector("#" + select).innerHTML = options;
-            }
-            var renderWard = function (data, select) {
-                let options = '<option value="" selected>Chọn phường xã</option>';
-                data.forEach(element => {
-                    options += `<option value="` + element.name + `" data-id="` + element.wardId + `">` + element.name + `</option>`;
-                });
-                document.querySelector("#" + select).innerHTML = options;
-            }
-
-
-            $('#city').change(() => {
-                callApiDistrict(hostDistricts + $("#city").find(':selected').data('id'))
-            })
-
-            $('#district').change(() => {
-                callApiWard(hostWards + $("#district").find(':selected').data('id'))
-            })
 
             const boxPayItem = document.querySelectorAll(".box-pay_item");
             const viewMoreBtn = document.getElementById("view-more");
@@ -556,75 +493,93 @@
 
             let messName = "Vui lòng kiểm tra lại tên người nhận";
             let messPhone = "Vui lòng kiểm tra lại số điện thoại người nhận";
+            $(document).ready(function () {
+        // Initial calculation when the page loads
+        updateTotal();
+
+        // Event listener for shipment dropdown changes
+        $('select[name="shipment"]').on('change', function () {
+            updateTotal();
+        });
+
+        function updateTotal() {
+            // Get the base total amount from the JSP page
+            let total = parseFloat('${total}');
+            
+            // Get the selected shipment price
+            let shipmentCost = parseFloat($('select[name="shipment"] option:selected').text().split('-').pop().replace('$', '').trim());
+
+            // Calculate the total cost including shipment
+            let totalCost = total + shipmentCost;
+
+            // Update the total displayed to the user
+            $('.totalCost').text(totalCost.toFixed(2) + '$');
+        }
             $('#pay_btn').click(() => {
-                const checkEmpty = (value, errorMessage) => {
-                    if (value === '') {
-                        showMess({
-                            type: "warning",
-                            title: errorMessage,
-                            duration: 3000
-                        });
-                        return true;
-                    }
-                    return false;
-                };
-
-                const validateField = (value, validator, errorMessage) => {
-                    if (!checkEmpty(value, errorMessage)) {
-                        if (!validator(value)) {
-                            showMess({
-                                type: "warning",
-                                title: errorMessage,
-                                duration: 3000
-                            });
-                            return false;
-                        }
-                    }
-                    return true;
-                };
-
-                let name = $('#recive-name').val();
-                let phone = $('#recive-phone').val();
-
-                if (!validateField(name, isValidName, messName))
-                    return;
-                if (!validateField(phone, isValidPhoneNumber, messPhone))
-                    return;
-
-                let city = $('#city').val();
-                let district = $('#district').val();
-                let ward = $('#ward').val();
-                let addressDetail = $('#address-detail').val();
-                let shipment = $('select[name="shipment"]').val(); // Lấy giá trị shipment
-                if (checkEmpty(city, "Không thể để trống city"))
-                    return true;
-                if (checkEmpty(district, "Không thể để trống district"))
-                    return true;
-                if (checkEmpty(ward, "Không thể để trống ward"))
-                    return true;
-                if (checkEmpty(addressDetail, "Không thể để trống address detail"))
-                    return true;
-                const formData = {
-                    Service: "payment",
-                    reciveName: name,
-                    recivePhone: phone,
-                    city: city,
-                    district: district,
-                    ward: ward,
-                    addressDetail: addressDetail,
-                    shipment: shipment
-                };
-
-                $.post('cart', formData, (response) => {
-                    // Xử lý phản hồi từ servlet nếu cần
-                    console.log(response);
-                    window.location = "cart?mess=order success";
-                }).fail((jqXHR, textStatus, errorThrown) => {
-                    // Xử lý lỗi nếu có
-                    console.error("Error: " + textStatus, errorThrown);
-                });
-
+    const checkEmpty = (value, errorMessage) => {
+        if (value === '') {
+            showMess({
+                type: "warning",
+                title: errorMessage,
+                duration: 3000
             });
+            return true;
+        }
+        return false;
+    };
+
+    const validateField = (value, validator, errorMessage) => {
+        if (!checkEmpty(value, errorMessage)) {
+            if (!validator(value)) {
+                showMess({
+                    type: "warning",
+                    title: errorMessage,
+                    duration: 3000
+                });
+                return false;
+            }
+        }
+        return true;
+    };
+
+    let name = $('#recive-name').val();
+    let phone = $('#recive-phone').val();
+
+    if (!validateField(name, isValidName, messName)) return;
+    if (!validateField(phone, isValidPhoneNumber, messPhone)) return;
+
+    if (document.querySelector('input[name="address"]') == null) {
+        window.location.href = 'addAddress'; // Redirect to add address if no address is selected
+        return;
+    }
+
+    let address = document.querySelector('input[name="address"]:checked').value;
+    let shipment = parseFloat($('select[name="shipment"]').val()); // Get shipment cost as float
+
+    // Calculate total cost including shipment
+    let totalCost = parseFloat('${total}') + shipment;
+
+    // Display the updated total cost to the user
+    $('.totalCost').text(totalCost.toFixed(2) + '$');
+
+    const formData = {
+        Service: "payment",
+        reciveName: name,
+        recivePhone: phone,
+        address: address,
+        shipment: shipment
+    };
+
+    // Proceed with sending the payment data
+    $.post('cart', formData, (response) => {
+        console.log(response);
+        window.location = "cart?mess=order success";
+    }).fail((jqXHR, textStatus, errorThrown) => {
+        // Handle errors if any
+        console.error("Error: " + textStatus, errorThrown);
+    });
+});
+});
 
 
 
@@ -704,15 +659,6 @@
                     }, duration + 1000);
             }
             }
-            const avatarElement = document.querySelector('.avatar');
-if (avatarElement) {
-    avatarElement.addEventListener('mouseover', function () {
-        document.querySelector('.dropdown-content').style.display = 'block';
-    });
-}
-            document.querySelector('.dropdown-content').addEventListener('mouseleave', function () {
-                document.querySelector('.dropdown-content').style.display = 'none';
-            });
         </script>
     </body>
 

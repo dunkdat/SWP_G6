@@ -71,6 +71,11 @@ public class CartServlet extends HttpServlet {
         DAOUser daoU = new DAOUser();
         DAOProduct daoPro = new DAOProduct();
         HttpSession session = request.getSession();
+         User acc = (User)session.getAttribute("current_user");
+        if(acc == null) {
+            response.sendRedirect("login");
+            return;
+        }
         String messAfterOrder = request.getParameter("mess");
         String service = request.getParameter("Service");
         if (messAfterOrder != null) {
@@ -163,9 +168,13 @@ public class CartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOProduct daoPro = new DAOProduct();
-        response.setContentType("text/html;charset=UTF-8");
-        String service = request.getParameter("Service");
         HttpSession session = request.getSession();
+         User acc = (User)session.getAttribute("current_user");
+        if(acc == null) {
+            response.sendRedirect("login");
+            return;
+        }
+        String service = request.getParameter("Service");
         System.out.println("runhere0");
         getShipper(request, response);
         if (service == null) {
@@ -173,11 +182,6 @@ public class CartServlet extends HttpServlet {
             request.getRequestDispatcher("cart.jsp").forward(request, response);
             return;
         }
-//Service: addToCart
-//quantity: 2
-//color: Red
-//pid: R001-B
-//name: Yonex Nanofare 1000z
         if (service.equals("addToCart")) {
             String quantity = request.getParameter("quantity");
             //test de phong
@@ -212,8 +216,6 @@ public class CartServlet extends HttpServlet {
             request.getRequestDispatcher("cart.jsp").forward(request, response);
         }
 
-       
-
         if (service.equals("payment")) {
             System.out.println("run payment");
             DAOOrder daoOrder = new DAOOrder();
@@ -233,15 +235,11 @@ public class CartServlet extends HttpServlet {
                     }
                 }
 
-                String city = request.getParameter("city");
-                String district = request.getParameter("district");
-                String ward = request.getParameter("ward");
-                String addressDetail = request.getParameter("addressDetail");
+                String reciveAddress = request.getParameter("address");
 
                 User cus = (User) session.getAttribute("current_user");
                 String reciveName = request.getParameter("reciveName");
                 String recivePhone = request.getParameter("recivePhone");
-                String reciveAddress = city + "," + district + "," + ward + "," + addressDetail;
 
                 System.out.println("list: " + listOrder);
 

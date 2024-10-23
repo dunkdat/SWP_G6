@@ -29,7 +29,7 @@ import util.Validate;
 
 /**
  *
- * @author HP
+ * @author Lenovo
  */
 @MultipartConfig
 public class ProfileServlet extends HttpServlet {
@@ -59,21 +59,23 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        User current_user = (User) session.getAttribute("current_user");
+        HttpSession session = request.getSession();
         String[] listService = {"Account info", "My order", "Change password"};
         request.setAttribute("listService", listService);
-        //gia su dang nhap
-        session.setAttribute("currentUser", current_user);
-        User acc = (User)session.getAttribute("currentUser");
+        User acc = (User)session.getAttribute("current_user");
+        if(acc == null) {
+            response.sendRedirect("login");
+            return;
+        }
         String service = request.getParameter("Service");
-        
+        //neu da dang nhap
         if (acc != null) {
             if (service == null) {
                 service = listService[0];
             }
             if(service.equals(listService[1])) {
-               
+               response.sendRedirect("myOrder");
+               return;
             }
             request.setAttribute("current", service);
             request.getRequestDispatcher("profile.jsp").forward(request, response);
@@ -164,7 +166,7 @@ public class ProfileServlet extends HttpServlet {
                 return;
                }
              //check valid current password
-              if (daoUser.ValidateUsers(user.getEmail(), Validate.getMd5(currentPassword)) == null) {
+              if (daoUser.ValidateUsers(user.getEmail(), currentPassword) == null) {
                 mess = "The current password incorrect.";
                 setCommonAttributes(request, response, mess, isSuccess, "Change password");
                 return;
@@ -182,7 +184,7 @@ public class ProfileServlet extends HttpServlet {
                 setCommonAttributes(request, response, mess, isSuccess, "Change password");
                 return;
               }
-               if (newPassword.equals(confirmPassword)) {
+               if (newPassword.equals(currentPassword)) {
                 mess = "The new password you just entered is the same as the old password.";
                 setCommonAttributes(request, response, mess, isSuccess, "Change password");
                 return;

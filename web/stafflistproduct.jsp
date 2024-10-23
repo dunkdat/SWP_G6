@@ -777,8 +777,8 @@
                 </tr>
             </table>
             <div class="modal-actions">
-                <button type="submit" class="btn-update" name="submit" value="update" onclick="confirmUpdate()">Update</button>
-                <button type="button" class="btn-delete" name="submit" value="delete" onclick=" confirmDelete()">Delete</button>
+                <button type="submit" class="btn-update" name="submit" value="update" onclick=" return confirmUpdate()">Update</button>
+                <button type="button" class="btn-delete" name="submit" value="delete" onclick="return  confirmDelete()">Delete</button>
             </div>
         </form>
     </div>

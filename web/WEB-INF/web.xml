@@ -145,6 +145,10 @@
         <servlet-class>controller.OrderDetailServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AddressMore</servlet-name>
+        <servlet-class>controller.AddressMore</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>OrderManagerServlet</servlet-name>
         <servlet-class>controller.OrderManagerServlet</servlet-class>
     </servlet>
@@ -320,5 +324,9 @@
     <servlet-mapping>
         <servlet-name>CustomerManager</servlet-name>
         <url-pattern>/CustomerManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddressMore</servlet-name>
+        <url-pattern>/addAddress</url-pattern>
     </servlet-mapping>
 </web-app>

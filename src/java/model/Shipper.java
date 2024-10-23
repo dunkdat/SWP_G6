@@ -9,15 +9,17 @@ package model;
  * @author Lenovo
  */
 public class Shipper {
-    private int id, rating;
-    private String name, company;
+    private int id;
+    private float price;
+    private String name, company, type;
 
     public Shipper() {
     }
 
-    public Shipper(int id, int rating, String name, String company) {
+    public Shipper(int id,float price, String type, String name, String company) {
         this.id = id;
-        this.rating = rating;
+        this.price = price;
+        this.type = type;
         this.name = name;
         this.company = company;
     }
@@ -26,16 +28,24 @@ public class Shipper {
         return id;
     }
 
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public int getRating() {
-        return rating;
+    public String getType() {
+        return type;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getName() {
@@ -54,10 +64,7 @@ public class Shipper {
         this.company = company;
     }
 
-    @Override
-    public String toString() {
-        return "Shipper{" + "id=" + id + ", rating=" + rating + ", name=" + name + ", company=" + company + '}';
-    }
+    
     
     
 }
