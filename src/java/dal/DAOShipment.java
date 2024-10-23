@@ -25,7 +25,8 @@ public class DAOShipment extends DBContext{
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 list.add(new Shipper(rs.getInt("id"),
-                        rs.getInt("rating"),
+                        rs.getInt("price"),
+                        rs.getString("type"),
                         rs.getString("name"),
                         rs.getString("company")));
             }

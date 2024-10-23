@@ -108,7 +108,7 @@ public class OrderManagerServlet extends HttpServlet {
             return;
         }
         //only admin or sale can manage
-        if(!usLogin.getRole().equals("admin") || !usLogin.getRole().equals("sale")) {
+        if(!usLogin.getRole().equals("Staff Manager")) {
             response.sendRedirect("login");
             return;
         }

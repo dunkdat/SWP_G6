@@ -64,6 +64,9 @@ public class GoogleLoginServlet extends HttpServlet {
                 case "Staff":
                     request.getRequestDispatcher("staffproductlist").forward(request, response);
                     break;
+                case "Staff Manager":
+                    request.getRequestDispatcher("orderManagerServlet").forward(request, response);
+                    break;
                 default:
                     break;
             }

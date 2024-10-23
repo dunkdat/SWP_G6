@@ -1118,7 +1118,7 @@ public String getProductLinkPicture(String nameProduct, String color) {
     }
     public static void main(String[] args) {
         DAOProduct d = new DAOProduct();
-        System.out.println(d.getProductByNameColorSize("Yonex 6 Racket Bag", "Black", null).getId());
+        System.out.println(d.getProductLinkPicture("Yonex Power Cushion 65 Z", "Black"));
     }
 
 }

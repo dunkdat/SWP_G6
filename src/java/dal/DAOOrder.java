@@ -90,7 +90,24 @@ public class DAOOrder extends DBContext{
             System.out.println(e);
         }
     } 
-    
+    public float getShipPriceOfOrder(int orderId){
+        String query = "SELECT s.price FROM Orders o " +
+                       "JOIN Shippers s ON o.shipper_id = s.id " +
+                       "WHERE o.id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, orderId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getFloat("price");
+                } 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     
     public Vector<Order> getAllOrderByCus(int cusId) {
         String sql = "Select * FROM `badminton_shop`.`orders` where customer_id = ?";
@@ -447,5 +464,12 @@ System.out.println("qqqq "+query);
         SimpleDateFormat desiredFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = desiredFormat.format(utilDate);
         return formattedDate;
+    }
+    public static void main(String[] args) {
+        // Create an instance of DAOOrder
+        DAOOrder daoOrder = new DAOOrder();
+        
+        // Create a new Order object
+        System.out.println(daoOrder.getShipPriceOfOrder(4));
     }
 }

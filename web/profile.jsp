@@ -186,6 +186,7 @@
          <!-- Header Section -->
     <header class="header collapsed">
         <div class="left-section">
+            ::before
             <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
             <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
             <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
@@ -220,7 +221,7 @@
         </c:if>
     
     <c:if test="${current_user.role == 'Customer'}">
-        <img src="images/cart.png" alt="Cart">
+        <a href="cart"><img src="images/cart.png" alt="Cart"></a> 
     </c:if>
 </div>
         </div>
@@ -243,7 +244,7 @@
                     <ul class="d-flex py-4 border-top border-bottom text-center px-3">
                         <c:forEach var="service" items="${requestScope.listService}">
                             <li class="me-5">
-                                <a href="profile?Service=${service}"
+                                <a href="ProfileServlet?Service=${service}"
                                    <c:if test="${service == requestScope.current}">
                                        style="text-decoration: underline; text-decoration-color: var(--main-color);"
                                    </c:if>

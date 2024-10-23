@@ -2,56 +2,58 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
-import dal.DAOOrder;
-import dal.DAOUser;
+import dal.DAOAddress;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.List;
-import model.Order;
+import model.Address;
 import model.User;
 
 /**
  *
  * @author Lenovo
  */
-public class MyOrder extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+@WebServlet(name = "AddressMore", urlPatterns = {"/addAddress"})
+public class AddressMore extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MyOrder</title>");  
+            out.println("<title>Servlet AddressMore</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MyOrder at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet AddressMore at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -59,26 +61,26 @@ public class MyOrder extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        DAOOrder daoOrder = new DAOOrder();
-        HttpSession ss = request.getSession(false);
-        DAOUser daoU = new DAOUser();
-        User user =  (User)ss.getAttribute("current_user");
-        List<Order> list = daoOrder.getAllOrderByCus(user.getId());
-        HashMap<Integer, Float> shippingPrices = new HashMap<>();
-        
-        // Iterate over orders and get shipping prices
-        for (Order order : list) {
-            float shippingPrice = daoOrder.getShipPriceOfOrder(order.getId());
-            shippingPrices.put(order.getId(), shippingPrice);  // Store shipping price for each order
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        DAOAddress daoAdd = new DAOAddress();
+        String mess = request.getParameter("mess");
+        if(mess != null) {
+            request.setAttribute("mess", mess);
         }
-        request.setAttribute("orders", list);
-        request.setAttribute("shippingPrices", shippingPrices);
-        request.getRequestDispatcher("myOrder.jsp").forward(request, response);
-    } 
+        User acc = (User) session.getAttribute("current_user");
+        if(acc == null) {
+            response.sendRedirect("login");
+            return;
+        }
+        List<Address> address = daoAdd.getAddressOfUser(acc.getId());
+        request.setAttribute("address", address);
+        request.getRequestDispatcher("addMoreAddress.jsp").forward(request, response);
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -86,16 +88,42 @@ public class MyOrder extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        DAOAddress daoAdd = new DAOAddress();
+        User acc = (User) session.getAttribute("current_user");
+        if(acc == null) {
+            response.sendRedirect("login");
+            return;
+        }
+        String city = request.getParameter("city");
+        String district = request.getParameter("district");
+        String ward = request.getParameter("ward");
+        String detail = request.getParameter("detail");
+
+        Address add = new Address(city, district, ward, detail, acc.getId());
+        DAOAddress dao = new DAOAddress();
+        boolean exist = dao.isExistAddressOfUser(acc.getId(), add);
+        String mess = "Have exist address";
+        if (!exist) {
+            boolean isInsert = dao.insertAddress(add);
+            if (isInsert) {
+                mess = "insert success";
+            } else {
+                mess = "insert fail";
+            }
+        }
+        response.sendRedirect("addAddress?mess=" + mess);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }
