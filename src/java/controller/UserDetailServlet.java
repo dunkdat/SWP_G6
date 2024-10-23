@@ -42,7 +42,6 @@ public class UserDetailServlet extends HttpServlet {
                 if(action.equals("delete")){
                     du.deleteUser(Integer.parseInt(id));
                 }
-                
                 request.setAttribute("userlist", du.getAllSatff());
                 request.getRequestDispatcher("userlist.jsp").forward(request, response);
         }

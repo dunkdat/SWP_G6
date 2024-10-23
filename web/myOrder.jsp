@@ -16,23 +16,47 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </head>
     <body>
-        <header class="header collapsed">
-        <div class="left-section">
-            <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
-            <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
-            <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
-        </div>
-        <div class="right-section">
-            <div class="search-bar">
-                <input type="text" placeholder="Tìm sản phẩm...">
-                <span class="search-icon">🔍</span>
+      <header class="header collapsed">
+            <div class="left-section">
+                <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
+                <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
+                <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
             </div>
-            <div class="icons">
-                <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img src="images/profile.png" alt="Account"></a>
-                <a href="cart"><img src="images/cart.png" alt="Cart"></a>
+            <div class="right-section">
+                <div class="icons">
+                    <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+                        <c:if test="${current_user == null}">
+                            <img src="images/profile.png" alt="Account" >
+                        </c:if>
+                        <c:if test="${current_user != null}">
+                            <c:if test="${current_user.imagePath == null}">
+                                <img src="images/profile.png" alt="Account" class="avatar">
+                            </c:if>
+                            <c:if test="${current_user.imagePath != null}">
+                                <img src="${IConstant.PATH_USER}${current_user.imagePath}" alt="Account" class="avatar">   
+                            </c:if>
+
+                        </c:if>
+                    </a>
+                    <c:if test="${current_user != null}">
+                        <div class="dropdown-content">
+                            <c:if test="${current_user.imagePath != null}">
+                                <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+                            </c:if>
+
+                            <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+                                Profile
+                            </a>
+                            <a href="logout">Logout</a>
+                        </div>
+                    </c:if>
+                        <h3>role: ${current_user.role}</h3>
+                    <c:if test="${current_user.role == 'Customer'}">
+                        <a href="cart"><img src="images/cart.png" alt="Cart"></a> 
+                    </c:if>
+                </div>
             </div>
-        </div>
-    </header>
+        </header>
      <section class="h-100 h-custom" style="background-color: #d2c9ff;">
            <div class="mt-5">
                 <a href="myOrder" class="btn px-4 py-2 rounded text-white bg-info">My Order</a>

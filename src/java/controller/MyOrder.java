@@ -91,8 +91,4 @@ public class MyOrder extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-public static void main(String[] args) {
-       DAOOrder daoOrder = new DAOOrder();
-       System.out.println(daoOrder.getAllOrderByCus(1));
-    }
 }

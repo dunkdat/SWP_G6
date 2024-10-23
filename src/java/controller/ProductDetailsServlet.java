@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.DAOCategory;
 import dal.DAOProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,14 +34,13 @@ public class ProductDetailsServlet extends HttpServlet {
             String id = request.getParameter("id");
             if(id!=null){
             DAOProduct dp = new DAOProduct();
+                DAOCategory c = new DAOCategory();
             Products p = dp.getProductById(id);
             request.setAttribute("product", p);
-            request.setAttribute("averageRating", dp.getAverageStarRating(id));
-            request.setAttribute("productReviews", dp.getProductReviews(id));
+            request.setAttribute("averageRating", dp.getAverageStarRating(dp.getProductById(id).getName()));
+            request.setAttribute("productReviews", dp.getProductReviews(dp.getProductById(id).getName()));
             request.setAttribute("relatedProducts", dp.getRelatedProductsByBrand(p.getBrand(),p.getCategory() ,id));
-            if(p.getCategory().equals("shoes")){
-                request.setAttribute("sizelist", dp.getShoesSize());
-            }
+                    request.setAttribute("categoryList", c.getAllCategory());
             request.setAttribute("colors", dp.getColorsByProductName(p.getName()));
             request.getRequestDispatcher("productdetails.jsp").forward(request, response);
             }

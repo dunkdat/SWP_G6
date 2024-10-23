@@ -7,6 +7,7 @@ package controller;
 
 import GoogleLogin.SendVerify;
 import constant.IConstant;
+import dal.DAORole;
 import dal.DAOUser;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -48,12 +49,13 @@ public class UserListServlet extends HttpServlet {
         User currentUser = (User) session.getAttribute("current_user");
         Encode e = new Encode();
          DAOUser daoUser = new DAOUser();
+         DAORole r = new DAORole();
         if (session != null && currentUser != null) {
             if (!currentUser.getRole().equals("Admin")) {
                 response.sendRedirect("access_denied.jsp");
                 return; // Exit if the current user is not an admin
             }
-            request.setAttribute("userlist", daoUser.getAllSatff());
+            request.setAttribute("userlist", daoUser.getAllStaff());
             String action = request.getParameter("submit");
 
             if (action != null) {
@@ -62,6 +64,11 @@ public class UserListServlet extends HttpServlet {
                 int gender = Integer.parseInt(request.getParameter("gender"));
                 String phone = request.getParameter("phone");
                 String role = request.getParameter("role");
+                request.setAttribute("name", name);
+request.setAttribute("email", email);
+request.setAttribute("gender", gender);
+request.setAttribute("phone", phone);
+request.setAttribute("role", role);
                 if(action.equals("add")){
                 // Gather user inputs from the form
                  // Set default status
@@ -97,6 +104,19 @@ public class UserListServlet extends HttpServlet {
                     request.getRequestDispatcher("userlist.jsp").forward(request, response);
                     return;
                 }
+                for(User x : daoUser.getAllUser()){
+                    if(x.getPhone()==null) continue;
+                    if(x.getEmail().equals(email)){
+                        request.setAttribute("message", "Email are already existed!");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
+                    }
+                    if(x.getPhone().equals(phone)){
+                        request.setAttribute("message", "Phone are already existed!");
+                    request.getRequestDispatcher("userlist.jsp").forward(request, response);
+                    return;
+                    }
+                }
                 
                 String filename = null;
                 filename = avatarPart.getSubmittedFileName();
@@ -104,13 +124,33 @@ public class UserListServlet extends HttpServlet {
                 saveImage(avatarPart, folderPath, filename);
                 // Create a User object
                 SendVerify uv = new SendVerify();
-                User newUser = new User(name, null, gender, phone,email,e.toSHA1(uv.getRandom()), role, filename);
+                String password = uv.getRandom();
+                User newUser = new User(name, null, gender, phone,email,e.toSHA1(password), role, filename);
                 // Add user to the database using DAOUser
+                String content = "<html>" +
+                 "<head><style>" +
+                 "body { font-family: Arial, sans-serif; margin: 0; padding: 20px;}" +
+                 "h1 { color: #333; text-align: center; }" +
+                 "p { font-size: 16px; color: #555; text-align: center; }" +
+                 ".container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9; text-align: center; }" +
+                 ".code { font-size: 36px; font-weight: bold; color: #007bff; margin: 20px 0; }" +
+                 "</style></head>" +
+                 "<body>" +
+                 "<div class='container'>" +
+                 "<h1>Hello!</h1>" +
+                 "<p>You have an account of Bad Sport Shop, use this email and the below password to login:</p>" +
+                 "<p class='code'>" + password + "</p>" +
+                 "<p>If you did not request this code, please ignore this email.</p>" +
+                 "</div>" +
+                 "</body>" +
+                 "</html>";
+                uv.sendEmail(newUser.getEmail(), content, "You have an account !!!");
                 
                 daoUser.addUser(newUser);
                 }
             }
-                request.setAttribute("userlist", daoUser.getAllSatff());
+                request.setAttribute("userlist", daoUser.getAllStaff());
+                request.setAttribute("roleList", r.getAllRoles());
                 request.getRequestDispatcher("userlist.jsp").forward(request, response);
             
         }

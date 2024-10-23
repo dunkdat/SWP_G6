@@ -5,6 +5,7 @@
 package util;
 
 import java.security.MessageDigest;
+import org.apache.tomcat.jakartaee.commons.lang3.math.NumberUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 /**

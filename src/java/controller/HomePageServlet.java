@@ -37,10 +37,7 @@ public class HomePageServlet extends HttpServlet {
             request.setAttribute("bloglist", d.getAllNews());
             request.setAttribute("slider", p.getAllSlider());
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-            
-        
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -78,8 +75,4 @@ public class HomePageServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-public static void main(String[] args) {
-         SliderDAO p = new SliderDAO();
-         System.out.println(p.getAllSlider());
-    }
 }

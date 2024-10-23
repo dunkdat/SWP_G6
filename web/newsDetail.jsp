@@ -3,6 +3,11 @@
     Created on : Jan 13, 2024, 9:56:50 PM
     Author : ADMIN
 --%>
+<%-- 
+    Document : newsDetail
+    Created on : Jan 13, 2024, 9:56:50 PM
+    Author : ADMIN
+--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.text.Normalizer" %>
@@ -128,21 +133,47 @@
 </head>
 
 <body>
-   <header class="header collapsed">
-        <div class="left-section">
-            <a href="homepage">
-                <img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px; width: 60px;">
-            </a>
-            <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
-            <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
-        </div>
-        <div class="right-section">
-            <div class="icons">
-                <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img src="images/profile.png" style="width: 30px;" alt="Account"></a>
-                <a href="cart"><img src="images/cart.png" style="width: 30px;" alt="Cart"></a>
+     <header class="header collapsed">
+            <div class="left-section">
+                <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
+                <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
+                <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
             </div>
-        </div>
-    </header>
+            <div class="right-section">
+                <div class="icons">
+                    <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+                        <c:if test="${current_user == null}">
+                            <img src="images/profile.png" alt="Account" >
+                        </c:if>
+                        <c:if test="${current_user != null}">
+                            <c:if test="${current_user.imagePath == null}">
+                                <img src="images/profile.png" alt="Account" class="avatar">
+                            </c:if>
+                            <c:if test="${current_user.imagePath != null}">
+                                <img src="${IConstant.PATH_USER}${current_user.imagePath}" alt="Account" class="avatar">   
+                            </c:if>
+
+                        </c:if>
+                    </a>
+                    <c:if test="${current_user != null}">
+                        <div class="dropdown-content">
+                            <c:if test="${current_user.imagePath != null}">
+                                <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+                            </c:if>
+
+                            <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+                                Profile
+                            </a>
+                            <a href="logout">Logout</a>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${current_user.role == 'Customer'}">
+                        <a href="cart"><img src="images/cart.png" alt="Cart"></a> 
+                        </c:if>
+                </div>
+            </div>
+        </header>
     <c:set var="currNew" value="${requestScope.currentNews}" />
     <div class="container">
         <div class="address-page">
@@ -203,7 +234,50 @@
                                         </h4>
                                         <div class="mt-4">
                                             <a href="#" class="btn btn-primary bg-weak text-black border-0">${news.newsGroupName}</a>
-                                        </div>
+    <section>
+        <div class="container">
+            <h1 class="news_tittle">${currNew.newsTitle}</h1>
+            <div class="news_head d-flex align-items-center">
+                <img style="" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" alt="">
+                <div class="ms-3">
+                    <span class="fs-5 fw-bold">${currNew.adminName}</span>
+                    <p class="mb-0">${currNew.createDate}</p>
+                </div>
+            </div>
+            <div class="news_description">
+                ${currNew.description}
+            </div>
+            <div class="author-wrap">
+                <div class="author_avatar">
+                    <img src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" alt="alt" />
+                </div>
+                <div class="author_infor">
+                    <div class="author_name">${currNew.adminName}</div>
+                    <div class="author-description">
+                        Luôn cố gắng tìm tòi và học hỏi để nâng cao kiến thức và kỹ năng của bản thân, nhằm mang đến những nội dung chất lượng và hấp dẫn cho người đọc.
+                    </div>
+                    <p class="author-post">
+                        <a href="NewsManagerServlet?Service=newsAuthor&aid=${currNew.getAdmin().id}">Xem ${totalNewsByAdmin} bài viết cùng tác giả</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- jQuery and Swiper JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.review-close_btn').on('click', function () {
+                document.querySelector('.box-review').classList.remove('active-review');
+            });
+
+            let newsDes = document.querySelector('.news_description');
+            let listImages = newsDes.getElementsByTagName('img');
+            let boxReviewSlide = document.querySelector('.box-review .swiper-wrapper');
                                     </div>
                                 </a>
                             </div>
@@ -269,6 +343,49 @@
             },
         });
     </script>
+            for (var i = 0; i < listImages.length; i++) {
+                let currImg = listImages[i];
+                currImg.addEventListener('click', () => {
+                    activeView(currImg.src);
+                });
+            }
+
+            function activeView(imgPath) {
+                let html = ``;
+                for (var i = 0; i < listImages.length; i++) {
+                    let currImg = listImages[i];
+                    let isActive = (imgPath === currImg.src) ? 'swiper-slide-active' : '';
+                    let className = `swiper-slide ${isActive} h-100`;
+                    html += `<div class="swiper-slide ${isActive} h-100">`;
+                                <div class="slider-img review-item text-center h-100">
+                                    <img src="` + currImg.src + `" alt="" style="width: 80%; height: 100%;">
+                                    <div class="review-info text-start py-4">
+                                        <span class="fs-3 ms-3 text-white">` + currImg.getAttribute('alt') + `</span>
+                                    </div>
+                                </div>
+                            </div>`;
+                }
+                boxReviewSlide.innerHTML = html;
+                document.querySelector('.box-review').classList.add('active-review');
+            }
+        });
+
+        var swiper = new Swiper(".mySwiper", {
+            spaceBetween: 30,
+            centeredSlides: true,
+            loop: true,
+            speed: 1000,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+    </script>
 </body>
 
 </html>
+

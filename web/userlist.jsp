@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page import="constant.*" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -73,7 +74,7 @@
             }
 
             table thead {
-                background-color: #007bff;
+                background-color: #ffcc99;
                 color: white;
             }
 
@@ -86,17 +87,13 @@
             table th {
                 cursor: pointer;
                 font-weight: bold;
-                background-color: #007bff;
+                background-color: #ff6600;
                 color: white;
                 text-transform: uppercase;
             }
 
             table tr:hover {
-                background-color: #f1f1f1;
-            }
-
-            table tr:nth-child(even) {
-                background-color: #f9f9f9;
+                background-color: #ffcc99; /* Màu cam nhạt */
             }
 
             table tr td img {
@@ -118,151 +115,389 @@
 
             .add-new-user a {
                 padding: 10px 20px;
-                background-color: #007bff;
+                background-color: #ff6600;
                 color: white;
                 border-radius: 5px;
                 text-decoration: none;
                 font-size: 16px;
             }
 
-            .add-new-user a:hover {
-                background-color: #0056b3;
-                text-decoration: none;
-            }
-
             /* Modal styling */
-            .modal {
-                display: none;
-                position: fixed;
-                z-index: 1;
-                padding-top: 100px;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0,0,0,0.4);
+            /* Modal styling for adding new user */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Dimmed background */
+    padding-top: 50px; /* Center modal vertically */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    position: relative;
+}
+
+/* Close button styling */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Modal header styling */
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Input fields inside modal */
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Ensures padding is included in element width */
+}
+
+/* Radio buttons for gender */
+.modal-content input[type="radio"] {
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.modal-content label[for="gender"] {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+/* Submit button for modal */
+.submit-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+    transition: 0.3s;
+}
+.detail-modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+    padding-top: 50px; /* Center the modal vertically */
+}
+
+.detail-modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 700px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    position: relative;
+}
+
+/* Close button styling */
+.detail-modal .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.detail-modal .close:hover, 
+.detail-modal .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Header for detail modal */
+.detail-modal-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Table for displaying user details */
+.detail-table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-spacing: 0;
+}
+
+.detail-table td {
+    padding: 10px;
+    vertical-align: top;
+}
+
+.detail-table td:first-child {
+    width: 30%;
+    font-weight: bold;
+}
+
+.detail-table td:last-child {
+    width: 70%;
+}
+
+.detail-table img {
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    width: 100px;
+    height: 100px;
+}
+
+/* Inputs for user details */
+.detail-table input, 
+.detail-table select, 
+.detail-table textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Modal action buttons */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    transition: opacity 0.3s ease;
+}
+
+.btn-update {
+    background-color: #28a745;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+}
+
+.modal-actions button:hover {
+    opacity: 0.9;
+}
+
+            .navbar {
+            background-color: #ff6600; /* Primary orange color */
+            color: #fff;
+            padding: 1rem;
+            width: 200px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+            z-index: 1000; /* Ensure navbar is on top */
+            gap: 2rem;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #ff9933; /* Lighter orange on hover */
+        }
+.navbar .dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%; /* Đảm bảo mục "Category" chiếm toàn bộ chiều rộng */
+}
+
+.navbar .dropdown a {
+    color: #fff; /* Màu trắng cho chữ trong các mục của navbar */
+    text-decoration: none;
+    padding: 1rem;
+    display: block;
+    text-align: left;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Cấu trúc danh sách dropdown */
+.navbar .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff; /* Nền cam nhạt cho dropdown */
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng */
+    border-radius: 5px; /* Bo góc nhẹ */
+    padding: 0.5rem 0; /* Khoảng cách bên trong */
+    z-index: 1;
+    width: 100%; /* Chiều rộng danh sách bằng với chiều rộng navbar */
+}
+
+.navbar .dropdown-content a {
+    color: #333; /* Màu chữ đen cho các mục dropdown */
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left; /* Căn lề trái cho danh sách con */
+    font-size: 14px;
+    font-weight: normal; /* Mức độ đậm vừa phải */
+    gap:1rem;
+}
+
+/* Hover vào danh sách con */
+.navbar .dropdown-content a:hover {
+    background-color: #ff6600; /* Nền cam khi hover */
+    color: #fff; /* Chữ trắng khi hover */
+}
+
+/* Hiển thị danh sách khi hover vào mục chính */
+.navbar .dropdown:hover .dropdown-content {
+    display: block; /* Hiển thị danh sách khi hover */
+}
+
+/* Hiệu ứng hover cho mục chính */
+.navbar .dropdown:hover a {
+    color: #ff6600; /* Đổi màu chữ thành cam khi hover vào mục chính */
+    background-color: #fff; /* Nền trắng khi hover vào mục chính */
+    border-radius: 5px; /* Bo góc nhẹ */
+}
+            .navbar.hidden {
+                transform: translateX(-100%);
             }
 
-            .modal-content {
-                background-color: #fff;
-                margin: auto;
-                padding: 20px;
-                border: 1px solid #888;
-                width: 80%;
-                max-width: 500px;
+            /* Adjust content and header when navbar is hidden */
+            .header.expanded, .content.expanded {
+                margin-left: 200px;
             }
 
-            .modal-content input, .modal-content select {
-                padding: 10px;
-                margin-bottom: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
+            .header.collapsed, .content.collapsed {
+                margin-left: 0;
             }
 
-
-
-            .close {
-                color: #aaa;
-                float: right;
-                font-size: 28px;
-                font-weight: bold;
-            }
-
-            .close:hover, .close:focus {
-                color: black;
-                text-decoration: none;
-                cursor: pointer;
-            }
-
-            .submit-btn {
-                background-color: #007bff;
+            .toggle-button {
+                background-color: #ff6600; /* Primary orange color */
                 color: white;
-                padding: 10px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            .submit-btn:hover {
-                background-color: #0056b3;
-            }
-
-            /* Detail modal for user information */
-            .detail-modal {
-                display: none;
+                padding: 1rem;
                 position: fixed;
-                z-index: 2;
-                padding-top: 100px;
-                left: 0;
                 top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0,0,0,0.5);
-            }
-
-            .detail-modal-content {
-                background-color: #fff;
-                margin: auto;
-                padding: 20px;
-                border: 1px solid #888;
-                width: 60%;
-                max-width: 800px;
-                border-radius: 10px;
-            }
-
-            .detail-modal .close {
-                color: #aaa;
-                float: right;
-                font-size: 28px;
-                font-weight: bold;
-            }
-
-            .detail-modal .close:hover, .detail-modal .close:focus {
-                color: black;
-                text-decoration: none;
+                left: 0;
                 cursor: pointer;
+                z-index: 1100; /* Higher than the navbar */
             }
-
-            .detail-table td {
-                padding: 10px;
-            }
-
-            .detail-table {
-                width: 100%;
-                margin-bottom: 20px;
-            }
-
-            .modal-actions button {
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                color: #fff;
-            }
-
-            .btn-update {
-                background-color: #28a745;
-            }
-
-            .btn-delete {
-                background-color: #dc3545;
-            }
-
-            .modal-actions button:hover {
-                opacity: 0.9;
-            }
-
-            /* Red and italic message styling */
-            .message {
-                color: red;
-                font-style: italic;
-            }
-
+            
         </style>
+        <link rel="stylesheet" href="css/homestyle.css"/>
     </head>
+    
     <body>
+        <header class="header collapsed">
+        <div class="left-section">
+            <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
+            <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
+            <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
+        </div>
+        <div class="right-section">
+            <div class="icons">
+    <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+        <c:if test="${current_user == null}">
+            <img src="images/profile.png" alt="Account" >
+            </c:if>
+        <c:if test="${current_user != null}">
+            <c:if test="${current_user.imagePath == null}">
+                <img src="images/profile.png" alt="Account" class="avatar">
+            </c:if>
+                <c:if test="${current_user.imagePath != null}">
+                 <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Account" class="avatar">   
+            </c:if>
+            
+        </c:if>
+    </a>
+        <c:if test="${current_user != null}">
+            <div class="dropdown-content">
+                <c:if test="${current_user.imagePath != null}">
+                    <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+            </c:if>
+             
+        <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+            Profile
+        </a>
+        <a href="logout">Logout</a>
+    </div>
+        </c:if>
+    
+    <c:if test="${current_user == 'Customer'}">
+        <img src="images/cart.png" alt="Cart">
+    </c:if>
+</div>
+        </div>
+    </header>
+        <div class="toggle-button" onclick="toggleNavbar()">☰</div>
+
+        <nav class="navbar hidden" id="navbar">
+            <div class="logo">Online Shop</div>
+            
+            <div class="dropdown"><a href="homepage">HomePage</a></div>
+            <div class="dropdown"><a href="dashboard?role=${current_user.role}">Dash Board </a></div>
+            <div class="dropdown"><a href="userlist">User Management</a></div>
+            <div class="dropdown"><a href="settinglist">Setting Management</a></div>
+            
+            
+            
+        </nav>
         <div class="container">
             <h1>User Management</h1>
 
@@ -277,8 +512,8 @@
                     </select>
                     <select id="statusFilter" onchange="filterTable()">
                         <option value="">All Statuses</option>
-                        <option value="Online">Active</option>
-                        <option value="Offline">Inactive</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
                     </select>
                 </form>
             </div>
@@ -299,7 +534,7 @@
                 <tbody>
                     <c:forEach var="user" items="${userlist}">
                         <tr>
-                            <td><img src="images/User_img/${user.imagePath}" alt="Avatar" width="50" height="50"></td>
+                            <td><img src="${IConstant.PATH_USER}/${user.imagePath}" alt="Avatar" width="50" height="50"></td>
                             <td>${user.name}</td>
                             <td>${user.email}</td>
                             <td>${user.phone}</td>
@@ -318,45 +553,52 @@
         </div>
 
         <!-- Modal for Adding New User -->
-        <div id="myModal" class="modal" style="display: ${message != null ? 'block' : 'none'}">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Add New User</h2>
-                <form action="userlist" method="post" enctype="multipart/form-data">
-                    <div>
-                        <label for="avatar">Avatar:</label>
-                        <input type="file" id="avatar" name="avatar" required="">
-                    </div>
-                    <label for="name">Full Name:</label>
-                    <input type="text" id="name" name="name" required>
-
-                    <div style="display: flex;">
-                        <label for="gender">Gender:</label>
-                        <input type="radio" id="gender" name="gender" value="1" required> Male
-                        <input type="radio" id="gender" name="gender" value="0" required> Female
-                    </div>
-                    <div>
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div>
-                        <label for="phone">Mobile:</label>
-                        <input type="text" id="mobile" name="phone" required>
-                    </div>
-                    <div>
-                        <label for="role">Role:</label>
-                        <select id="role" name="role">
-                            <option value="Staff Manager">Staff Manager</option>
-                            <option value="Staff">Staff</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button type="submit" name="submit" value="add" class="submit-btn">Add User</button>
-                    </div>
-                </form>
-                <div class="message">${message}</div>
+       <div id="myModal" class="modal" style="display: ${message != null ? 'block' : 'none'}">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add New User</h2>
+        <form action="userlist" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="avatar">Avatar:</label>
+                <input type="file" id="avatar" name="avatar" required="">
             </div>
-        </div>
+
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" value="${name != null ? name : ''}" required>
+
+            <div style="display: flex;">
+                <label for="gender">Gender:</label>
+                <input type="radio" id="gender_male" name="gender" value="1" ${gender == 1 ? 'checked' : ''} required> Male
+                <input type="radio" id="gender_female" name="gender" value="0" ${gender == 0 ? 'checked' : ''} required> Female
+            </div>
+
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="${email != null ? email : ''}" required>
+            </div>
+
+            <div>
+                <label for="phone">Mobile:</label>
+                <input type="text" id="mobile" name="phone" value="${phone != null ? phone : ''}" required>
+            </div>
+
+            <div>
+                <label for="role">Role:</label>
+                <select id="detail-role" name="role">
+                    <c:forEach items="${requestScope.roleList}" var="n">
+                                        <option value="${n.id}" ${role == n.id ? 'checked' : ''}>${n.id}</option>
+                                    </c:forEach>
+                                </select>
+            </div>
+
+            <div>
+                <button type="submit" name="submit" value="add" class="submit-btn">Add User</button>
+            </div>
+        </form>
+
+        <div class="message">${message}</div>
+    </div>
+</div>
 
         <!-- Detail Modal -->
         <div id="detailModal" class="detail-modal">
@@ -393,8 +635,9 @@
                             <td><strong>Role:</strong></td>
                             <td>
                                 <select id="detail-role" name="role">
-                                    <option value="Staff Manager">Staff Manager</option>
-                                    <option value="Staff">Staff</option>
+                                    <c:forEach items="${requestScope.roleList}" var="n">
+                                        <option value="${n.id}">${n.id}</option>
+                                    </c:forEach>
                                 </select>
                             </td>
                         </tr>
@@ -410,8 +653,8 @@
                     </table>
 
                     <div class="modal-actions">
-                        <button type="submit" class="btn-update" name="submit" value="update">Update</button>
-                        <button type="submit" class="btn-delete" name="submit" value="delete">Delete</button>
+                        <button type="submit" class="btn-update" name="submit" value="update" onclick=" confirmUpdate()">Update</button>
+                        <button type="submit" class="btn-delete" name="submit" value="delete" onclick=" confirmUpdate()">Delete</button>
                     </div>
 
                     <!-- Hidden field to store user ID for update/delete -->
@@ -421,7 +664,21 @@
         </div>
 
         <script>
+            document.querySelector('.avatar').addEventListener('mouseover', function() {
+    document.querySelector('.dropdown-content').style.display = 'block';
+});
+
+document.querySelector('.dropdown-content').addEventListener('mouseleave', function() {
+    document.querySelector('.dropdown-content').style.display = 'none';
+});
             // Modal functionality
+            function confirmDelete() {
+                return confirm("Are you sure you want to delete this user ?");
+            }
+
+            function confirmUpdate() {
+                return confirm("Are you sure you want to update this user ?");
+            }
             var modal = document.getElementById("myModal");
             var btn = document.getElementById("openModal");
             var span = document.getElementsByClassName("close")[0];
@@ -478,7 +735,7 @@
             // Function to show the details and populate the modal with current user information
             function showDetails(id, avatar, name, phone, email, role, status) {
                 document.getElementById('detail-id').value = id;
-                document.getElementById('detail-avatar').src = "images/User_img/" + avatar;
+                document.getElementById('detail-avatar').src = "${IConstant.PATH_USER}/" + avatar;
                 document.getElementById('detail-name').value = name;
                 document.getElementById('detail-mobile').value = phone;
                 document.getElementById('detail-email').value = email;
@@ -497,6 +754,18 @@
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
+            }
+            function toggleNavbar() {
+                const navbar = document.getElementById('navbar');
+                const content = document.getElementById('content');
+                const header = document.querySelector('.header');
+
+                navbar.classList.toggle('hidden');
+                navbar.classList.toggle('visible');
+                content.classList.toggle('expanded');
+                header.classList.toggle('expanded');
+                content.classList.toggle('collapsed');
+                header.classList.toggle('collapsed');
             }
         </script>
     </body>

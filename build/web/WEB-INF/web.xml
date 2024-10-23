@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
@@ -63,6 +65,78 @@
     <servlet>
         <servlet-name>CartComplete</servlet-name>
         <servlet-class>controller.CartComplete</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SettingListServlet</servlet-name>
+        <servlet-class>controller.SettingListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SettingDetailServlet</servlet-name>
+        <servlet-class>controller.SettingDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadProductsServlet</servlet-name>
+        <servlet-class>controller.LoadProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadListProductsServlet</servlet-name>
+        <servlet-class>controller.LoadListProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetAvailableSizesServlet</servlet-name>
+        <servlet-class>controller.GetAvailableSizesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetColorOfProduct</servlet-name>
+        <servlet-class>controller.GetColorOfProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckToken</servlet-name>
+        <servlet-class>controller.CheckToken</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffProductListServlet</servlet-name>
+        <servlet-class>controller.StaffProductListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffProductDetailServlet</servlet-name>
+        <servlet-class>controller.StaffProductDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadProductListStaff</servlet-name>
+        <servlet-class>controller.LoadProductListStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OnsaleProducts</servlet-name>
+        <servlet-class>controller.StaffOnsaleLists</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadOnSaleProductsServlet</servlet-name>
+        <servlet-class>controller.LoadOnSaleProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadOnsaleLists</servlet-name>
+        <servlet-class>controller.LoadOnsaleLists</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OnsaleLists</servlet-name>
+        <servlet-class>controller.OnsaleLists</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RoleListServlet</servlet-name>
+        <servlet-class>controller.RoleListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RoleDetailServlet</servlet-name>
+        <servlet-class>controller.RoleDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadSettingListServlet</servlet-name>
+        <servlet-class>controller.LoadSettingListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadRoleListServlet</servlet-name>
+        <servlet-class>controller.LoadRoleListServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
@@ -160,5 +234,85 @@
     <servlet-mapping>
         <servlet-name>OrderDetailServlet</servlet-name>
         <url-pattern>/orderDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SettingListServlet</servlet-name>
+        <url-pattern>/settinglist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SettingDetailServlet</servlet-name>
+        <url-pattern>/settingdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadProductsServlet</servlet-name>
+        <url-pattern>/LoadProductsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadListProductsServlet</servlet-name>
+        <url-pattern>/LoadListProductsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAvailableSizesServlet</servlet-name>
+        <url-pattern>/GetAvailableSizesServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetColorOfProduct</servlet-name>
+        <url-pattern>/GetColorOfProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckToken</servlet-name>
+        <url-pattern>/CheckToken</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffProductListServlet</servlet-name>
+        <url-pattern>/staffproductlist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffProductDetailServlet</servlet-name>
+        <url-pattern>/staffproductdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadProductListStaff</servlet-name>
+        <url-pattern>/LoadProductListStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OnsaleProducts</servlet-name>
+        <url-pattern>/onsale</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadOnSaleProductsServlet</servlet-name>
+        <url-pattern>/LoadOnSaleProductsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadOnsaleLists</servlet-name>
+        <url-pattern>/LoadOnsaleLists</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OnsaleLists</servlet-name>
+        <url-pattern>/salelist</url-pattern>
+    </servlet-mapping>
+    <filter>
+        <filter-name>AuthorizationFilter</filter-name>
+        <filter-class>util.AuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthorizationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <servlet-mapping>
+        <servlet-name>RoleListServlet</servlet-name>
+        <url-pattern>/rolelist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RoleDetailServlet</servlet-name>
+        <url-pattern>/roledetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadSettingListServlet</servlet-name>
+        <url-pattern>/LoadSettingListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadRoleListServlet</servlet-name>
+        <url-pattern>/LoadRoleListServlet</url-pattern>
     </servlet-mapping>
 </web-app>

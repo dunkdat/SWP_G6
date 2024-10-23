@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.DAOAddress;
 import dal.DAOShipment;
 import dal.DAOUser;
 import java.io.IOException;
@@ -14,6 +15,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Address;
+import model.User;
 
 /**
  *
@@ -57,12 +61,24 @@ public class CartComplete extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOUser daoU = new DAOUser();
-        HttpSession ss = request.getSession();
-        if(ss.getAttribute("listBuy") == null) {
-            response.sendRedirect("homepage");
+        DAOAddress daoAdd = new DAOAddress();
+        HttpSession session = request.getSession();
+        User acc = (User)session.getAttribute("current_user");
+        if(acc == null) {
+            response.sendRedirect("login");
             return;
         }
-        String[] selectedProducts = (String[]) ss.getAttribute("listBuy");
+        if(session.getAttribute("listBuy") == null) {
+            response.sendRedirect("cart");
+            return;
+        }
+        List<Address> address = daoAdd.getAddressOfUser(acc.getId());
+        request.setAttribute("address", address);
+        getShipper(request, response);
+        if(session.getAttribute("listBuy") == null) {
+            response.sendRedirect("homepage");
+        }
+        String[] selectedProducts = (String[]) session.getAttribute("listBuy");
         if (selectedProducts.length <= 0) {
             response.sendRedirect("homepage");
             return;
@@ -91,6 +107,10 @@ public class CartComplete extends HttpServlet {
        HttpSession session = request.getSession();
        session.setAttribute("listBuy", selectedProducts);
        getShipper(request, response);
+        DAOAddress daoAdd = new DAOAddress();
+         User acc = (User)session.getAttribute("current_user");
+       List<Address> address = daoAdd.getAddressOfUser(acc.getId());
+        request.setAttribute("address", address);
        request.getRequestDispatcher("cartComplete.jsp").forward(request, response);
     }
 
@@ -102,5 +122,4 @@ public class CartComplete extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

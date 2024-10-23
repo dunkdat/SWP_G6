@@ -69,7 +69,7 @@
         <h1>Reset Password!</h1>
         <div class="message">${message}</div>
         <div>
-            <form action="resetpass?email=${param.email}" method="post">
+            <form action="resetpass?email=${email}" method="post">
                 <div>Enter your new password:</div>
                 <input type="password" name="password" required>
                 <div>Confirm password:</div>

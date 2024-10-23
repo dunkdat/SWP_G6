@@ -59,13 +59,14 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        User current_user = (User) session.getAttribute("current_user");
+        HttpSession session = request.getSession();
         String[] listService = {"Account info", "My order", "Change password"};
         request.setAttribute("listService", listService);
-        //gia su dang nhap
-        session.setAttribute("currentUser", current_user);
-        User acc = (User)session.getAttribute("currentUser");
+        User acc = (User)session.getAttribute("current_user");
+        if(acc == null) {
+            response.sendRedirect("login");
+            return;
+        }
         String service = request.getParameter("Service");
         //neu da dang nhap
         if (acc != null) {
@@ -73,7 +74,8 @@ public class ProfileServlet extends HttpServlet {
                 service = listService[0];
             }
             if(service.equals(listService[1])) {
-               
+               response.sendRedirect("myOrder");
+               return;
             }
             request.setAttribute("current", service);
             request.getRequestDispatcher("profile.jsp").forward(request, response);
@@ -95,7 +97,7 @@ public class ProfileServlet extends HttpServlet {
             throws ServletException, IOException {
         String service = request.getParameter("Service");
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("currentUser");
+        User user = (User) session.getAttribute("current_user");
         System.out.println("currsess: "+user);
         String mess = "";
         String filename = null;
@@ -137,12 +139,12 @@ public class ProfileServlet extends HttpServlet {
              String folderPath = getServletContext().getRealPath("") + File.separator + IConstant.PATH_USER;
              saveImage(cusImage, folderPath, filename);
              User cussChange = new User(user.getId(), name,  address, 
-             gender,  phone,  filename);
+             gender,  phone, filename);
              
              boolean haveUpdate = daoUser.updateCustomer(cussChange);
              User updatedUser = daoUser.getUserById(user.getId());
-             session.removeAttribute("currentUser"); // Xóa đối tượng cũ khỏi phiên
-             session.setAttribute("currentUser", updatedUser); // Thêm đối tượng mới vào phiên
+             session.removeAttribute("current_user"); // Xóa đối tượng cũ khỏi phiên
+             session.setAttribute("current_user", updatedUser); // Thêm đối tượng mới vào phiên
             if (haveUpdate) {
                 isSuccess = true;
                 mess = "update success";
@@ -164,7 +166,7 @@ public class ProfileServlet extends HttpServlet {
                 return;
                }
              //check valid current password
-              if (daoUser.ValidateUsers(user.getEmail(), Validate.getMd5(currentPassword)) == null) {
+              if (daoUser.ValidateUsers(user.getEmail(), currentPassword) == null) {
                 mess = "The current password incorrect.";
                 setCommonAttributes(request, response, mess, isSuccess, "Change password");
                 return;
@@ -182,7 +184,7 @@ public class ProfileServlet extends HttpServlet {
                 setCommonAttributes(request, response, mess, isSuccess, "Change password");
                 return;
               }
-               if (newPassword.equals(confirmPassword)) {
+               if (newPassword.equals(currentPassword)) {
                 mess = "The new password you just entered is the same as the old password.";
                 setCommonAttributes(request, response, mess, isSuccess, "Change password");
                 return;

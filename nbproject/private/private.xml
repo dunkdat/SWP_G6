@@ -3,14 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/web/news.jsp</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/NewsServlet.java</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/model/User.java</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/web/WEB-INF/web.xml</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/web/cart.jsp</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/CartServlet.java</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/LoginServlet.java</file>
-            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/dal/DAONews.java</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/web/cartComplete.jsp</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/web/newsDetail.jsp</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/ProductListServlet.java</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/web/addMoreAddress.jsp</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/ProfileServlet.java</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/web/myOrder.jsp</file>
+            <file>file:/C:/JavaWorkSpace/SWP_G6/src/java/controller/CartComplete.java</file>
         </group>
     </open-files>
 </project-private>

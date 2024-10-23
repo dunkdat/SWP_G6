@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.DAOCategory;
 import dal.DAOProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
 import model.Products;
 
 /**
@@ -38,11 +39,11 @@ public class ProductListServlet extends HttpServlet {
             String sub = request.getParameter("submit");
             String brand = request.getParameter("brand");
             String price = request.getParameter("price");
-            if (cat != null) {
-                    String lowPrice = null;
-                    String highPrice = null;
+
+                String lowPrice = null;
+                String highPrice = null;
                 if (sub != null) {
-                    
+
                     if (price != null) {
                         String[] prices = price.split("-");
                         lowPrice = prices[0];
@@ -51,17 +52,34 @@ public class ProductListServlet extends HttpServlet {
 
                 }
                 DAOProduct d = new DAOProduct();
-                List<Products>t= d.getAllProduct(cat, brand, lowPrice, highPrice);
-                if(t.size()==0){
+                DAOCategory c = new DAOCategory();
+                String pageParam = request.getParameter("page");
+                int currentPage = pageParam != null ? Integer.parseInt(pageParam) : 1;
+                int pageSize = 12; // Số sản phẩm trên mỗi trang
+                int offset = (currentPage - 1) * pageSize;
+
+                // Lấy tổng số sản phẩm và tính tổng số trang
+                int totalProducts = d.getTotalProducts(cat);
+                int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
+                List<Products> t = d.getAllProduct(cat, brand, lowPrice, highPrice,null, pageSize, offset);
+                
+                if (t.size() == 0) {
                     request.setAttribute("message", "No product found!");
+                    request.setAttribute("categoryList", c.getAllCategory());
                     request.getRequestDispatcher("productlist.jsp").forward(request, response);
-                }else{
+                } else {
+                    request.setAttribute("currentPage", currentPage);
+                    request.setAttribute("totalPages", totalPages);
                     request.setAttribute("productlist", t);
+                    request.setAttribute("categoryList", c.getAllCategory());
+                     Map<String, Float> averageRatings = d.getAllAverageStarRatings();
+
+        // Set the average ratings in the request scope
+        request.setAttribute("averageRatings", averageRatings);
                     request.getRequestDispatcher("productlist.jsp").forward(request, response);
                     return;
                 }
-                
-            }
+            
         }
     }
 
@@ -103,5 +121,8 @@ public class ProductListServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+public static void main(String[] args) {
+    DAOProduct d = new DAOProduct();
+          System.out.println(d.getAllAverageStarRatings());
+    }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import dal.DAOCategory;
 import dal.DAOUser;
 import model.User;
 import java.io.IOException;
@@ -23,6 +24,8 @@ public class LoginServlet extends HttpServlet {
         
         DAOUser u = new DAOUser();
         Encode e = new Encode();
+        DAOCategory c = new DAOCategory();
+        request.setAttribute("categoryList", c.getAllCategory());
         
         if(email != null && password != null){
             // Validate user credentials
@@ -46,10 +49,23 @@ public class LoginServlet extends HttpServlet {
                     response.addCookie(emailCookie);
                     response.addCookie(passwordCookie);
                 }
-                if(!currentUser.getRole().equals("Admin")){
-                    request.getRequestDispatcher("homepage").forward(request, response);
-                }else if(currentUser.getRole().equals("Admin")){
-                    request.getRequestDispatcher("userlist").forward(request, response);
+                if(currentUser.getStatus().equals("inactive")){
+                    request.setAttribute("message", "Your account no more available!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+                }
+                switch (currentUser.getRole().toLowerCase()) {
+                    case "customer":
+                        request.getRequestDispatcher("homepage").forward(request, response);
+                        break;
+                    case "admin":
+                        request.getRequestDispatcher("userlist").forward(request, response);
+                        break;
+                    case "staff":
+                        request.getRequestDispatcher("staffproductlist").forward(request, response);
+                        break;
+                    default:
+                        break;
                 }
                 
             } else {
@@ -92,5 +108,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
+    }
+    public static void main(String[] args) {
+        Encode e = new Encode();
+        DAOUser daoU = new DAOUser();
+        System.out.println(daoU.ValidateUsers("vuong4@gmail.com", "12345"));
     }
 }

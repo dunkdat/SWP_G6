@@ -5,6 +5,7 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="constant.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,51 +71,104 @@
         button:hover {
             background-color: #ff9933;
         }
-
-        footer {
-            background-color: #ffe5cc; /* Same as homepage */
-            color: black;
-            text-align: center;
-            padding: 1rem;
-            position: relative;
-            width: 100%;
-            bottom: 0;
-            z-index: 100;
-        }
     </style>
+    <link rel="stylesheet" href="css/homestyle.css"/>
 </head>
+
 <body>
 
 <header class="header collapsed">
     <div class="left-section">
-        <img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;">
+        <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
         <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
         <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
     </div>
-    <div class="right-section">
-        <div class="search-bar">
-            <input type="text" placeholder="Tìm sản phẩm...">
-            <span class="search-icon">🔍</span>
-        </div>
-        <div class="icons">
-            <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img src="images/profile.png" alt="Account"></a>
-            <img src="images/cart.png" alt="Cart">
-        </div>
+<div class="right-section">
+            <div class="icons">
+    <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+        <c:if test="${current_user == null}">
+            <img src="images/profile.png" alt="Account" >
+            </c:if>
+        <c:if test="${current_user != null}">
+            <c:if test="${current_user.imagePath == null}">
+                <img src="images/profile.png" alt="Account" class="avatar">
+            </c:if>
+                <c:if test="${current_user.imagePath != null}">
+                 <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Account" class="avatar">   
+            </c:if>
+            
+        </c:if>
+    </a>
+        <c:if test="${current_user != null}">
+            <div class="dropdown-content">
+                <c:if test="${current_user.imagePath != null}">
+                    <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+            </c:if>
+             
+        <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+            Profile
+        </a>
+        <a href="logout">Logout</a>
     </div>
+        </c:if>
+    
+    <c:if test="${current_user == 'Customer'}">
+        <img src="images/cart.png" alt="Cart">
+    </c:if>
+</div>
+        </div>
 </header>
-
 <div class="toggle-button" onclick="toggleNavbar()">☰</div>
 
-<nav class="navbar hidden" id="navbar">
-    <div class="logo">Online Shop</div>
-    <a href="homepage">Home</a>
-    <a href="productlist?category=racket">Racket</a>
-    <a href="productlist?category=shoes">Shoes</a>
-    <a href="productlist?category=net">Net</a>
-    <a href="productlist?category=grip">Grip</a>
-    <a href="productlist?category=backpack">Back Pack</a>
-    <a href="productlist?category=shuttlecock">Shuttlecock</a>
-</nav>
+    <nav class="navbar hidden" id="navbar">
+            <div class="logo">Online Shop</div>
+            <div class="dropdown">
+                <a href="homepage">Home</a>
+            </div>
+            <div class="dropdown">
+                <a href="#">Category</a> <!-- Mục "Category" chính -->
+                <div class="dropdown-content">
+                    <a href="productlist">All</a>
+                    <a href="productlist?category=racket">Racket</a>
+                    <a href="productlist?category=shoes">Shoes</a>
+                    <a href="productlist?category=net">Net</a>
+                    <a href="productlist?category=grip">Grip</a>
+                    <a href="productlist?category=backpack">Back Pack</a>
+                    <a href="productlist?category=shuttlecock">Shuttlecock</a>
+                </div></div>
+                <c:if test="${current_user.role == 'Staff'}">
+                    <div class="dropdown">
+                        <a href="dashboard?role=${current_user.role}">Dashboard</a>
+
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="staffproductlist">Products List</a>  
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="onsale">On Sale Product</a>
+                    </div>
+
+                </c:if>
+                <c:if test="${current_user.role == 'Admin'}">
+                    <div class="dropdown">
+                        <a href="dashboard?role=${current_user.role}">Dashboard</a>
+
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="userlist">User Management</a>
+                
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="settinglist">Setting Management</a>
+                    </div>
+
+                </c:if>
+            
+        </nav>
 
 <div class="content collapsed" id="content">
     <section class="hero">
@@ -124,7 +178,7 @@
 
     <section class="nav-bar">
         <a href="homepage">Home Page</a>
-        <a href="#">Sale</a>
+        <a href="salelist">Sale</a>
         <a href="#">Voucher</a>
         <a href="aboutus.jsp">About Us</a>
         <a href="contact.jsp">Contact</a>
@@ -150,10 +204,33 @@
 </div>
 
 <footer class="footer">
-    © 2024 Online Shop. All rights reserved.
+    <div class="footer-content">
+        <p>© 2024 Online Shop. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/terms-of-service">Terms of Service</a></li>
+            <li><a href="/contact-us">Contact Us</a></li>
+            <li><a href="/about-us">About Us</a></li>
+        </ul>
+        <div class="social-media">
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://twitter.com" target="_blank">Twitter</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+        </div>
+    </div>
 </footer>
 
+
 <script>
+    const avatarElement = document.querySelector('.avatar');
+if (avatarElement) {
+    avatarElement.addEventListener('mouseover', function () {
+        document.querySelector('.dropdown-content').style.display = 'block';
+    });
+}
+            document.querySelector('.dropdown-content').addEventListener('mouseleave', function () {
+                document.querySelector('.dropdown-content').style.display = 'none';
+            });
     function toggleNavbar() {
         const navbar = document.getElementById('navbar');
         const content = document.getElementById('content');

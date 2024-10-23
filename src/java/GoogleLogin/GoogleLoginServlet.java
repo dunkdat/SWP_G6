@@ -32,7 +32,6 @@ public class GoogleLoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
             String code = request.getParameter("code");
             GoogleLogin gg = new GoogleLogin();
             String acessToken = gg.getToken(code);
@@ -44,15 +43,32 @@ public class GoogleLoginServlet extends HttpServlet {
                 SendVerify s = new SendVerify();
                 Encode e = new Encode();
                 String pass = e.toSHA1(s.getRandom());
-                u.addUser(new User(acc.getName(),null,1 ,null, acc.getEmail(), pass, "customer"));
+                u.addUser(new User(acc.getName(),null,1 ,null, acc.getEmail(), pass, "Customer"));
                 ss.setAttribute("user_email", acc.getEmail());
                 request.getRequestDispatcher("homepage").forward(request, response);
             }else{
-                
-                ss.setAttribute("user_email", acc.getEmail());
-                request.getRequestDispatcher("homepage").forward(request, response);
+                User user = u.getUserByEmail(acc.getEmail());
+                if(user.getStatus().equals("inactive")){
+                    request.setAttribute("message", "Your account no more available!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+                }
+                ss.setAttribute("current_user", user);
+            switch (user.getRole()) {
+                case "Customer":
+                    request.getRequestDispatcher("homepage").forward(request, response);
+                    break;
+                case "Admin":
+                    request.getRequestDispatcher("userlist").forward(request, response);
+                    break;
+                case "Staff":
+                    request.getRequestDispatcher("staffproductlist").forward(request, response);
+                    break;
+                default:
+                    break;
             }
-        }
+            }
+        
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

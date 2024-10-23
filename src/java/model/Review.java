@@ -2,29 +2,40 @@ package model;
 import java.util.Date;
 
 public class Review {
-    private String productId;
+    private String id;
     private int customerId;
     private int starRating;
+    String productName;
     private String comment;
     private String customerName; // New field for customer name
     private Date reviewDate;
 
-    public Review(String productId, int customerId, int starRating, String comment, String customerName, Date reviewDate) {
-        this.productId = productId;
+    public Review(String id, int customerId, int starRating,String producName, String comment, String customerName, Date reviewDate) {
+        this.id = id;
         this.customerId = customerId;
         this.starRating = starRating;
+        this.productName = producName;
         this.comment = comment;
         this.customerName = customerName;
         this.reviewDate = reviewDate;
     }
 
-    // Getters and Setters
-    public String getProductId() {
-        return productId;
+    public Review(String id, int customerId, int starRating, String productName, String comment, Date reviewDate) {
+        this.id = id;
+        this.customerId = customerId;
+        this.starRating = starRating;
+        this.productName = productName;
+        this.comment = comment;
+        this.reviewDate = reviewDate;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    // Getters and Setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getCustomerId() {
@@ -67,4 +78,3 @@ public class Review {
         this.reviewDate = reviewDate;
     }
 }
-
