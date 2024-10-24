@@ -753,7 +753,7 @@ public List<Integer> getProductSizesByNameAndColor(String productName, String co
             // Establish a connection to the database (Assuming you have a method to get a connection)
             
             // SQL query to fetch all sizes for a product with the specified name and color
-            String query = "SELECT size FROM Products WHERE name = ? AND color = ? and quantity > 0 order by size";
+            String query = "SELECT size FROM Products WHERE name = ? AND color = ? and quantity > 0 and status = 'active' order by size";
             pstmt = connection.prepareStatement(query);
             pstmt.setString(1, productName);
             pstmt.setString(2, color);

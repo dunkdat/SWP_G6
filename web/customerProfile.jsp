@@ -65,18 +65,47 @@
             }
         </style>
     </head>
-    <header class="header collapsed" >
-        <div class="left-section">
-            <a class="text-decoration-none" href="homepage"><img src="images/logo.png" alt="Shop Logo" class="w-auto" style="margin-left: 50px;"></a>
-            <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
-            <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
-        </div>
-        <div class="right-section">
-            <div class="icons">
-                <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img class="w-auto" src="images/profile.png" alt="Account"></a>
+    <header class="header collapsed">
+            <div class="left-section">
+                <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px; width: 60px;"></a>
+                <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
+                <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
             </div>
-       </div>
-    </header>
+            <div class="right-section">
+                <div class="icons">
+                    <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+                        <c:if test="${current_user == null}">
+                            <img src="images/profile.png" alt="Account" >
+                        </c:if>
+                        <c:if test="${current_user != null}">
+                            <c:if test="${current_user.imagePath == null}">
+                                <img src="images/profile.png" alt="Account" class="avatar">
+                            </c:if>
+                            <c:if test="${current_user.imagePath != null}">
+                                <img src="${IConstant.PATH_USER}${current_user.imagePath}" alt="Account" class="avatar">   
+                            </c:if>
+
+                        </c:if>
+                    </a>
+                    <c:if test="${current_user != null}">
+                        <div class="dropdown-content">
+                            <c:if test="${current_user.imagePath != null}">
+                                <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+                            </c:if>
+
+                            <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+                                Profile
+                            </a>
+                            <a href="logout">Logout</a>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${current_user.role == 'Customer'}">
+                       <a href="cart"><img src="images/cart.png" style="width: auto;" alt="Cart"></a> 
+                    </c:if>
+                </div>
+            </div>
+        </header>
     <body style="margin: 0">
         <section>
            
@@ -242,6 +271,15 @@
         </section>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script>
+            const avatarElement = document.querySelector('.avatar');
+if (avatarElement) {
+    avatarElement.addEventListener('mouseover', function () {
+        document.querySelector('.dropdown-content').style.display = 'block';
+    });
+}
+            document.querySelector('.dropdown-content').addEventListener('mouseleave', function () {
+                document.querySelector('.dropdown-content').style.display = 'none';
+            });
                                                                function previewImage(input) {
                                                                    var imagePreview = document.getElementById('imagePreview');
                                                                    var file = input.files[0];

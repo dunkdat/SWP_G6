@@ -186,7 +186,6 @@
          <!-- Header Section -->
     <header class="header collapsed">
         <div class="left-section">
-            ::before
             <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
             <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
             <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>

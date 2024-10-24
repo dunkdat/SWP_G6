@@ -66,7 +66,7 @@ public class LoginServlet extends HttpServlet {
                         request.getRequestDispatcher("staffproductlist").forward(request, response);
                         break;
                     case "Staff Manager":
-                        request.getRequestDispatcher("orderManagerServlet").forward(request, response);
+                        request.getRequestDispatcher("CustomerManager").forward(request, response);
                         break;
                     default:
                         break;
