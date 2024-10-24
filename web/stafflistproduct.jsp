@@ -704,8 +704,10 @@
             </div>
 
             <div>
-                <button type="submit" name="submit" value="add" class="submit-btn">Add Product</button>
-            </div>
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" step="0.01" required>
+</div>
+
         </form>
         <div class="message">${message1}</div>
     </div>

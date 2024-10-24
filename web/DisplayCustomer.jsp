@@ -46,18 +46,47 @@
         }
     </style>
     <body>
-    <header class="header collapsed" >
-        <div class="left-section">
-            <a class="text-decoration-none" href="homepage"><img src="images/logo.png" alt="Shop Logo" class="w-auto" style="margin-left: 50px;"></a>
-            <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
-            <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
-        </div>
-        <div class="right-section">
-            <div class="icons">
-                <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img class="w-auto" src="images/profile.png" alt="Account"></a>
+    <header class="header collapsed">
+            <div class="left-section">
+                <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px; width: 60px;"></a>
+                <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
+                <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
             </div>
-       </div>
-    </header>
+            <div class="right-section">
+                <div class="icons">
+                    <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+                        <c:if test="${current_user == null}">
+                            <img src="images/profile.png" alt="Account" >
+                        </c:if>
+                        <c:if test="${current_user != null}">
+                            <c:if test="${current_user.imagePath == null}">
+                                <img src="images/profile.png" alt="Account" class="avatar">
+                            </c:if>
+                            <c:if test="${current_user.imagePath != null}">
+                                <img src="${IConstant.PATH_USER}${current_user.imagePath}" alt="Account" class="avatar">   
+                            </c:if>
+
+                        </c:if>
+                    </a>
+                    <c:if test="${current_user != null}">
+                        <div class="dropdown-content">
+                            <c:if test="${current_user.imagePath != null}">
+                                <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+                            </c:if>
+
+                            <a href="ProfileServlet?current_user=${sessionScope.current_user}">
+                                Profile
+                            </a>
+                            <a href="logout">Logout</a>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${current_user.role == 'Customer'}">
+                       <a href="cart"><img src="images/cart.png" style="width: auto;" alt="Cart"></a> 
+                    </c:if>
+                </div>
+            </div>
+        </header>
         <section>
             <div class="row h-100">
                 <div class="col-md-2 left-nav-admin p-0"  style="background-color: #ff6600; height: 100vh;">
@@ -187,13 +216,6 @@
                         </div>
                     </div>
                     <div style="margin-top: 7px; display: flex; margin-bottom: 5px">
-                        <div class="me-5">
-                            <a href="CustomerManager?Service=addCustomer" >
-                                <button class="btn btn-danger mb-2 fs-3">
-                                    <i class="fas fa-plus"> </i>Add New
-                                </button>
-                            </a>
-                        </div>
 
                         <div style="font-size: 25px; margin-left: 5px; margin-top: 2px" class="fs-3">
                             Show
@@ -253,7 +275,7 @@
                                             <button class="btn btn-danger">
                                                 <i class="fas fa-trash-alt"></i>
                                                 <a style="color: white"
-                                                   href="CustomerManager?Service=deleteCustomer&id=${cus.id}">Delete</a>
+                                                   href="CustomerManager?Service=deleteCustomer&id=${cus.id}" onclick="return  confirmDelete()">Delete</a>
                                             </button>
                                         </td>
                                     </tr>
@@ -288,6 +310,19 @@
             </div>
         </section>
         <script>
+            const avatarElement = document.querySelector('.avatar');
+if (avatarElement) {
+    avatarElement.addEventListener('mouseover', function () {
+        document.querySelector('.dropdown-content').style.display = 'block';
+    });
+}
+function confirmDelete() {
+                return confirm("Are you sure you want to delete this customer ?");
+            }
+
+            document.querySelector('.dropdown-content').addEventListener('mouseleave', function () {
+                document.querySelector('.dropdown-content').style.display = 'none';
+            });
             function updateItemsPerPage() {
                 var selectedNumber = document.getElementById("numberOnPage").value;
                 window.location.href = "CustomerManager?Service=listAllCustomer&numberOnPage=" + selectedNumber;

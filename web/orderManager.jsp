@@ -449,7 +449,7 @@
                                 <span class="text-danger fw-bold fs-4">Add date:</span><%=order.getOrderDate()%>
                             </div>
                             <div class="col-sm-12 col-md-2">
-                                <span class="text-danger fw-bold ">Total: </span><%=df.format(order.getTotal())%> vnđ
+                                <span class="text-danger fw-bold ">Total: </span><%=df.format(order.getTotal())%> $
                             </div>
                             <div class="col-6 fs-4 col-md-2">
                                 <form id="statusForm_<%=order.getOrderId()%>" action="orderManagerServlet" method="POST" onsubmit="return confirm('Are you sure you want to update the status?')">

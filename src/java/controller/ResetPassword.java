@@ -6,6 +6,7 @@
 package controller;
 
 import GoogleLogin.SendVerify;
+import constant.IConstant;
 import controller.UserVerify;
 import dal.DAOUser;
 import java.io.IOException;
@@ -68,6 +69,11 @@ throws ServletException, IOException {
         String password = request.getParameter("password");
         String cfpassword = request.getParameter("cfpassword");
         if (password != null && cfpassword != null && email != null) {
+            if(!isValidPassword(password)){
+                request.setAttribute("message", "Password must have at least 8 characters and combine uppercase letters, lowercase letters, numbers and special characters !");
+                request.setAttribute("email", email);
+                request.getRequestDispatcher("changepassword.jsp").forward(request, response);
+            }
             if (password.equals(cfpassword)) {
                 request.setAttribute("message", "Reset password successfully");
                 u.changePassword(email, password);
@@ -114,6 +120,10 @@ throws ServletException, IOException {
         }
     }
 }
+    private boolean isValidPassword(String password) {
+        // Kiểm tra độ dài mật khẩu và mức độ mạnh
+        return password.matches(IConstant.REGEX_PASSWORD);
+    }
 
     /** 
      * Returns a short description of the servlet.

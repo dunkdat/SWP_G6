@@ -49,7 +49,7 @@
         </c:if>
     
     <c:if test="${current_user.role == 'Customer'}">
-        <img src="images/cart.png" alt="Cart">
+        <a href="cart"><img src="images/cart.png" style="width: auto;" alt="Cart"></a> 
     </c:if>
 </div>
         </div>

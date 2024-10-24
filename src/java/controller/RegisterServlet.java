@@ -1,5 +1,6 @@
 package controller;
 
+import constant.IConstant;
 import dal.DAOCategory;
 import dal.DAOUser;
 import model.User;
@@ -64,6 +65,11 @@ public class RegisterServlet extends HttpServlet {
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
+                if(!isValidPassword(password)){
+                    request.setAttribute("message", "Password must have at least 8 characters and combine uppercase letters, lowercase letters, numbers and special characters !");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
+                }
                 // Validate password confirmation
                 if (!password.equals(cfpassword)) {
                     request.setAttribute("message", "Passwords do not match!");
@@ -83,6 +89,7 @@ public class RegisterServlet extends HttpServlet {
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
+                
                
                 
                 for(User x : u.getAllUser()){
@@ -111,7 +118,10 @@ public class RegisterServlet extends HttpServlet {
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }
-
+private boolean isValidPassword(String password) {
+        // Kiểm tra độ dài mật khẩu và mức độ mạnh
+        return password.matches(IConstant.REGEX_PASSWORD);
+    }
     /** 
      * Handles the HTTP GET method.
      * @param request servlet request
