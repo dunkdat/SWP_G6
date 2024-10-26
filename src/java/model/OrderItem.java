@@ -15,18 +15,27 @@ import model.Products;
  * @author Lenovo
  */
 public class OrderItem {
-    private int id, productId, quantity;
+    private int id, productId, quantity, getRated;
     private double price;
     private Products products;
 
     public OrderItem() {
     }
 
-    public OrderItem(int id, int quantity, double price, Products products) {
+    public OrderItem(int id, int quantity, double price, Products products, int getRated) {
         this.id = id;
         this.quantity = quantity;
         this.price = price;
         this.products = products;
+        this.getRated = getRated;
+    }
+
+    public int getGetRated() {
+        return getRated;
+    }
+
+    public void setGetRated(int getRated) {
+        this.getRated = getRated;
     }
     
     public int getId() {

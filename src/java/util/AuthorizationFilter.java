@@ -22,7 +22,7 @@ public class AuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        
+
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession(false);
@@ -51,39 +51,50 @@ public class AuthorizationFilter implements Filter {
                         return;
                     }
                     break;
-            }
-        }else{
-            if (isRestrictedForGuest(path)) {
+                case "Staff Manager":
+                    if (isRestrictedForManager(path)) {
                         httpResponse.sendRedirect(httpRequest.getContextPath() + "/unauthorized.jsp");
                         return;
                     }
+                    break;
+            }
+        } else {
+            if (isRestrictedForGuest(path)) {
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/unauthorized.jsp");
+                return;
+            }
         }
 
         // Proceed to the next filter or the target resource
         chain.doFilter(request, response);
     }
-    
+
     private boolean isRestrictedForGuest(String path) {
-        return path.equals("/userlist") || path.equals("/userdetail") || path.equals("/userlist.jsp") || path.equals("/onsale") || path.equals("/onsale.jsp") || 
-               path.equals("/settinglist") || path.equals("/settingdetail") || path.equals("/settinglist.jsp") ||
-               path.equals("/staffproductlist") || path.equals("/staffproductdetail") || path.equals("/stafflistproduct.jsp")|| path.equals("/rolelist") || path.equals("/rolelist.jsp");
+        return path.equals("/userlist") || path.equals("/userdetail") || path.equals("/onsale")
+                || path.equals("/settinglist") || path.equals("/settingdetail") | path.equals("/CustomerManager") || path.equals("/orderManagerServlet")
+                || path.equals("/staffproductlist") || path.equals("/staffproductdetail") || path.equals("/rolelist");
     }
-    
-    
+
     private boolean isRestrictedForCustomer(String path) {
-        return path.equals("/userlist") || path.equals("/userdetail") || path.equals("/userlist.jsp") || path.equals("/onsale") || path.equals("/onsale.jsp") || 
-               path.equals("/settinglist") || path.equals("/settingdetail") || path.equals("/settinglist.jsp") ||
-               path.equals("/staffproductlist") || path.equals("/staffproductdetail") || path.equals("/stafflistproduct.jsp")|| path.equals("/rolelist") || path.equals("/rolelist.jsp");
+        return path.equals("/userlist") || path.equals("/userdetail") || path.equals("/onsale")
+                || path.equals("/settinglist") || path.equals("/settingdetail") || path.equals("/CustomerManager") || path.equals("/orderManagerServlet")
+                || path.equals("/staffproductlist") || path.equals("/staffproductdetail") || path.equals("/rolelist");
     }
 
     private boolean isRestrictedForStaff(String path) {
-        return path.equals("/userlist") || path.equals("/userdetail") || path.equals("/userlist.jsp") ||
-               path.equals("/settinglist") || path.equals("/settingdetail") || path.equals("/settinglist.jsp")|| path.equals("/rolelist") || path.equals("/rolelist.jsp");
+        return path.equals("/userlist") || path.equals("/userdetail") || path.equals("/CustomerManager") || path.equals("/orderManagerServlet")
+                || path.equals("/settinglist") || path.equals("/settingdetail") || path.equals("/rolelist");
     }
 
     private boolean isRestrictedForAdmin(String path) {
-        return path.equals("/staffproductlist") || path.equals("/staffproductdetail")|| path.equals("/stafflistproduct.jsp")
-                || path.equals("/onsale") || path.equals("/onsale.jsp");
+        return path.equals("/staffproductlist") || path.equals("/staffproductdetail") || path.equals("/CustomerManager") || path.equals("/orderManagerServlet")
+                || path.equals("/onsale");
+    }
+
+    private boolean isRestrictedForManager(String path) {
+        return path.equals("/staffproductlist") || path.equals("/staffproductdetail") || path.equals("/settinglist") || path.equals("/userlist") || path.equals("/userdetail")
+                || path.equals("/settingdetail") || path.equals("/rolelist")
+                || path.equals("/onsale");
     }
 
     @Override

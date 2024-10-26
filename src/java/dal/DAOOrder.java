@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -89,7 +90,22 @@ public class DAOOrder extends DBContext{
         } catch (SQLException e) {
             System.out.println(e);
         }
-    } 
+    }
+    public void getRated(String product_id, int orderId, int star) {
+        String sql = "update `badminton_shop`.`orderitem`\n"
+                + "set `getRated` = ?\n"
+                + "WHERE product_id = ? and orderId = ?";
+        try {
+                PreparedStatement st = connection.prepareStatement(sql);
+                 st.setInt(1, star);
+                 st.setString(2, product_id);
+                 st.setInt(3, orderId);
+                st.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
     public float getShipPriceOfOrder(int orderId){
         String query = "SELECT s.price FROM Orders o " +
                        "JOIN Shippers s ON o.shipper_id = s.id " +
@@ -151,7 +167,7 @@ public class DAOOrder extends DBContext{
                            rs.getInt("id") , 
                      rs.getInt("quantity"),
                         rs.getDouble("price"), 
-                     daoPro.getProductById(rs.getString("product_id"))));
+                     daoPro.getProductById(rs.getString("product_id")), rs.getInt("getRated")));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -424,7 +440,7 @@ System.out.println("qqqq "+query);
                     while (rs.next()) {
                        Products pro = daoPro.getProductById(rs.getString("proId"));
                         orderItems.add(new OrderItem(rs.getInt("id"), 
-                                rs.getInt("quantity"), rs.getDouble("price"), pro));
+                                rs.getInt("quantity"), rs.getDouble("price"), pro, rs.getInt("getRated")));
                     }
                 }
             }
@@ -459,6 +475,203 @@ System.out.println("qqqq "+query);
 
         return null;
     }
+       public int getPendingOrderCount(){
+        String query = "SELECT COUNT(*) FROM orders WHERE status = 'Chờ xác nhận' AND createAt >= ?";
+        
+        // Lấy ngày hiện tại và tính ngày 7 ngày trước
+        LocalDate sevenDaysAgo = LocalDate.now().minusDays(7);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, sevenDaysAgo.format(formatter));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1); // Trả về tổng số đơn hàng
+                }
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+                
+        return 0;
+    }
+       public int getConfirmOrderCount(){
+        String query = "SELECT COUNT(*) FROM orders WHERE status = 'Đã xác nhận' AND createAt >= ?";
+        
+        // Lấy ngày hiện tại và tính ngày 7 ngày trước
+        LocalDate sevenDaysAgo = LocalDate.now().minusDays(7);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, sevenDaysAgo.format(formatter));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1); // Trả về tổng số đơn hàng
+                }
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+                
+        return 0;
+    }
+       public int getCancelOrderCount(){
+        String query = "SELECT COUNT(*) FROM orders WHERE status = 'Đã hủy' AND createAt >= ?";
+        
+        // Lấy ngày hiện tại và tính ngày 7 ngày trước
+        LocalDate sevenDaysAgo = LocalDate.now().minusDays(7);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, sevenDaysAgo.format(formatter));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1); // Trả về tổng số đơn hàng
+                }
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+                
+        return 0;
+    }
+       public int getSoldCount(){
+        String query = "SELECT COUNT(*) FROM orders WHERE status = 'Đã giao' AND createAt >= ?";
+        
+        // Lấy ngày hiện tại và tính ngày 7 ngày trước
+        LocalDate sevenDaysAgo = LocalDate.now().minusDays(7);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, sevenDaysAgo.format(formatter));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1); // Trả về tổng số đơn hàng
+                }
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+                
+        return 0;
+    }
+       public double getTotalRevenueInLast7Days() {
+        double totalRevenue = 0;
+
+        // SQL query để tính tổng doanh thu từ các đơn hàng 'Đã giao' trong 7 ngày gần đây
+        String query = "SELECT oi.price, oi.quantity " +
+                       "FROM orderitem oi " +
+                       "JOIN orders o ON oi.orderId = o.id " +
+                       "WHERE o.status = 'Đã giao' AND o.createAt >= ?";
+
+        // Tính ngày 7 ngày trước từ ngày hiện tại
+        LocalDate sevenDaysAgo = LocalDate.now().minusDays(7);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            // Đặt giá trị cho parameter là ngày 7 ngày trước
+            statement.setString(1, sevenDaysAgo.format(formatter));
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Duyệt qua các kết quả để tính tổng doanh thu
+                while (resultSet.next()) {
+                    double price = resultSet.getDouble("price");
+                    int quantity = resultSet.getInt("quantity");
+                    totalRevenue += price * quantity;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalRevenue;
+    }
+        public List<Integer> getOrderCountInLast7Days() {
+        List<Integer> orderCountList = new ArrayList<>();
+
+        // SQL query để lấy tổng số đơn hàng của từng ngày trong 7 ngày gần nhất
+        String sql = "SELECT DATE(o.createAt) as date, COUNT(*) as total_orders " +
+                     "FROM orders o " +
+                     "WHERE o.createAt >= CURDATE() - INTERVAL 7 DAY " +
+                     "GROUP BY DATE(o.createAt) " +
+                     "ORDER BY DATE(o.createAt)";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet rs = statement.executeQuery();
+
+            // Khởi tạo một mảng 7 phần tử với giá trị mặc định là 0
+            for (int i = 0; i < 7; i++) {
+                orderCountList.add(0);
+            }
+
+            // Lấy ngày hiện tại
+            LocalDate currentDate = LocalDate.now();
+            
+            // Duyệt qua kết quả query
+            while (rs.next()) {
+                LocalDate date = rs.getDate("date").toLocalDate();
+                int totalOrders = rs.getInt("total_orders");
+
+                // Tính khoảng cách giữa ngày hiện tại và ngày trong result set
+                int daysAgo = (int) currentDate.minusDays(7).until(date).getDays();
+                
+                // Cập nhật tổng số đơn hàng cho ngày đó trong danh sách
+                if (daysAgo >= 0 && daysAgo < 7) {
+                    orderCountList.set(daysAgo, totalOrders);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orderCountList;
+    }
+        public List<Integer> getSuccessOrderCountInLast7Days() {
+        List<Integer> orderCountList = new ArrayList<>();
+
+        // SQL query để lấy tổng số đơn hàng của từng ngày trong 7 ngày gần nhất
+        String sql = "SELECT DATE(o.createAt) as date, COUNT(*) as total_orders " +
+                     "FROM orders o " +
+                     "WHERE o.status = 'Đã giao' AND o.createAt >= CURDATE() - INTERVAL 7 DAY " +
+                     "GROUP BY DATE(o.createAt) " +
+                     "ORDER BY DATE(o.createAt)";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet rs = statement.executeQuery();
+
+            // Khởi tạo một mảng 7 phần tử với giá trị mặc định là 0
+            for (int i = 0; i < 7; i++) {
+                orderCountList.add(0);
+            }
+
+            // Lấy ngày hiện tại
+            LocalDate currentDate = LocalDate.now();
+            
+            // Duyệt qua kết quả query
+            while (rs.next()) {
+                LocalDate date = rs.getDate("date").toLocalDate();
+                int totalOrders = rs.getInt("total_orders");
+
+                // Tính khoảng cách giữa ngày hiện tại và ngày trong result set
+                int daysAgo = (int) currentDate.minusDays(7).until(date).getDays();
+                
+                // Cập nhật tổng số đơn hàng cho ngày đó trong danh sách
+                if (daysAgo >= 0 && daysAgo < 7) {
+                    orderCountList.set(daysAgo, totalOrders);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orderCountList;
+    }
     public String getDate(Timestamp orderDateTimestamp) {
         java.util.Date utilDate = new java.util.Date(orderDateTimestamp.getTime());
         SimpleDateFormat desiredFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -470,6 +683,5 @@ System.out.println("qqqq "+query);
         DAOOrder daoOrder = new DAOOrder();
         
         // Create a new Order object
-        System.out.println(daoOrder.getShipPriceOfOrder(4));
     }
 }

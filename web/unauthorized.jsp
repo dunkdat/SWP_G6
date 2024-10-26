@@ -94,21 +94,40 @@
         </nav>
         
         <!-- error not authorized here -->
-        <div style="text-align: center;">
+        <div style="text-align: center;" class="content collapsed">
         <h1>403 - Not Authorized</h1>
     <p>You do not have permission to view this page.</p>
         </div>
+        <footer class="footer collapsed" style="margin-top: 50%">
+            <div class="footer-content" >
+        <p>© 2024 Online Shop. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/terms-of-service">Terms of Service</a></li>
+            <li><a href="/contact-us">Contact Us</a></li>
+            <li><a href="/about-us">About Us</a></li>
+        </ul>
+        <div class="social-media">
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://twitter.com" target="_blank">Twitter</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+        </div>
+    </div>
+</footer>
         <script>
             function toggleNavbar() {
                 const navbar = document.getElementById('navbar');
-                const content = document.getElementById('content');
+                const footer = document.querySelector('.footer');
+                const content = document.querySelector('.content');
                 const header = document.querySelector('.header');
 
                 navbar.classList.toggle('hidden');
                 navbar.classList.toggle('visible');
-                content.classList.toggle('expanded');
+                footer.classList.toggle('expanded');
                 header.classList.toggle('expanded');
+                content.classList.toggle('expanded');
                 content.classList.toggle('collapsed');
+                footer.classList.toggle('collapsed');
                 header.classList.toggle('collapsed');
             }
         </script>

@@ -866,6 +866,43 @@ public List<Products> getProductsByNameColorSize(String name, String color, Inte
         // If no ratings are found, return 0
         return averageRating == 0 ? 0 : averageRating;
     }
+    public float getAverageStarRatingTotal() {
+        float averageRating = 0;
+        String sql = "SELECT AVG(star_rating) as average_rating FROM Reviews";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+
+            // Check if there are any ratings
+            if (rs.next()) {
+                averageRating = rs.getFloat("average_rating");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // If no ratings are found, return 0
+        return averageRating == 0 ? 0 : averageRating;
+    }
+    public int countAllReviews() {
+    int reviewCount = 0;
+    String sql = "SELECT COUNT(*) as review_count FROM Reviews";
+
+    try {
+        PreparedStatement pre = connection.prepareStatement(sql);
+        ResultSet rs = pre.executeQuery();
+
+        // Check if any reviews are found
+        if (rs.next()) {
+            reviewCount = rs.getInt("review_count");
+        }
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+
+    return reviewCount;
+}
 public Map<String, Float> getAllAverageStarRatings() {
     Map<String, Float> averageRatingsMap = new HashMap<>();
     String sql = "SELECT product_name, AVG(star_rating) as average_rating FROM Reviews GROUP BY product_name";
@@ -1118,7 +1155,7 @@ public String getProductLinkPicture(String nameProduct, String color) {
     }
     public static void main(String[] args) {
         DAOProduct d = new DAOProduct();
-        System.out.println(d.getProductLinkPicture("Yonex Power Cushion 65 Z", "Black"));
+        System.out.println(d.getAverageStarRatingTotal());
     }
 
 }

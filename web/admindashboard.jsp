@@ -165,65 +165,68 @@
         </div>
     </header>
         <div class="toggle-button" onclick="toggleNavbar()">☰</div>
-
         <nav class="navbar hidden" id="navbar">
             <div class="logo">Online Shop</div>
+            <div class="dropdown">
+                <a href="homepage">Home</a>
+            </div>
             
-            <div class="dropdown"><a href="homepage">HomePage</a></div>
-            <div class="dropdown"><a href="dashboard?role=${current_user.role}">Dash Board </a></div>
-            <div class="dropdown"><a href="userlist">User Management</a></div>
-            <div class="dropdown"><a href="settinglist">Setting Management</a></div>
-            
-            
+                <c:if test="${current_user.role == 'Staff'}">
+                    <div class="dropdown">
+                        <a href="dashboard?role=${current_user.role}">Dashboard</a>
+
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="staffproductlist">Products List</a>  
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="onsale">On Sale Products</a>
+                    </div>
+
+                </c:if>
+                <c:if test="${current_user.role == 'Admin'}">
+                    <div class="dropdown">
+                        <a href="dashboard?role=${current_user.role}">Dashboard</a>
+
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="userlist">User Management</a>
+                
+                    </div>
+                    <div class="dropdown">
+
+                        <a href="settinglist">Setting Management</a>
+                    </div>
+
+                </c:if>
             
         </nav>
     <div class="dashboard-container collapsed" id="content">
         <h1>Admin Dashboard</h1>
 
-        <!-- Date Range Filter -->
-        <div class="date-range-filter">
-            <form method="GET" action="dashboard.jsp">
-                <label for="startDate">Start Date:</label>
-                <input type="date" id="startDate" name="startDate" value="<%= request.getParameter("startDate") %>">
-
-                <label for="endDate">End Date:</label>
-                <input type="date" id="endDate" name="endDate" value="<%= request.getParameter("endDate") %>">
-
-                <button type="submit">Apply</button>
-            </form>
-        </div>
-
         <!-- Statistics Section -->
         <div class="statistics">
-            <!-- New Orders Section -->
-            <div class="orders-section">
-                <h2>New Orders</h2>
-                <p>Success: <%= request.getAttribute("successOrders") %></p>
-                <p>Cancelled: <%= request.getAttribute("cancelledOrders") %></p>
-                <p>Submitted: <%= request.getAttribute("submittedOrders") %></p>
-            </div>
+    <!-- New Orders Chart -->
+    <div class="chart-section">
+        <h2>New Orders</h2>
+        <canvas id="newOrdersChart"></canvas>
+    </div>
 
-            <!-- Revenues Section -->
-            <div class="revenues-section">
-                <h2>Revenues</h2>
-                <p>Total: <%= request.getAttribute("totalRevenues") %></p>
-                <p>By Product Categories: <%= request.getAttribute("revenuesByCategories") %></p>
-            </div>
+    <!-- Revenue Chart -->
+    <div class="chart-section">
+        <h2>Revenue</h2>
+        <canvas id="revenueChart"></canvas>
+    </div>
 
-            <!-- Customers Section -->
-            <div class="customers-section">
-                <h2>Customers</h2>
-                <p>Newly Registered: <%= request.getAttribute("newRegisteredCustomers") %></p>
-                <p>Newly Bought: <%= request.getAttribute("newBoughtCustomers") %></p>
-            </div>
-
-            <!-- Feedbacks Section -->
-            <div class="feedbacks-section">
-                <h2>Feedbacks</h2>
-                <p>Average Star (Total): <%= request.getAttribute("avgFeedbackStarTotal") %></p>
-                <p>By Product Categories: <%= request.getAttribute("avgFeedbackByCategories") %></p>
-            </div>
-        </div>
+    <!-- Feedbacks Chart -->
+    <div class="chart-section">
+        <h2>Feedbacks</h2>
+        <canvas id="feedbackChart"></canvas>
+    </div>
+</div>
 
         <!-- Trend of Order Counts Section -->
         <div class="order-trend">
@@ -273,33 +276,113 @@ function toggleNavbar() {
                 header.classList.toggle('collapsed');
             }
         // Assuming you have trend data coming from the backend
-        var ctx = document.getElementById('orderTrendChart').getContext('2d');
-        var orderTrendChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: <%= request.getAttribute("trendLabels") %>,  // Days (last 7 days)
-                datasets: [{
-                    label: 'Successful Orders',
-                    data: <%= request.getAttribute("successOrderData") %>,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1,
-                    fill: false
-                }, {
-                    label: 'All Orders',
-                    data: <%= request.getAttribute("allOrderData") %>,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1,
-                    fill: false
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+        var trendLabels = JSON.parse('<%= new com.google.gson.Gson().toJson(request.getAttribute("trendLabels")) %>');
+    var successOrderData = JSON.parse('<%= new com.google.gson.Gson().toJson(request.getAttribute("successOrderData")) %>');
+    var allOrderData = JSON.parse('<%= new com.google.gson.Gson().toJson(request.getAttribute("allOrderData")) %>');
+
+    // Sử dụng dữ liệu đã được chuyển đổi để hiển thị biểu đồ
+    var ctx = document.getElementById('orderTrendChart').getContext('2d');
+    var orderTrendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: trendLabels,  // Days (last 7 days)
+            datasets: [{
+                label: 'Successful Orders',
+                data: successOrderData,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                fill: false
+            }, {
+                label: 'All Orders',
+                data: allOrderData,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                fill: false
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
+        }
+    });
+    var newOrdersData = [<%= request.getAttribute("successOrders") %>, <%= request.getAttribute("cancelledOrders") %>, <%= request.getAttribute("submittedOrders") %>];
+    var ctxNewOrders = document.getElementById('newOrdersChart').getContext('2d');
+    new Chart(ctxNewOrders, {
+        type: 'bar',
+        data: {
+            labels: ['Confirmed', 'Cancelled', 'Submitted'],
+            datasets: [{
+                label: 'New Orders',
+                data: newOrdersData,
+                backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)'],
+                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',  // Biểu đồ ngang
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Biểu đồ cho Revenue
+    var revenueData = [<%= request.getAttribute("totalRevenues") %>, <%= request.getAttribute("newBoughts") %>];
+    var ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+    new Chart(ctxRevenue, {
+        type: 'bar',
+        data: {
+            labels: ['Total Revenue', 'Newly Bought'],
+            datasets: [{
+                label: 'Revenue',
+                data: revenueData,
+                backgroundColor: ['rgba(153, 102, 255, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                borderColor: ['rgba(153, 102, 255, 1)', 'rgba(255, 206, 86, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',  // Biểu đồ ngang
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    
+
+    // Biểu đồ cho Feedbacks
+    var feedbackData = [<%= request.getAttribute("totalFeedbacks") %>, <%= request.getAttribute("avgFeedbackStarTotal") %>];
+    var ctxFeedback = document.getElementById('feedbackChart').getContext('2d');
+    new Chart(ctxFeedback, {
+        type: 'bar',
+        data: {
+            labels: ['Total Feedbacks', 'Average Star Rating'],
+            datasets: [{
+                label: 'Feedbacks',
+                data: feedbackData,
+                backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)'],
+                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',  // Biểu đồ ngang
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
     </script>
 </body>
 </html>

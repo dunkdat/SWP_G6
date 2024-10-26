@@ -11,10 +11,35 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="t
+              ext/html; charset=UTF-8">
         <title>My order</title>
         <link rel="stylesheet" href="css/homestyle.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <style>
+          .star-rating .star {
+    font-size: 24px;
+    cursor: pointer;
+    color: #ccc; /* Màu mặc định khi chưa chọn */
+    transition: color 0.2s;
+}
+
+.star-rating .star.selected {
+    color: #FFD700; /* Màu vàng cho ngôi sao đã chọn */
+}
+
+/* Hover ngôi sao và các ngôi sao bên trái nó */
+.star-rating .star:hover,
+.star-rating .star:hover ~ .star {
+    color: #FFD700;
+}
+
+/* Khi không hover thì các sao bên phải trở lại màu ban đầu */
+.star-rating .star:hover ~ .star {
+    color: #ccc;
+}
+        </style>
     </head>
     <body>
       <header class="header collapsed">
@@ -100,7 +125,7 @@
                                                                     </c:if>
                                                                 </p>
                                                             </div>
-                                                            <div class="col-md-3 col-lg-3 col-xl-3 d-flex">
+                                                            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                                                     <input id="form1" min="0" name="quantity" value="${orderItem.quantity}" type="number"
                                                                            class="form-control form-control-sm" readonly />
                                                             </div>
@@ -109,6 +134,59 @@
                                                             <div class="col-md-2 col-lg-2 col-xl-2 offset-lg-1">
                                                                 <fmt:formatNumber value="${totalPrice}" type="number" maxFractionDigits="2" minFractionDigits="2" />$
                                                             </div>
+                                                            <div class="col-md-3 col-lg-3 col-xl-2">
+                                                                <c:if test="${order.status == 'Đã giao'}">
+                                                                    <c:if test="${orderItem.getRated == -1}">
+                                                                    
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#feedbackModal${itemPro.id}">
+    Give Feedback
+</button>
+                          </c:if>
+                                                                        <c:if test="${orderItem.getRated != -1}">
+                                                                        <div class="star-rating">
+            <c:forEach begin="1" end="5" var="i">
+                <i class="fa-star ${i <= orderItem.getRated ? 'fas' : 'far'}"></i>
+            </c:forEach>
+            <span>${orderItem.getRated}</span> <!-- Display numeric rating if desired -->
+        </div>                               
+                </c:if>                                                   
+        </c:if> </div>
+                                                            <div class="modal fade" id="feedbackModal${itemPro.id}" tabindex="-1" aria-labelledby="feedbackModalLabel${order.id}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel${itemPro.id}">Give Feedback for ${itemPro.name}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="feedbackServlet">
+                    <input type="hidden" name="order_id" value="${order.id}"/>
+                    <input type="hidden" name="product_id" value="${itemPro.id}"/>
+                    <input type="hidden" name="product_name" value="${itemPro.name}"/>
+                    <div class="mb-3">
+    <label class="form-label">Rating:</label>
+    <div class="star-rating">
+        <input type="hidden" name="rating" id="rating" value="0"/>
+        <span class="star" data-value="1">&#9733;</span>
+        <span class="star" data-value="2">&#9733;</span>
+        <span class="star" data-value="3">&#9733;</span>
+        <span class="star" data-value="4">&#9733;</span>
+        <span class="star" data-value="5">&#9733;</span>
+    </div>
+</div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Comment:</label>
+                        <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Write your feedback here..." required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
                                                         </div>
                                                 </c:forEach>
                                                 <div class="d-flex align-items-center justify-content-between">
@@ -120,7 +198,9 @@
                                                  <span class="text-end bg-info text-white fw-bold p-3 rounded">
                                                      Total this order: <fmt:formatNumber value="${sub+shipPrice}" type="number" maxFractionDigits="2" minFractionDigits="2" />$
                                                  </span>
+                                                 
                                                 </div>
+                                                 
                                             </c:forEach>  
                                             <div class="pt-5">
                                                 <h6 class="mb-0"><a href="homepage" class="text-body"><i
@@ -135,6 +215,7 @@
                 </div>
             </div>
         </section>
+                                         
                                             <script>
                                                 const avatarElement = document.querySelector('.avatar');
 if (avatarElement) {
@@ -145,6 +226,27 @@ if (avatarElement) {
             document.querySelector('.dropdown-content').addEventListener('mouseleave', function () {
                 document.querySelector('.dropdown-content').style.display = 'none';
             });
+            document.querySelectorAll('.star-rating').forEach((ratingContainer) => {
+    const stars = ratingContainer.querySelectorAll('.star');
+    const ratingInput = ratingContainer.querySelector('input[name="rating"]');
+
+    stars.forEach((star) => {
+        star.addEventListener('click', function () {
+            const value = this.getAttribute('data-value');
+            ratingInput.value = value;
+            updateStars(stars, value);
+        });
+    });
+});
+
+function updateStars(stars, rating) {
+    stars.forEach((star) => {
+        star.classList.toggle('selected', star.getAttribute('data-value') <= rating);
+    });
+}
+
                                             </script>
+                                            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
     </body>
 </html>
