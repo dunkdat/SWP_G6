@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.DAOCategory;
 import dal.DAOOrder;
 import dal.DAOProduct;
 import dal.DAOUser;
@@ -13,8 +14,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  *
@@ -82,6 +85,22 @@ public class DashboardServlet extends HttpServlet {
                 request.setAttribute("successOrderData", successOrderData);
                 request.setAttribute("allOrderData", allOrderData);
                 request.getRequestDispatcher("admindashboard.jsp").forward(request, response);
+                return;
+            }
+            if(role.equals("Staff")){
+                request.setAttribute("inventories", p.getTotalInventory());
+                request.setAttribute("goodSold", o.getTotalSoldQuantity());
+                List<String> trendLabels = Arrays.asList("Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7");
+                List<Integer> successOrderData = o.getOrderCountInLast7Days();
+                List<Integer> allOrderData = o.getSuccessOrderCountInLast7Days();
+                Map<String, Integer> soldQuantityByCategory = o.getSoldQuantityByCategory();
+
+                request.setAttribute("categoryLabels", new ArrayList<>(soldQuantityByCategory.keySet()));
+                request.setAttribute("categoryValues", new ArrayList<>(soldQuantityByCategory.values()));
+                request.setAttribute("trendLabels", trendLabels);
+                request.setAttribute("successOrderData", successOrderData);
+                request.setAttribute("allOrderData", allOrderData);
+                request.getRequestDispatcher("staffdashboard.jsp").forward(request, response);
                 return;
             }
         }

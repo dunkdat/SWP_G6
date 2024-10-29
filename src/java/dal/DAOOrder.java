@@ -16,7 +16,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import model.Order;
 import model.OrderItem;
@@ -591,12 +593,54 @@ System.out.println("qqqq "+query);
         return totalRevenue;
     }
         public List<Integer> getOrderCountInLast7Days() {
+    List<Integer> orderCountList = new ArrayList<>();
+
+    // SQL query để lấy tổng số đơn hàng của từng ngày trong 7 ngày gần nhất, bao gồm cả ngày hôm nay
+    String sql = "SELECT DATE(o.createAt) as date, COUNT(*) as total_orders " +
+                 "FROM orders o " +
+                 "WHERE o.createAt >= CURDATE() - INTERVAL 6 DAY " + // Thay đổi từ 7 thành 6 để bao gồm ngày hôm nay
+                 "GROUP BY DATE(o.createAt) " +
+                 "ORDER BY DATE(o.createAt)";
+
+    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        ResultSet rs = statement.executeQuery();
+
+        // Khởi tạo một mảng 7 phần tử với giá trị mặc định là 0
+        for (int i = 0; i < 7; i++) {
+            orderCountList.add(0);
+        }
+
+        // Lấy ngày hiện tại
+        LocalDate currentDate = LocalDate.now();
+        
+        // Duyệt qua kết quả query
+        while (rs.next()) {
+            LocalDate date = rs.getDate("date").toLocalDate();
+            int totalOrders = rs.getInt("total_orders");
+
+            // Tính khoảng cách giữa ngày hiện tại và ngày trong result set
+            int daysAgo = (int) currentDate.minusDays(6).until(date).getDays(); // Chỉnh từ 7 thành 6
+            
+            // Cập nhật tổng số đơn hàng cho ngày đó trong danh sách
+            if (daysAgo >= 0 && daysAgo < 7) {
+                orderCountList.set(daysAgo, totalOrders);
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return orderCountList;
+}
+
+        public List<Integer> getSuccessOrderCountInLast7Days() {
         List<Integer> orderCountList = new ArrayList<>();
 
         // SQL query để lấy tổng số đơn hàng của từng ngày trong 7 ngày gần nhất
         String sql = "SELECT DATE(o.createAt) as date, COUNT(*) as total_orders " +
                      "FROM orders o " +
-                     "WHERE o.createAt >= CURDATE() - INTERVAL 7 DAY " +
+                     "WHERE o.status = 'Đã giao' AND o.createAt >= CURDATE() - INTERVAL 6 DAY " +
                      "GROUP BY DATE(o.createAt) " +
                      "ORDER BY DATE(o.createAt)";
 
@@ -617,7 +661,7 @@ System.out.println("qqqq "+query);
                 int totalOrders = rs.getInt("total_orders");
 
                 // Tính khoảng cách giữa ngày hiện tại và ngày trong result set
-                int daysAgo = (int) currentDate.minusDays(7).until(date).getDays();
+                int daysAgo = (int) currentDate.minusDays(6).until(date).getDays();
                 
                 // Cập nhật tổng số đơn hàng cho ngày đó trong danh sách
                 if (daysAgo >= 0 && daysAgo < 7) {
@@ -631,46 +675,21 @@ System.out.println("qqqq "+query);
 
         return orderCountList;
     }
-        public List<Integer> getSuccessOrderCountInLast7Days() {
-        List<Integer> orderCountList = new ArrayList<>();
+        public int getTotalSoldQuantity() {
+        int totalQuantity = 0;
+        String sql = "SELECT SUM(quantity) AS totalQuantity FROM orderitem";
 
-        // SQL query để lấy tổng số đơn hàng của từng ngày trong 7 ngày gần nhất
-        String sql = "SELECT DATE(o.createAt) as date, COUNT(*) as total_orders " +
-                     "FROM orders o " +
-                     "WHERE o.status = 'Đã giao' AND o.createAt >= CURDATE() - INTERVAL 7 DAY " +
-                     "GROUP BY DATE(o.createAt) " +
-                     "ORDER BY DATE(o.createAt)";
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            ResultSet rs = statement.executeQuery();
-
-            // Khởi tạo một mảng 7 phần tử với giá trị mặc định là 0
-            for (int i = 0; i < 7; i++) {
-                orderCountList.add(0);
+            if (resultSet.next()) {
+                totalQuantity = resultSet.getInt("totalQuantity");
             }
-
-            // Lấy ngày hiện tại
-            LocalDate currentDate = LocalDate.now();
-            
-            // Duyệt qua kết quả query
-            while (rs.next()) {
-                LocalDate date = rs.getDate("date").toLocalDate();
-                int totalOrders = rs.getInt("total_orders");
-
-                // Tính khoảng cách giữa ngày hiện tại và ngày trong result set
-                int daysAgo = (int) currentDate.minusDays(7).until(date).getDays();
-                
-                // Cập nhật tổng số đơn hàng cho ngày đó trong danh sách
-                if (daysAgo >= 0 && daysAgo < 7) {
-                    orderCountList.set(daysAgo, totalOrders);
-                }
-            }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return orderCountList;
+        return totalQuantity;
     }
     public String getDate(Timestamp orderDateTimestamp) {
         java.util.Date utilDate = new java.util.Date(orderDateTimestamp.getTime());
@@ -678,10 +697,38 @@ System.out.println("qqqq "+query);
         String formattedDate = desiredFormat.format(utilDate);
         return formattedDate;
     }
+     public Map<String, Integer> getSoldQuantityByCategory() {
+        Map<String, Integer> soldQuantityByCategory = new HashMap<>();
+        String sql = """
+                SELECT c.id AS category, SUM(oi.quantity) AS total_sold
+                FROM orderItem oi
+                JOIN Products p ON oi.product_id = p.id
+                JOIN Categories c ON p.category = c.id
+                WHERE p.status = 'active' AND c.status = 'active'
+                GROUP BY c.id;
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String category = resultSet.getString("category");
+                int totalSold = resultSet.getInt("total_sold");
+                soldQuantityByCategory.put(category, totalSold);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return soldQuantityByCategory;
+    }
     public static void main(String[] args) {
         // Create an instance of DAOOrder
         DAOOrder daoOrder = new DAOOrder();
         
-        // Create a new Order object
+         Map<String, Integer> soldQuantityByCategory = daoOrder.getSoldQuantityByCategory();
+            for (Map.Entry<String, Integer> entry : soldQuantityByCategory.entrySet()) {
+                System.out.println("Category: " + entry.getKey() + ", Total Sold Quantity: " + entry.getValue());
+            }
     }
 }
