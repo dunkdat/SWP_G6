@@ -577,7 +577,6 @@ table tr td {
                         </select>
             <!-- Submit Button -->
             <button type="submit" name="submit" value="update" class="submit-btn" id="saveEditRoleBtn" onclick=" confirmUpdate()">Update</button>
-            <button type="submit" name="submit" value="delete" class="submit-btn" id="saveEditRoleBtn"onclick=" confirmDelete()">Delete</button>
         </form>
     </div>
 </div>

@@ -1153,6 +1153,22 @@ public String getProductLinkPicture(String nameProduct, String color) {
         
         return linkPicture;  // Return the link_picture or null if not found
     }
+public int getTotalInventory() {
+        int totalInventory = 0;
+        String sql = "SELECT SUM(quantity) AS totalInventory FROM Products WHERE status = 'active'";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            if (resultSet.next()) {
+                totalInventory = resultSet.getInt("totalInventory");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalInventory;
+    }
     public static void main(String[] args) {
         DAOProduct d = new DAOProduct();
         System.out.println(d.getAverageStarRatingTotal());

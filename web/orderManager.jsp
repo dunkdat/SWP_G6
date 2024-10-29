@@ -141,48 +141,36 @@
 
     <section>
         <div class="row h-100">
-            <div class="col-md-2 h-100 left-nav-admin p-0">
-                <div class="p-5 pe-0">
-                    <ul>
-                        <li class="py-4 ps-3 mb-3">
-                            <a href="" class="fs-2 text-white d-flex align-items-center">
-                                <i class='bx bxs-dashboard me-3'></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="py-4 ps-3 mb-3 active">
-                            <a href="" class="fs-2 text-white">
-                                <i class='bx bx-cart me-3'></i>
-                                <span>Order</span>
-                            </a>
-                        </li>
-                        <li class="py-4 ps-3 mb-3">
-                            <a href="" class="fs-2 text-white d-flex align-items-center">
-                                <i class='bx bx-circle-three-quarter me-3'></i>
-                                <span>Statistic</span>
-                            </a>
-                        </li>
-                        <li class="py-4 ps-3 mb-3">
-                            <a href="" class="fs-2 text-white d-flex align-items-center">
-                                <i class='bx bxs-data me-3'></i>
-                                <span>Products</span>
-                            </a>
-                        </li>
-                        <li class="py-4 ps-3 mb-3">
-                            <a href="" class="fs-2 text-white d-flex align-items-center">
-                                <i class='bx bx-line-chart me-3'></i>
-                                <span>Stock</span>
-                            </a>
-                        </li>
-                        <li class="py-4 ps-3 mb-3">
-                            <a href="" class="fs-2 text-white d-flex align-items-center">
-                                <i class='bx bx-purchase-tag-alt me-3'></i>
-                                <span>Offer</span>
-                            </a>
-                        </li>
-                    </ul>
+                <div class="col-md-2 left-nav-admin p-0"  style="background-color: #ff6600; height: 100vh;">
+                    <div class="p-5 pe-0">
+                        <ul>
+                            <li class="py-4 ps-3 mb-3">
+                                <a href="" class="fs-2 text-white d-flex align-items-center">
+                                    <i class="bx bxs-dashboard me-3"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="py-4 ps-3 mb-3 active">
+                                <a href="orderManagerServlet" class="fs-2 text-white">
+                                    <i class="bx bx-cart me-3"></i>
+                                    <span>Order</span>
+                                </a>
+                            </li>
+                            <li class="py-4 ps-3 mb-3">
+                                <a href="productlist" class="fs-2 text-white d-flex align-items-center">
+                                    <i class="bx bxs-data me-3"></i>
+                                    <span>Products</span>
+                                </a>
+                            </li>
+                            <li class="py-4 ps-3 mb-3">
+                                <a href="CustomerManager" class="fs-3 text-white text-decoration-none">
+                                    <i class="bx bx-cart me-3"></i>
+                                    <span>User Manager</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
             <div class="col-md-10 h-100 manage-product">
                 <h1 class="fw-bold my-4">Manager Order</h1>
                 <div class="row mt-5 ">

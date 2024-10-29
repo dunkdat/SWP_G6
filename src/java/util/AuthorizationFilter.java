@@ -71,14 +71,14 @@ public class AuthorizationFilter implements Filter {
 
     private boolean isRestrictedForGuest(String path) {
         return path.equals("/userlist") || path.equals("/userdetail") || path.equals("/onsale")
-                || path.equals("/settinglist") || path.equals("/settingdetail") | path.equals("/CustomerManager") || path.equals("/orderManagerServlet")
-                || path.equals("/staffproductlist") || path.equals("/staffproductdetail") || path.equals("/rolelist");
+                || path.equals("/settinglist") || path.equals("/settingdetail") || path.equals("/CustomerManager") || path.equals("/orderManagerServlet")
+                || path.equals("/staffproductlist") || path.equals("/staffproductdetail") || path.equals("/rolelist") || path.startsWith("/dashboard");
     }
 
     private boolean isRestrictedForCustomer(String path) {
         return path.equals("/userlist") || path.equals("/userdetail") || path.equals("/onsale")
                 || path.equals("/settinglist") || path.equals("/settingdetail") || path.equals("/CustomerManager") || path.equals("/orderManagerServlet")
-                || path.equals("/staffproductlist") || path.equals("/staffproductdetail") || path.equals("/rolelist");
+                || path.equals("/staffproductlist") || path.equals("/staffproductdetail") || path.equals("/rolelist") || path.startsWith("/dashboard");
     }
 
     private boolean isRestrictedForStaff(String path) {
