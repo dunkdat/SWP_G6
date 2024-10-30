@@ -120,6 +120,11 @@
             <div class="main-content">
                 <!-- Left Filter Section -->
                 <div class="filter-section">
+                    <h3>Search by name</h3>
+                 <div class="search-bar">
+                    <input type="text" id="searchInput" class="searching" placeholder="Tìm sản phẩm..." autocomplete="off">
+                    <span class="search-icon">🔍</span>
+                </div>
                     <h3>Filter by</h3>
 
                     <!-- Filter by Brand -->

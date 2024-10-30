@@ -94,11 +94,11 @@
         </nav>
         
         <!-- error not authorized here -->
-        <div style="text-align: center;" class="content collapsed">
+        <div  class="content collapsed" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center;">
         <h1>403 - Not Authorized</h1>
     <p>You do not have permission to view this page.</p>
         </div>
-        <footer class="footer collapsed" style="margin-top: 50%">
+        <footer class="footer collapsed">
             <div class="footer-content" >
         <p>© 2024 Online Shop. All rights reserved.</p>
         <ul class="footer-links">
