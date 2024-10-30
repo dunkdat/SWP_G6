@@ -626,6 +626,22 @@ table tr td {
         </form>
     </div>
 </div>
+<footer class="footer" style="margin-top: 10%">
+    <div class="footer-content">
+        <p>© 2024 Online Shop. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/terms-of-service">Terms of Service</a></li>
+            <li><a href="/contact-us">Contact Us</a></li>
+            <li><a href="/about-us">About Us</a></li>
+        </ul>
+        <div class="social-media">
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://twitter.com" target="_blank">Twitter</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+        </div>
+    </div>
+</footer>
         <!-- JavaScript to handle modal and form actions -->
         <script>
               const avatarElement = document.querySelector('.avatar');

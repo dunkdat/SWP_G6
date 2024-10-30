@@ -22,10 +22,7 @@
             <div class="right-section">
                 <!-- Search Bar Section in the header -->
                 <!-- Search Bar Section in the header -->
-                <div class="search-bar">
-                    <input type="text" id="searchInput" class="searching" placeholder="Tìm sản phẩm..." autocomplete="off">
-                    <span class="search-icon">🔍</span>
-                </div>
+                
 
 
                             <div class="icons">
@@ -113,8 +110,8 @@
 
         <div class="content collapsed" id="content">
             <section class="hero">
-                <h1>Welcome to Bad Sport Shop</h1>
-                <p>We are stronger, we are better !!!</p>
+                <h1>Our Products</h1>
+                <p>Find your best partner here !!!</p>
             </section>
 
             <section class="nav-bar">
@@ -125,8 +122,14 @@
                 <a href="contact.jsp">Contact</a>
             </section>
             <div class="main-content">
+                
                 <!-- Left Filter Section -->
                 <div class="filter-section">
+                    <h3>Search by name</h3>
+                 <div class="search-bar">
+                    <input type="text" id="searchInput" class="searching" placeholder="Tìm sản phẩm..." autocomplete="off">
+                    <span class="search-icon">🔍</span>
+                </div>
                     <h3>Filter by</h3>
 
                     <!-- Filter by Brand -->
