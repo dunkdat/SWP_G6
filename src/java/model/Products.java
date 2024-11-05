@@ -45,7 +45,19 @@ public class Products {
 
     public Products() {
     }
-
+   public Products(String pid, String name, String category, String brand,
+                    float price, String color, int size,
+                    int quantity, String linkPicture) {
+        this.id = pid;
+        this.name = name;
+        this.category = category;
+        this.brand = brand;
+        this.price = price;
+        this.color = color;
+        this.size = size;
+        this.quantity = quantity;
+        this.link_picture = linkPicture;
+    }
     public Products(String id, String name, String category, String brand, float price, String color, int size, int quantity, String details, String link_picture) {
         this.id = id;
         this.name = name;

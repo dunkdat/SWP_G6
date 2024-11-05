@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.DAOCategory;
 import dal.DAOProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,6 +32,8 @@ public class StaffOnsaleLists extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             DAOProduct d = new DAOProduct();
+            DAOCategory c = new DAOCategory();
+                    
             String name = request.getParameter("productName");
             String salePercent = request.getParameter("salePercent");
             if(name !=null && salePercent !=null){
@@ -46,6 +49,7 @@ public class StaffOnsaleLists extends HttpServlet {
                 request.setAttribute("page", currentPage);
                     request.setAttribute("totalPages", totalPages);
             request.setAttribute("productlist", d.getAllProduct(null, null, null, null, null, pageSize, offset));
+            request.setAttribute("categoryList", c.getAllCategory());
             request.getRequestDispatcher("onsale.jsp").forward(request, response);
         }
     } 

@@ -165,22 +165,27 @@ public boolean deleteProductByid( String id) {
       return rowsUpdated > 0; 
    }
     // Method to get all products by id
-    public boolean updateSale( String name , String salePercent) {
-        String sql = "update Products set salePercent = ? WHERE name = ? ";
-        int rowsUpdated = 0;
-        try  {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            
-            statement.setString(1, salePercent);
-            statement.setString(2, name);
-            
-             rowsUpdated = statement.executeUpdate();
-            // returns true if the update was successful
-        }catch(Exception e){
-            System.out.println(e);
-        }
-      return rowsUpdated > 0; 
-   }
+    public boolean updateSale(String name, String salePercent) {
+    // SQL statement to update salePercent and price
+    String sql = "UPDATE Products SET salePercent = ?, price = price * ((100 - ?) / 100.0) WHERE name = ?";
+    int rowsUpdated = 0;
+    try {
+        PreparedStatement statement = connection.prepareStatement(sql);
+        
+        // Set the salePercent value and use it for the price calculation
+        statement.setInt(1, Integer.parseInt(salePercent)); // Assuming salePercent is an integer percentage
+        statement.setInt(2, Integer.parseInt(salePercent)); // Use the same value for the price calculation
+        statement.setString(3, name); // Set the product name
+        
+        rowsUpdated = statement.executeUpdate();
+    } catch (Exception e) {
+        System.out.println(e);
+    }
+    
+    // Returns true if the update was successful
+    return rowsUpdated > 0;
+}
+
 public List<Products> getAllProducts() {
     List<Products> products = new ArrayList<>();
     
@@ -649,6 +654,45 @@ public List<Products> getAllSaleProduct(String category, String brand, String lo
 
     return totalProducts;
 }
+     public Products getProductByNameColorSize(String name, String color, String size) {
+        Products product = null;
+        String sql = "SELECT * FROM Products WHERE name = ? AND color = ?";
+        
+        // If size is provided, append the condition to the query
+        if (size != null) {
+            sql += " AND size = ?";
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, color);
+            
+            if (size != null && !size.isBlank()) {
+                ps.setInt(3, Integer.parseInt(size));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    product = new Products();
+                    product.setId(rs.getString("id"));
+                    product.setName(rs.getString("name"));
+                    product.setCategory(rs.getString("category"));
+                    product.setBrand(rs.getString("brand"));
+                    product.setPrice(rs.getFloat("price"));
+                    product.setColor(rs.getString("color"));
+                    product.setSize(rs.getInt("size"));
+                    product.setQuantity(rs.getInt("quantity"));
+                    product.setDetails(rs.getString("details"));
+                    product.setLink_picture(rs.getString("link_picture"));
+                    product.setStatus(rs.getString("status"));
+                    product.setSalePercent(rs.getInt("salePercent"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();  // Proper exception handling/logging
+        }
+        return product;
+    }
 public int getTotalFilterProductsStaff(String category, String status, String searchQuery) {
     int totalProducts = 0;
     try {
@@ -1074,10 +1118,7 @@ public String getProductLinkPicture(String nameProduct, String color) {
     }
     public static void main(String[] args) {
         DAOProduct d = new DAOProduct();
-        Map<String, Float> averageRatings = d.getAllAverageStarRatings();
-for (Map.Entry<String, Float> entry : averageRatings.entrySet()) {
-    System.out.println("Product: " + entry.getKey() + ", Average Rating: " + entry.getValue());
-}
+        System.out.println(d.getProductByNameColorSize("Yonex 6 Racket Bag", "Black", null).getId());
     }
 
 }

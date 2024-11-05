@@ -166,36 +166,38 @@
                                     </c:if>
                                     <h2 style="font-size: 15px">${product.name}</h2>
 
+                                <c:if test="${product.salePercent > 0}">
+                                    <!-- Hiển thị giá cũ bị gạch bỏ và giá mới -->
+                                    <div  class="price-container">
+                                        <p class="original-price">$${product.price+product.price*product.salePercent/100}</p>
+                                        <p class="sale-price">$<fmt:formatNumber value="${product.price}" minFractionDigits="2" maxFractionDigits="2" /></p>
                                     </div>
-                                    <div>
-                                        <c:if test="${product.salePercent > 0}">
-                                        <!-- Hiển thị giá cũ bị gạch bỏ và giá mới -->
-                                        <div  class="price-container">
-                                            <p class="original-price">$${product.price}</p>
-                                            <p class="sale-price">$<fmt:formatNumber value="${product.price - (product.price * product.salePercent / 100)}" minFractionDigits="2" maxFractionDigits="2" /></p>
-                                        </div>
-                                    </c:if>
-                                        <c:if test="${product.salePercent == 0}">
-                                            <!-- Hiển thị giá bình thường khi không có giảm giá -->
-                                            <p class="sale-price" style="border: 1px solid orange; border-radius: 5px; text-align: center;">$${product.price}</p>
-                                        </c:if>
-                                        <div class="product-rating">
-                                            <c:set var="averageRating" value="${averageRatings[product.name]}" />
-                                            <c:forEach begin="1" end="5" var="star">
-                                                <c:if test="${star <= averageRating}">
-                                                    <span class="star filled">⭐</span>
-                                                </c:if>
-                                                <c:if test="${star > averageRating}">
-                                                    <span class="star empty">⭐</span>
-                                                </c:if>
-                                            </c:forEach>
-                                            <c:if test="${averageRatings[product.name] != null}">
-                                                <span class="rating-value">(${averageRating})</span>
-                                            </c:if>
+                                </c:if>
 
-                                        </div>
-                                    </div>
-                                </div> 
+                                <c:if test="${product.salePercent == 0}">
+                                    <!-- Hiển thị giá bình thường khi không có giảm giá -->
+                                    <p class="sale-price">$${product.price}</p>
+                                </c:if>
+
+
+
+                                <div class="product-rating">
+            <c:set var="averageRating" value="${averageRatings[product.name]}" />
+            <c:forEach begin="1" end="5" var="star">
+                <c:if test="${star <= averageRating}">
+                    <span class="star filled">⭐</span>
+                </c:if>
+                <c:if test="${star > averageRating}">
+                    <span class="star empty">⭐</span>
+                </c:if>
+            </c:forEach>
+                <c:if test="${averageRatings[product.name] != null}">
+                    <span class="rating-value">(${averageRating})</span>
+                </c:if>
+            
+        </div>
+                               
+                            </div> 
                             </a>
                         </c:forEach>
                     </section>

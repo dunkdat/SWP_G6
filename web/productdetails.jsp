@@ -48,7 +48,7 @@
     </div>
         </c:if>
     
-    <c:if test="${current_user == 'Customer'}">
+    <c:if test="${current_user.role == 'Customer'}">
         <img src="images/cart.png" alt="Cart">
     </c:if>
 </div>
@@ -129,9 +129,9 @@
                     <p style="color: red">
     <strong style="color: black; font-weight: bold;">Price:</strong>
     <c:if test="${product.salePercent > 0}">
-        <span style="text-decoration: line-through; color:grey; font-size: 14px;">${product.price}</span>
+        <span style="text-decoration: line-through; color:grey; font-size: 14px;">$<fmt:formatNumber value="${product.price + (product.price * product.salePercent / 100)}" minFractionDigits="2" maxFractionDigits="2" /></span>
         <span style="font-size: 24px; font-weight: bold;">
-            $<fmt:formatNumber value="${product.price - (product.price * product.salePercent / 100)}" minFractionDigits="2" maxFractionDigits="2" />
+            $<fmt:formatNumber value="${product.price}" minFractionDigits="2" maxFractionDigits="2" />
         </span>
         <span style="color: green;">(${product.salePercent}% off)</span>
     </c:if>
@@ -143,7 +143,8 @@
 
                     <!-- Add to Cart Section -->
                     <form action="cart" method="post">
-                           <input name="Service" value="addToCart" hidden/>
+                        <input type="hidden" id="product-type" value="${product.category}">
+                        <input name="Service" value="addToCart" hidden/>
                         <div class="quantity-wrapper">
                             <label for="quantity" style="font-weight: bold;">Quantity:</label>
                             <div class="quantity-control">
@@ -170,7 +171,7 @@
                                 <div class="size-options" id="size-options">
                                     <!-- Size options will be loaded here via AJAX -->
                                 </div>
-                                <input type="hidden" name="selectedSize" id="selected-size" value="">
+                                <input type="hidden" name="size" id="selected-size" value="">
                             </div>
                         </c:if>
                         <!-- Hidden fields for color and product name -->
@@ -178,7 +179,7 @@
                         <input type="hidden" name="pid" value="${product.id}">
                         <input type="hidden" name="name" value="${product.name}">
                         <!-- Add to Cart Button -->
-                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                        <button type="submit" class="add-to-cart-btn" id="add-to-cart-button">Add to Cart</button>
                     </form>
                 </div>
 
@@ -412,18 +413,19 @@ if (avatarElement) {
                 }
             }
             function selectColor(color) {
-                document.getElementById('selected-color').value = color;
+    document.getElementById('selected-color').value = color;
 
-                // UI feedback to show selected color
-                const colorBoxes = document.querySelectorAll('.color-box');
-                colorBoxes.forEach(box => box.classList.remove('selected'));
-                event.target.classList.add('selected');
+    // UI feedback to show selected color
+    const colorBoxes = document.querySelectorAll('.color-box');
+    colorBoxes.forEach(box => box.classList.remove('selected'));
+    event.target.classList.add('selected');
 
-                // Gọi hàm để cập nhật ảnh sản phẩm dựa trên màu đã chọn
-                loadProductImage(color);
-                loadSizes(color);
+    // Gọi hàm để cập nhật ảnh sản phẩm dựa trên màu đã chọn
+    loadProductImage(color);
+    loadSizes(color);
 
-            }
+    // Call to update the visibility of the Add to Cart button after color is selected
+}
 
     // Hàm này gửi yêu cầu đến servlet để lấy ảnh tương ứng với màu đã chọn
             function loadProductImage(selectedColor) {
@@ -460,15 +462,44 @@ if (avatarElement) {
                 xhr.send();
             }
     // Function to select a size
-            function selectSize(size) {
-                document.getElementById('selected-size').value = size;
+    function selectSize(size) {
+    // Update hidden input with selected size value
+    document.getElementById('selected-size').value = size;
 
-                // UI feedback to show selected size
-                const sizeBoxes = document.querySelectorAll('.size-box');
-                sizeBoxes.forEach(box => box.classList.remove('selected'));
-                event.target.classList.add('selected');
+    // UI feedback to show selected size
+    const sizeBoxes = document.querySelectorAll('.size-box');
+    sizeBoxes.forEach(box => box.classList.remove('selected'));
+    event.target.classList.add('selected');
+
+    // Call to update the visibility of the Add to Cart button after size is selected
+    updateAddToCartButtonVisibility();
+}    
+function updateAddToCartButtonVisibility() {
+    const addToCartButton = document.getElementById('add-to-cart-button');
+        const selectedColorInput = document.getElementById('selected-color');
+        const selectedSizeInput = document.getElementById('selected-size');
+        const productCategory = "${product.category}";
+
+        // Initially hide the Add to Cart button
+        addToCartButton.style.display = 'none';
+            if (productCategory === 'shoes') {
+                console.log(selectedColorInput.value);
+                console.log(selectedSizeInput.value);
+                // For shoes, show the button only if both color and size are selected
+                if (selectedColorInput.value && selectedSizeInput.value) {
+                    addToCartButton.style.display = 'block';
+                } else {
+                    addToCartButton.style.display = 'none';
+                }
+            } else {
+                // For other products, show the button only if color is selected
+                if (selectedColorInput.value) {
+                    addToCartButton.style.display = 'block';
+                } else {
+                    addToCartButton.style.display = 'none';
+                }
             }
-
+        }
             function toggleNavbar() {
                 const navbar = document.getElementById('navbar');
                 const content = document.getElementById('content');
@@ -481,7 +512,49 @@ if (avatarElement) {
                 content.classList.toggle('collapsed');
                 header.classList.toggle('collapsed');
             }
-            
+             document.addEventListener('DOMContentLoaded', function () {
+        const addToCartButton = document.getElementById('add-to-cart-button');
+        const selectedColorInput = document.getElementById('selected-color');
+        const selectedSizeInput = document.getElementById('selected-size');
+        const productCategory = "${product.category}";
+
+        // Initially hide the Add to Cart button
+        addToCartButton.style.display = 'none';
+       
+        // Function to show the Add to Cart button if conditions are met
+        function updateAddToCartButtonVisibility() {
+            if (productCategory === 'shoes') {
+                console.log(selectedColorInput.value);
+                console.log(selectedSizeInput.value);
+                // For shoes, show the button only if both color and size are selected
+                if (selectedColorInput.value && selectedSizeInput.value) {
+                    addToCartButton.style.display = 'block';
+                } else {
+                    addToCartButton.style.display = 'none';
+                }
+            } else {
+                // For other products, show the button only if color is selected
+                if (selectedColorInput.value) {
+                    addToCartButton.style.display = 'block';
+                } else {
+                    addToCartButton.style.display = 'none';
+                }
+            }
+        }
+
+        // Add event listeners for color and size selection
+        document.querySelectorAll('.color-box').forEach(function (colorBox) {
+            colorBox.addEventListener('click', function () {
+                updateAddToCartButtonVisibility();
+            });
+        });
+
+        document.querySelectorAll('.size-box').forEach(function (sizeBox) {
+            sizeBox.addEventListener('click', function () {
+                updateAddToCartButtonVisibility();
+            });
+        });
+    });
         </script>
 
     </body>

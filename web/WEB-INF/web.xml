@@ -138,6 +138,34 @@
         <servlet-name>LoadRoleListServlet</servlet-name>
         <servlet-class>controller.LoadRoleListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>controller.CartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MyOrder</servlet-name>
+        <servlet-class>controller.MyOrder</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CartComplete</servlet-name>
+        <servlet-class>controller.CartComplete</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerManager</servlet-name>
+        <servlet-class>controller.CustomerManager</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderDetailServlet</servlet-name>
+        <servlet-class>controller.OrderDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderManagerServlet</servlet-name>
+        <servlet-class>controller.OrderManagerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HomePageServlet</servlet-name>
+        <url-pattern>/homepage</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/NewsServlet</url-pattern>
@@ -166,10 +194,7 @@
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>HomePageServlet</servlet-name>
-        <url-pattern>/homepage</url-pattern>
-    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>UserVerify</servlet-name>
         <url-pattern>/UserVerify</url-pattern>
@@ -314,5 +339,29 @@
     <servlet-mapping>
         <servlet-name>LoadRoleListServlet</servlet-name>
         <url-pattern>/LoadRoleListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyOrder</servlet-name>
+        <url-pattern>/myOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartComplete</servlet-name>
+        <url-pattern>/cartComplete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderManagerServlet</servlet-name>
+        <url-pattern>/orderManagerServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderDetailServlet</servlet-name>
+        <url-pattern>/orderDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerManager</servlet-name>
+        <url-pattern>/CustomerManager</url-pattern>
     </servlet-mapping>
 </web-app>
