@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
         if(email != null && password != null){
             // Validate user credentials
             User currentUser = u.ValidateUsers(email, password);
-            
+            System.out.println(currentUser);
             if(currentUser != null){
                 HttpSession ss = request.getSession();
                 
@@ -55,16 +55,17 @@ public class LoginServlet extends HttpServlet {
                 return;
                 }
                 ss.setAttribute("current_user", currentUser);
-                switch (currentUser.getRole()) {
-                    case "Customer":
                 switch (currentUser.getRole().toLowerCase()) {
                     case "customer":
                         request.getRequestDispatcher("homepage").forward(request, response);
                         break;
                     case "admin":
-                        request.getRequestDispatcher("userlist").forward(request, response);
+                        request.getRequestDispatcher("CustomerManager").forward(request, response);
                         break;
-                    case "staff":
+                    case "sale":
+                        request.getRequestDispatcher("staffproductlist").forward(request, response);
+                        break;
+                    case "maketing":
                         request.getRequestDispatcher("staffproductlist").forward(request, response);
                         break;
                     default:

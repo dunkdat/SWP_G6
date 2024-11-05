@@ -418,6 +418,7 @@
                                 <div class="d-flex align-items-center mb-5 border-bottom">
                                     <input type="radio" checked name="address" value="${add.city}, ${add.district}, ${add.ward}, ${add.detail}"/>
                                     <p> ${add.city}, ${add.district}, ${add.ward}, ${add.detail}</p>
+                                    <a href="deleteAddress?id=${add.id}" class="btn btn-danger ms-auto">delete</a>
                                 </div>
                             </c:forEach>
                             <a class="btn btn-primary" href="addAddress">Add new address</a>
@@ -540,9 +541,13 @@
                     shipment: shipment
                 };
 
-                $.post('cart', formData, (response) => {
-                    console.log(response);
-                    window.location = "cart?mess=order success";
+                $.post('vnpayajax', formData, (response) => {
+                    console.log("response: "+response);
+                   if (response.redirectUrl) {
+        window.location.href = response.redirectUrl; // Điều hướng đến đường dẫn nhận được
+    } else {
+        console.error("No redirect URL found in response");
+    }
                 }).fail((jqXHR, textStatus, errorThrown) => {
                     // Xử lý lỗi nếu có
                     console.error("Error: " + textStatus, errorThrown);

@@ -26,7 +26,8 @@ import model.Products;
  *
  * @author Lenovo
  */
-public class DAOOrder extends DBContext{
+public class DAOOrder extends DBContext {
+
     public int insertOrder(Order order) {
         String sql = "INSERT INTO `badminton_shop`.`orders`\n"
                 + "(`customer_id`,\n"
@@ -51,7 +52,7 @@ public class DAOOrder extends DBContext{
                 throw new SQLException("Creating order failed, no rows affected.");
             }
 
-            try ( ResultSet generatedKeys = st.getGeneratedKeys()) {
+            try (ResultSet generatedKeys = st.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     return generatedKeys.getInt(1);
                 } else {
@@ -63,12 +64,14 @@ public class DAOOrder extends DBContext{
             return -1;
         }
     }
-      public String getFormatDate() {
-        LocalDateTime myDateObj = LocalDateTime.now();  
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
-        String formattedDate = myDateObj.format(myFormatObj);  
+
+    public String getFormatDate() {
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = myDateObj.format(myFormatObj);
         return formattedDate;
-   }
+    }
+
     public void insertOrderItem(Vector<Products> list, int orderId) {
         String sql = "INSERT INTO `badminton_shop`.`orderitem`\n"
                 + "(`product_id`,\n"
@@ -80,18 +83,30 @@ public class DAOOrder extends DBContext{
         try {
             for (Products item : list) {
                 PreparedStatement st = connection.prepareStatement(sql);
-                 st.setString(1, item.getId());
-                 st.setDouble(2, item.getPrice());
-                 st.setInt(3, item.getQuantity());
-                 st.setInt(4, orderId);
+                st.setString(1, item.getId());
+                st.setDouble(2, item.getPrice());
+                st.setInt(3, item.getQuantity());
+                st.setInt(4, orderId);
                 st.executeUpdate();
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
-    } 
-    
-    
+    }
+
+    public boolean updateStatus(Order order) {
+        String sql = "UPDATE `badminton_shop`.`orders` SET status = ? Where id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, order.getStatus());
+            st.setInt(2, order.getId());
+            return st.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
     public Vector<Order> getAllOrderByCus(int cusId) {
         String sql = "Select * FROM `badminton_shop`.`orders` where customer_id = ?";
         Vector<Order> list = new Vector<>();
@@ -99,28 +114,27 @@ public class DAOOrder extends DBContext{
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, cusId);
             ResultSet rs = pre.executeQuery();
-           
-            while (rs.next()) 
-                {
-                    list.add(new Order(
-                            rs.getInt("id"),
-                            rs.getString("address"),
-                            rs.getString("status"),
-                            rs.getString("name"),
-                            rs.getString("phone"),
-                            getAllOrderItem(rs.getInt("id")),
-                            rs.getDate("createAt"),
-                            rs.getDate("reciverAt"),
-                            rs.getDate("cancelAt"))
-                    );
-                }
+
+            while (rs.next()) {
+                list.add(new Order(
+                        rs.getInt("id"),
+                        rs.getString("address"),
+                        rs.getString("status"),
+                        rs.getString("name"),
+                        rs.getString("phone"),
+                        getAllOrderItem(rs.getInt("id")),
+                        rs.getDate("createAt"),
+                        rs.getDate("reciverAt"),
+                        rs.getDate("cancelAt"))
+                );
+            }
         } catch (SQLException e) {
             System.out.println(e);
         }
         return list;
-    } 
+    }
     DAOProduct daoPro = new DAOProduct();
-    
+
     public Vector<OrderItem> getAllOrderItem(int orderId) {
         String sql = "Select * FROM `badminton_shop`.`orderitem` where orderId = ?";
         Vector<OrderItem> list = new Vector<>();
@@ -128,20 +142,20 @@ public class DAOOrder extends DBContext{
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, orderId);
             ResultSet rs = pre.executeQuery();
-            
+
             while (rs.next()) {
                 list.add(new OrderItem(
-                           rs.getInt("id") , 
-                     rs.getInt("quantity"),
-                        rs.getDouble("price"), 
-                     daoPro.getProductById(rs.getString("product_id"))));
+                        rs.getInt("id"),
+                        rs.getInt("quantity"),
+                        rs.getDouble("price"),
+                        daoPro.getProductById(rs.getString("product_id"))));
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
         return list;
-    } 
-    
+    }
+
     public List<OrderManager> getAllOrders(int page, int pageSize, String service, String service2, String service3, String statusOrder, String querry4) {
         List<OrderManager> orders = new ArrayList<>();
 
@@ -155,16 +169,16 @@ public class DAOOrder extends DBContext{
                     + "JOIN users c ON o.customer_id = c.id "
                     + "JOIN orderitem oi ON o.id = oi.orderId "
                     + "JOIN products p ON oi.product_id = p.id "
-                    + " WHERE o.status LIKE N'%"+statusOrder+"%' "
-                    + service2 + service3+querry4
+                    + " WHERE o.status LIKE N'%" + statusOrder + "%' "
+                    + service2 + service3 + querry4
                     + " GROUP BY o.id, c.email, c.phone, o.createAt, o.status, o.customer_id "
                     + "ORDER BY " + service + " o.id " // Thêm sắp xếp
                     + " LIMIT ? OFFSET ?;"; // Sử dụng LIMIT và OFFSET
-System.out.println("qqqq "+query);
+            System.out.println("qqqq " + query);
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, pageSize); // Số lượng bản ghi muốn lấy
                 statement.setInt(2, offset);   // Vị trí bắt đầu
-                try ( ResultSet resultSet = statement.executeQuery()) {
+                try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         int orderId = resultSet.getInt("id");
                         int customerId = resultSet.getInt("customer_id");
@@ -179,7 +193,7 @@ System.out.println("qqqq "+query);
                         String formattedDate = desiredFormat.format(utilDate);
 
                         orders.add(new OrderManager(
-                                orderId, mail, phone, formattedDate, 
+                                orderId, mail, phone, formattedDate,
                                 total, status, customerId)
                         );
                     }
@@ -191,14 +205,14 @@ System.out.println("qqqq "+query);
 
         return orders;
     }
-    
+
     public List<OrderManager> getAllOrders() {
         List<OrderManager> orders = new ArrayList<>();
         try {
             String query = "SELECT id, customer_id, phone, createAt, status"
                     + " FROM orders";
-            try ( PreparedStatement statement = connection.prepareStatement(query)) {
-                try ( ResultSet resultSet = statement.executeQuery()) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         int orderId = resultSet.getInt("id");
                         int customerId = resultSet.getInt("customer_id");
@@ -209,7 +223,7 @@ System.out.println("qqqq "+query);
 
                         double total = findTotalPrice(orderId);
                         String status = resultSet.getString("status");
-                        orders.add(new OrderManager(orderId, phone, 
+                        orders.add(new OrderManager(orderId, phone,
                                 orderDate, total, status, customerId));
                     }
                 }
@@ -220,15 +234,15 @@ System.out.println("qqqq "+query);
 
         return orders;
     }
-    
-     public double findTotalPrice(int orderId) {
+
+    public double findTotalPrice(int orderId) {
         double rs = 0;
         try {
             String query = "SELECT price, quantity "
                     + "FROM orderitem WHERE orderId = ?";
-            try ( PreparedStatement statement = connection.prepareStatement(query)) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, orderId);
-                try ( ResultSet resultSet = statement.executeQuery()) {
+                try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         double price = resultSet.getDouble("price");
                         int quantity = resultSet.getInt("quantity");
@@ -242,15 +256,15 @@ System.out.println("qqqq "+query);
 
         return rs;
     }
-     
-     //lấy tổng tất cả trang của orderManager
+
+    //lấy tổng tất cả trang của orderManager
     public int getTotalPagesDetails(int pageSize, int orderId) {
         try {
 
             String query = "SELECT COUNT(*) as total FROM orderitem WHERE orderId = ? "; // Đếm số lượng đơn hàng
-            try ( PreparedStatement statement = connection.prepareStatement(query)) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, orderId);
-                try ( ResultSet resultSet = statement.executeQuery()) {
+                try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         int totalOrders = resultSet.getInt("total");
                         return (int) Math.ceil((double) totalOrders / pageSize);
@@ -262,15 +276,14 @@ System.out.println("qqqq "+query);
         }
         return 0;
     }
-    
-    
+
     //lấy tổng tất cả trang của orderManager
     public int getTotalPages(int pageSize, String querry) {
         try {
 
             String query = "SELECT COUNT(*) as total FROM orders " + querry; // Đếm số lượng đơn hàng
-            try ( PreparedStatement statement = connection.prepareStatement(query)) {
-                try ( ResultSet resultSet = statement.executeQuery()) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         int totalOrders = resultSet.getInt("total");
                         return (int) Math.ceil((double) totalOrders / pageSize);
@@ -282,12 +295,12 @@ System.out.println("qqqq "+query);
         }
         return 0;
     }
-    
+
     public void deleteOrder(int orderId) {
         deleteOrderItems(orderId);
         try {
             String query = "DELETE FROM orders WHERE id = ?";
-            try ( PreparedStatement statement = connection.prepareStatement(query)) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, orderId);
                 int affectedRows = statement.executeUpdate();
 
@@ -302,11 +315,11 @@ System.out.println("qqqq "+query);
             e.printStackTrace();
         }
     }
-    
+
     public void deleteOrderItems(int orderId) {
         try {
             String query = "DELETE FROM orderitem WHERE orderId = ?";
-            try ( PreparedStatement statement = connection.prepareStatement(query)) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, orderId);
                 int affectedRows = statement.executeUpdate();
 
@@ -321,28 +334,29 @@ System.out.println("qqqq "+query);
             e.printStackTrace();
         }
     }
-    
+
     public boolean changeStatusBank(int orderId) {
         String sql = "UPDATE `badminton_shop`.`orders`\n"
                 + "SET `status` = ?\n"
                 + " WHERE id = ?";
         try {
-                PreparedStatement st = connection.prepareStatement(sql);
-                 st.setString(1, "Chờ xác nhận");
-                 st.setInt(3, orderId);
-                return st.executeUpdate() > 0;
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "Chờ xác nhận");
+            st.setInt(3, orderId);
+            return st.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println(e);
         }
         return false;
-    } 
+    }
+
     // hàm sửa status
     public boolean changeStatus(int orderId, String status) {
         try {
             String query = "UPDATE `badminton_shop`.`orders`\n"
-                + "SET `status` = ?\n"
-                + " WHERE id = ?";
-            try ( PreparedStatement statement = connection.prepareStatement(query)) {
+                    + "SET `status` = ?\n"
+                    + " WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, status);
                 statement.setInt(2, orderId);
                 return statement.executeUpdate() > 0;
@@ -352,8 +366,8 @@ System.out.println("qqqq "+query);
         }
         return false;
     }
-    
-      // hàm filter
+
+    // hàm filter
     public List<OrderManager> getAllOrdersFilterDateAndWord(String fromDate, String toDate) {
         List<OrderManager> orders = new ArrayList<>();
 
@@ -368,7 +382,7 @@ System.out.println("qqqq "+query);
 
                 statement.setString(1, fromDate);
                 statement.setString(2, toDate);
-                try ( ResultSet resultSet = statement.executeQuery()) {
+                try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         int orderId = resultSet.getInt("id");
                         String mail = resultSet.getString("mail");
@@ -390,8 +404,8 @@ System.out.println("qqqq "+query);
         return orders;
 
     }
-    
-     public List<OrderItem> getAllOrdersDetail(int orderId) {
+
+    public List<OrderItem> getAllOrdersDetail(int orderId) {
         List<OrderItem> orderItems = new ArrayList<>();
         DAOProduct daoPro = new DAOProduct();
         try {
@@ -401,12 +415,12 @@ System.out.println("qqqq "+query);
                     + " join users u on u.id = o.customer_id\n"
                     + " join products p on p.id = od.product_id\n"
                     + " where o.id = ?";
-            try ( PreparedStatement statement = connection.prepareStatement(query)) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, orderId);
-                try ( ResultSet rs = statement.executeQuery()) {
+                try (ResultSet rs = statement.executeQuery()) {
                     while (rs.next()) {
-                       Products pro = daoPro.getProductById(rs.getString("proId"));
-                        orderItems.add(new OrderItem(rs.getInt("id"), 
+                        Products pro = daoPro.getProductById(rs.getString("proId"));
+                        orderItems.add(new OrderItem(rs.getInt("id"),
                                 rs.getInt("quantity"), rs.getDouble("price"), pro));
                     }
                 }
@@ -417,22 +431,22 @@ System.out.println("qqqq "+query);
 
         return orderItems;
     }
-     
-      public Order getOrdersByOid(int orderId) {
+
+    public Order getOrdersByOid(int orderId) {
         try {
             String query = "SELECT * FROM orders  where id = ?";
-            try ( PreparedStatement statement = connection.prepareStatement(query)) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, orderId);
-                try ( ResultSet rs = statement.executeQuery()) {
+                try (ResultSet rs = statement.executeQuery()) {
                     while (rs.next()) {
-                       return  new Order(rs.getInt("id"), 
-                               rs.getString("address"), 
-                               rs.getString("status"), 
-                               rs.getString("name"), 
-                               rs.getString("phone"), null,
-                               rs.getTimestamp("createAt"),
-                               rs.getTimestamp("reciverAt"),
-                               rs.getTimestamp("cancelAt"));
+                        return new Order(rs.getInt("id"),
+                                rs.getString("address"),
+                                rs.getString("status"),
+                                rs.getString("name"),
+                                rs.getString("phone"), null,
+                                rs.getTimestamp("createAt"),
+                                rs.getTimestamp("reciverAt"),
+                                rs.getTimestamp("cancelAt"));
                     }
                 }
             }
@@ -442,6 +456,7 @@ System.out.println("qqqq "+query);
 
         return null;
     }
+
     public String getDate(Timestamp orderDateTimestamp) {
         java.util.Date utilDate = new java.util.Date(orderDateTimestamp.getTime());
         SimpleDateFormat desiredFormat = new SimpleDateFormat("dd/MM/yyyy");

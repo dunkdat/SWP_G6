@@ -15,6 +15,22 @@ public class Order {
     private String address, status, name, phone;
     private int id, customer_id, shipper_id;
     private Date createAt, reciverAt, cancelAt;
+    int dashboardStatus;
+
+    public Order(String status, int id) {
+        this.status = status;
+        this.id = id;
+    }
+
+    public int getDashboardStatus() {
+        return dashboardStatus;
+    }
+
+    public void setDashboardStatus(int dashboardStatus) {
+        this.dashboardStatus = dashboardStatus;
+    }
+    
+    
     
     private List<OrderItem> orders;
 

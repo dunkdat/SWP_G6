@@ -35,7 +35,7 @@
     <body>
            <header class="header collapsed">
             <div class="left-section">
-                <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
+                <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px; width: 60px; "></a>
                 <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
                 <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
             </div>
@@ -43,7 +43,7 @@
                 <div class="icons">
                     <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
                         <c:if test="${current_user == null}">
-                            <img src="images/profile.png" alt="Account" >
+                            <img src="images/profile.png" alt="Account"  style="width: 30px;">
                         </c:if>
                         <c:if test="${current_user != null}">
                             <c:if test="${current_user.imagePath == null}">

@@ -51,7 +51,7 @@ public class UserListServlet extends HttpServlet {
          DAOUser daoUser = new DAOUser();
          DAORole r = new DAORole();
         if (session != null && currentUser != null) {
-            if (!currentUser.getRole().equals("Admin")) {
+            if (!currentUser.getRole().equals("admin")) {
                 response.sendRedirect("access_denied.jsp");
                 return; // Exit if the current user is not an admin
             }

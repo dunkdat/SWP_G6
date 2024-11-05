@@ -43,6 +43,19 @@ public class DAOAddress extends DBContext{
         return list;
     }
     
+    public void deleteAddress(int id) {
+        List<Address> list = new ArrayList<>();
+        String sql = "Delete from orderAddress where id = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
     public boolean isExistAddressOfUser(int userId, Address add) {
         String sql = "SELECT * from orderAddress where user_id = ? and city = ? and district = ? and ward = ? and detail = ?";
         try {

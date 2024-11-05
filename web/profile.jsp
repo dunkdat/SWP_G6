@@ -28,6 +28,42 @@
               integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <style>
+
+            .block-info {
+                margin-bottom: 180px;
+            }
+
+            .list_pay-method {
+                height: 320px;
+                overflow-y: scroll;
+            }
+            .box-info_orders {
+                transition: all 0.5s linear;
+            }
+            .box-info_address input[type="radio"] {
+                margin-right: 10px; /* Tạo khoảng cách giữa input và văn bản */
+            }
+
+            .box-info_address .d-flex {
+                align-items: center; /* Đảm bảo các thành phần cùng hàng với nhau */
+            }
+
+            .box-info_address p {
+                margin-bottom: 0; /* Loại bỏ khoảng cách dưới của phần tử <p> */
+            }
+
+            .box-info_address input[type="radio"] {
+                float: left; /* Đảm bảo input nằm bên trái */
+                margin-top: 0; /* Điều chỉnh vị trí để thẳng hàng với văn bản */
+            }
+
+            /* Sử dụng !important để đảm bảo override Bootstrap nếu cần */
+            .box-info_address input[type="radio"],
+            .box-info_address p {
+                display: inline-block !important; /* Đảm bảo input và văn bản nằm trên cùng một hàng */
+            }
+        </style>
     </head>
 
     <%
@@ -144,9 +180,9 @@
                                                 </div>
                                             </div>
                                             <div class="mt-5">
-                                                <h3 class="fw-medium">Address</h3>
+                                                <h3 class="fw-medium" hidden>Address</h3>
                                                 <div class="input-group">
-                                                    <input type="text" name="address" value="<%=cuss.getAddress()%>" class="form-control px-4 py-3 fs-3 rounded-xl" placeholder="Address">
+                                                    <input type="text" hidden name="address" value="<%=cuss.getAddress()%>" class="form-control px-4 py-3 fs-3 rounded-xl" placeholder="Address">
                                                 </div>
                                             </div>
                                             <div class="mt-5">
@@ -187,6 +223,24 @@
                                 </div>
                             </div>                  
                         </form>
+
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="rounded-lg p-5 bg-white col-md-9">
+                                <h4 class="mt-5 fs-3">THÔNG TIN NHẬN HÀNG: </h4>
+                                <div class="row gy-5">
+                                    <div class="col-12">
+                                        <c:forEach var="add" items="${requestScope.address}"> 
+                                            <div class="d-flex align-items-center mb-5 border-bottom">
+                                                <p class="me-auto"> ${add.city}, ${add.district}, ${add.ward}, ${add.detail}<p/>
+                                                <a href="deleteAddress?id=${add.id}" class="btn btn-danger ms-auto">delete</a>
+                                            </div>
+                                        </c:forEach>
+                                        <a class="btn btn-primary" href="addAddress">Add new address</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </c:if>
 
                     <!-- Change Password Form -->

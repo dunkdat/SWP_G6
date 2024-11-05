@@ -9,13 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Product List - Online Shop</title>
         <link rel="stylesheet" href="css/productlist.css"/>
-        <style>
-            a {
-                text-decoration: none;
-            }
-        </style>
     </head>
-
+    
     <body>
         <!-- Copy the header and navbar from homepage -->
         <header class="header collapsed">
@@ -25,40 +20,48 @@
                 <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
             </div>
             <div class="right-section">
-                <div class="icons">
-                    <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
-                        <c:if test="${current_user == null}">
-                            <img src="images/profile.png" alt="Account" >
-                        </c:if>
-                        <c:if test="${current_user != null}">
-                            <c:if test="${current_user.imagePath == null}">
-                                <img src="images/profile.png" alt="Account" class="avatar">
-                            </c:if>
-                            <c:if test="${current_user.imagePath != null}">
-                                <img src="${IConstant.PATH_USER}${current_user.imagePath}" alt="Account" class="avatar">   
-                            </c:if>
-
-                        </c:if>
-                    </a>
-                    <c:if test="${current_user != null}">
-                        <div class="dropdown-content">
-                            <c:if test="${current_user.imagePath != null}">
-                                <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
-                            </c:if>
-
-                            <a href="ProfileServlet?current_user=${sessionScope.current_user}">
-                                Profile
-                            </a>
-                            <a href="logout">Logout</a>
-                        </div>
-                    </c:if>
-
-                    <c:if test="${current_user.role == 'Customer'}">
-                        <a href="cart"><img src="images/cart.png" alt="Cart"></a> 
-                        </c:if>
+                <!-- Search Bar Section in the header -->
+                <!-- Search Bar Section in the header -->
+                <div class="search-bar">
+                    <input type="text" id="searchInput" class="searching" placeholder="Tìm sản phẩm..." autocomplete="off">
+                    <span class="search-icon">🔍</span>
                 </div>
-            </div>
+
+
+                            <div class="icons">
+    <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+        <c:if test="${current_user == null}">
+            <img src="images/profile.png" alt="Account" >
+            </c:if>
+        <c:if test="${current_user != null}">
+            <c:if test="${current_user.imagePath == null}">
+                <img src="images/profile.png" alt="Account" class="avatar">
+            </c:if>
+                <c:if test="${current_user.imagePath != null}">
+                 <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Account" class="avatar">   
+            </c:if>
+            
+        </c:if>
+    </a>
+        <c:if test="${current_user != null}">
+            <div class="dropdown-content">
+                <c:if test="${current_user.imagePath != null}">
+                    <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
+            </c:if>
+             
+        <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+            Profile
+        </a>
+        <a href="logout">Logout</a>
+    </div>
+        </c:if>
+    
+    <c:if test="${current_user == 'Customer'}">
+        <img src="images/cart.png" alt="Cart">
+    </c:if>
+</div>        </div>
         </header>
+
         <div class="toggle-button" onclick="toggleNavbar()">☰</div>
 
         <nav class="navbar hidden" id="navbar">
@@ -74,9 +77,9 @@
                         <a href="productlist?category=${n.id}">${n.id.toUpperCase()}</a>
                     </c:forEach>
                 </div></div>
-                <c:if test="${current_user.role == 'Staff'}">
+                <c:if test="${current_user.role == 'sale' || current_user.role == 'maketing' }">
                 <div class="dropdown">
-                    <a href="dashboard?role=${current_user.role}">Dashboard</a>
+                    <a href="dashboard">Dashboard</a>
 
                 </div>
                 <div class="dropdown">
@@ -84,7 +87,6 @@
                     <a href="staffproductlist">Products List</a>  
                 </div>
                 <div class="dropdown">
-
                     <a href="onsale">On Sale Product</a>
                 </div>
 
@@ -103,7 +105,6 @@
 
                     <a href="settinglist">Setting Management</a>
                 </div>
-
             </c:if>
 
         </nav>
@@ -127,13 +128,13 @@
                     <h3>Filter by</h3>
 
                     <!-- Filter by Brand -->
-
+                    
                     <form action="productlist" method="get" id="filterForm">
                         <h4>Category</h4>
                         <!-- Filter by Category -->
                         <c:forEach items="${requestScope.categoryList}" var="n">
-                            <input type="radio" name="category" value="${n.id}" <c:if test="${param.category == n.id}">checked</c:if> /> ${n.id}<br>
-                        </c:forEach>
+                        <input type="radio" name="category" value="${n.id}" <c:if test="${param.category == n.id}">checked</c:if> /> ${n.id}<br>
+                    </c:forEach>
                         <h4>Brand</h4>
                         <!-- Filter by Brand -->
                         <input type="radio" name="brand" value="Yonex" <c:if test="${param.brand == 'Yonex'}">checked</c:if> /> Yonex<br>
@@ -157,14 +158,13 @@
                     <section class="products">
                         <c:forEach items="${requestScope.productlist}" var="product">
                             <a href="productdetails?id=${product.id}" >
-                                <div class="product" style="display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #ddd; border-radius: 15px;">
-                                    <div>
-                                         <img src="${product.link_picture}" alt="${product.name}">
-                                    <c:if test="${product.salePercent > 0}">
-                                        <!-- Hiển thị salePercent trên ảnh -->
-                                        <div class="sale-badge">-${product.salePercent}%</div>
-                                    </c:if>
-                                    <h2 style="font-size: 15px">${product.name}</h2>
+                            <div class="product">
+                                <img src="${product.link_picture}" alt="${product.name}">
+                                <c:if test="${product.salePercent > 0}">
+                                    <!-- Hiển thị salePercent trên ảnh -->
+                                    <div class="sale-badge">-${product.salePercent}%</div>
+                                </c:if>
+                                <h2>${product.name}</h2>
 
                                 <c:if test="${product.salePercent > 0}">
                                     <!-- Hiển thị giá cũ bị gạch bỏ và giá mới -->
@@ -240,11 +240,11 @@
 
         <script>
             const avatarElement = document.querySelector('.avatar');
-            if (avatarElement) {
-                avatarElement.addEventListener('mouseover', function () {
-                    document.querySelector('.dropdown-content').style.display = 'block';
-                });
-            }
+if (avatarElement) {
+    avatarElement.addEventListener('mouseover', function () {
+        document.querySelector('.dropdown-content').style.display = 'block';
+    });
+}
             document.querySelector('.dropdown-content').addEventListener('mouseleave', function () {
                 document.querySelector('.dropdown-content').style.display = 'none';
             });

@@ -15,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.InputStream;
@@ -41,12 +42,22 @@ public class CustomerManager extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         DAOUser dao = new DAOUser();
+        HttpSession ss = request.getSession();
+        User usLogin = (User)ss.getAttribute("current_user");
+        if(usLogin == null) {
+            response.sendRedirect("login");
+            return;
+        }
+        //only admin or sale can manage
+        if(!usLogin.getRole().equals("admin") && !usLogin.getRole().equals("sale")) {
+            response.sendRedirect("login");
+            return;
+        }
         try ( PrintWriter out = response.getWriter()) {
             String service = request.getParameter("Service");
             if (service == null) {
                 service = "listAllCustomer";
             }
-
             switch (service) {
                 case "listAllCustomer":
                     listAllCustomers(request, response, dao);

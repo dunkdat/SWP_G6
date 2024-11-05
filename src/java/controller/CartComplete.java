@@ -103,12 +103,16 @@ public class CartComplete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+         HttpSession session = request.getSession();
+       User acc = (User)session.getAttribute("current_user");
+        if(acc == null) {
+            response.sendRedirect("login");
+            return;
+        }
        String[] selectedProducts = request.getParameterValues("selectedProducts");
-       HttpSession session = request.getSession();
        session.setAttribute("listBuy", selectedProducts);
        getShipper(request, response);
         DAOAddress daoAdd = new DAOAddress();
-         User acc = (User)session.getAttribute("current_user");
        List<Address> address = daoAdd.getAddressOfUser(acc.getId());
         request.setAttribute("address", address);
        request.getRequestDispatcher("cartComplete.jsp").forward(request, response);

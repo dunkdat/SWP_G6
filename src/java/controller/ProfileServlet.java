@@ -6,6 +6,7 @@
 package controller;
 
 import constant.IConstant;
+import dal.DAOAddress;
 import dal.DAOUser;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -21,8 +22,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import model.Address;
 import model.User;
 import util.Encode;
 import util.Validate;
@@ -67,6 +70,9 @@ public class ProfileServlet extends HttpServlet {
             response.sendRedirect("login");
             return;
         }
+        DAOAddress daoAdd = new DAOAddress();
+         List<Address> address = daoAdd.getAddressOfUser(acc.getId());
+        request.setAttribute("address", address);
         String service = request.getParameter("Service");
         //neu da dang nhap
         if (acc != null) {

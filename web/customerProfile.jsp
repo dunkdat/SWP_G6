@@ -34,6 +34,9 @@
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
           <link rel="stylesheet" href="css/homestyle.css"/>
         <style>
+            a {
+                text-decoration: none;
+            }
             body {
                 background: #f7f7ff;
                 margin-top: 20px;

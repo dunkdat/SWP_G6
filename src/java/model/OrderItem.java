@@ -8,12 +8,6 @@ package model;
  *
  * @author Lenovo
  */
-import model.Products;
-
-/**
- *
- * @author Lenovo
- */
 public class OrderItem {
     private int id, productId, quantity;
     private double price;
@@ -73,6 +67,4 @@ public class OrderItem {
     public String toString() {
         return "OrderItem{" + "id=" + id + ", productId=" + productId + ", quantity=" + quantity + ", price=" + price + ", products=" + products + '}';
     }
-    
-    
 }

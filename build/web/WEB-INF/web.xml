@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    
+    <servlet>
+        <servlet-name>BankingReturn</servlet-name>
+        <servlet-class>com.vnpay.common.VnpayReturn</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>BankingReturn</servlet-name>
+        <url-pattern>/vnpayReturn</url-pattern>
+    </servlet-mapping>
+      <servlet>
+        <servlet-name>ajaxServlet</servlet-name>
+        <servlet-class>com.vnpay.common.ajaxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ajaxServlet</servlet-name>
+        <url-pattern>/vnpayajax/*</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
@@ -138,6 +153,18 @@
         <servlet-name>LoadRoleListServlet</servlet-name>
         <servlet-class>controller.LoadRoleListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffManager</servlet-name>
+        <servlet-class>controller.StaffManager</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffDashboard</servlet-name>
+        <servlet-class>controller.StaffDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Dashboard</servlet-name>
+        <servlet-class>controller.Dashboard</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/NewsServlet</url-pattern>
@@ -226,7 +253,6 @@
         <servlet-name>OrderManagerServlet</servlet-name>
         <url-pattern>/orderManagerServlet</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>OrderDetailServlet</servlet-name>
         <servlet-class>controller.OrderDetailServlet</servlet-class>
@@ -314,5 +340,17 @@
     <servlet-mapping>
         <servlet-name>LoadRoleListServlet</servlet-name>
         <url-pattern>/LoadRoleListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffManager</servlet-name>
+        <url-pattern>/StaffManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffDashboard</servlet-name>
+        <url-pattern>/staffDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Dashboard</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    
+    <servlet>
+        <servlet-name>BankingReturn</servlet-name>
+        <servlet-class>com.vnpay.common.VnpayReturn</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>BankingReturn</servlet-name>
+        <url-pattern>/vnpayReturn</url-pattern>
+    </servlet-mapping>
+      <servlet>
+        <servlet-name>ajaxServlet</servlet-name>
+        <servlet-class>com.vnpay.common.ajaxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ajaxServlet</servlet-name>
+        <url-pattern>/vnpayajax/*</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
@@ -139,33 +154,17 @@
         <servlet-class>controller.LoadRoleListServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CartServlet</servlet-name>
-        <servlet-class>controller.CartServlet</servlet-class>
+        <servlet-name>StaffManager</servlet-name>
+        <servlet-class>controller.StaffManager</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>MyOrder</servlet-name>
-        <servlet-class>controller.MyOrder</servlet-class>
+        <servlet-name>StaffDashboard</servlet-name>
+        <servlet-class>controller.StaffDashboard</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CartComplete</servlet-name>
-        <servlet-class>controller.CartComplete</servlet-class>
+        <servlet-name>Dashboard</servlet-name>
+        <servlet-class>controller.Dashboard</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>CustomerManager</servlet-name>
-        <servlet-class>controller.CustomerManager</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>OrderDetailServlet</servlet-name>
-        <servlet-class>controller.OrderDetailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>OrderManagerServlet</servlet-name>
-        <servlet-class>controller.OrderManagerServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>HomePageServlet</servlet-name>
-        <url-pattern>/homepage</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>NewsServlet</servlet-name>
         <url-pattern>/NewsServlet</url-pattern>
@@ -194,7 +193,10 @@
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>HomePageServlet</servlet-name>
+        <url-pattern>/homepage</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserVerify</servlet-name>
         <url-pattern>/UserVerify</url-pattern>
@@ -251,7 +253,6 @@
         <servlet-name>OrderManagerServlet</servlet-name>
         <url-pattern>/orderManagerServlet</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>OrderDetailServlet</servlet-name>
         <servlet-class>controller.OrderDetailServlet</servlet-class>
@@ -341,27 +342,15 @@
         <url-pattern>/LoadRoleListServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CartServlet</servlet-name>
-        <url-pattern>/cart</url-pattern>
+        <servlet-name>StaffManager</servlet-name>
+        <url-pattern>/StaffManager</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>MyOrder</servlet-name>
-        <url-pattern>/myOrder</url-pattern>
+        <servlet-name>StaffDashboard</servlet-name>
+        <url-pattern>/staffDashboard</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CartComplete</servlet-name>
-        <url-pattern>/cartComplete</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>OrderManagerServlet</servlet-name>
-        <url-pattern>/orderManagerServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>OrderDetailServlet</servlet-name>
-        <url-pattern>/orderDetailServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CustomerManager</servlet-name>
-        <url-pattern>/CustomerManager</url-pattern>
+        <servlet-name>Dashboard</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
     </servlet-mapping>
 </web-app>

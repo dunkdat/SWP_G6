@@ -31,8 +31,16 @@
               crossorigin="anonymous" referrerpolicy="no-referrer"/>
         <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"rel="stylesheet"/>
         <link rel="stylesheet" href="css/homestyle.css"/>
+        <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     </head>
     <style>
+        a {
+            text-decoration: none;
+        }
         a.active{
             background-color: black;
             color: white;
@@ -46,25 +54,25 @@
         }
     </style>
     <body>
-    <header class="header collapsed" >
-        <div class="left-section">
-            <a class="text-decoration-none" href="homepage"><img src="images/logo.png" alt="Shop Logo" class="w-auto" style="margin-left: 50px;"></a>
-            <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
-            <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
-        </div>
-        <div class="right-section">
-            <div class="icons">
-                <a href="ProfileServlet?current_user=${sessionScope.current_user}"><img class="w-auto" src="images/profile.png" alt="Account"></a>
+        <header class="header collapsed" >
+            <div class="left-section">
+                <a class="text-decoration-none" href="homepage"><img src="images/logo.png" alt="Shop Logo" class="w-auto" style="margin-left: 50px;"></a>
+                <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
+                <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
             </div>
-       </div>
-    </header>
+            <div class="right-section">
+                <div class="icons">
+                    <a href="CustomerManager?Service=updateCustomer&id=${sessionScope.current_user.id}"><img class="w-auto" src="images/profile.png" alt="Account"></a>
+                </div>
+            </div>
+        </header>
         <section>
             <div class="row h-100">
                 <div class="col-md-2 left-nav-admin p-0"  style="background-color: #ff6600; height: 100vh;">
                     <div class="p-5 pe-0">
                         <ul>
                             <li class="py-4 ps-3 mb-3">
-                                <a href="" class="fs-2 text-white d-flex align-items-center">
+                                <a href="staffDashboard" class="fs-2 text-white d-flex align-items-center">
                                     <i class="bx bxs-dashboard me-3"></i>
                                     <span>Dashboard</span>
                                 </a>
@@ -188,11 +196,11 @@
                     </div>
                     <div style="margin-top: 7px; display: flex; margin-bottom: 5px">
                         <div class="me-5">
-                            <a href="CustomerManager?Service=addCustomer" >
-                                <button class="btn btn-danger mb-2 fs-3">
-                                    <i class="fas fa-plus"> </i>Add New
-                                </button>
-                            </a>
+                            <!--                            <a href="CustomerManager?Service=addCustomer" >
+                                                            <button class="btn btn-danger mb-2 fs-3">
+                                                                <i class="fas fa-plus"> </i>Add New
+                                                            </button>
+                                                        </a>-->
                         </div>
 
                         <div style="font-size: 25px; margin-left: 5px; margin-top: 2px" class="fs-3">
@@ -250,10 +258,9 @@
                                                     <i class="fas fa-edit"></i>Update
                                                 </button>
                                             </a>
-                                            <button class="btn btn-danger">
+                                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" onclick="setDeleteLink('CustomerManager?Service=deleteCustomer&id=${cus.id}')">
                                                 <i class="fas fa-trash-alt"></i>
-                                                <a style="color: white"
-                                                   href="CustomerManager?Service=deleteCustomer&id=${cus.id}">Delete</a>
+                                                Delete
                                             </button>
                                         </td>
                                     </tr>
@@ -266,7 +273,7 @@
                         <div class="paging-box d-flex">
                             <c:if test="${tag >= 2}">
                                 <a href="CustomerManager?${saveSearch != null?"Service=search&":""}${saveSort != null?"Service=sort&":""}index=${tag-1}&numberOnPage=${numberOnP}&keyword=${saveSearch}&sortBy=${saveSort}">
-                                    <span class="prev-paging"><i class='bx bx-chevron-left unclick'></i></span>
+                                    <span class="prev-paging"><i class='bx bx-chevron-left'></i></span>
                                 </a>
                             </c:if>
                             <c:forEach var="page" begin="1" end="${endP}">
@@ -287,7 +294,27 @@
                 </div>
             </div>
         </section>
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this customer?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <a id="confirmDeleteButton" href="#" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script>
+            function setDeleteLink(deleteUrl) {
+                document.getElementById('confirmDeleteButton').href = deleteUrl;
+            }
             function updateItemsPerPage() {
                 var selectedNumber = document.getElementById("numberOnPage").value;
                 window.location.href = "CustomerManager?Service=listAllCustomer&numberOnPage=" + selectedNumber;
@@ -297,16 +324,22 @@
                 myAlert.classList.remove('show');
             }
 
-            document.getElementById("exportButton").addEventListener("click", function () {
-                var exportConfirmation = confirm("Would you want to export to excel?");
-                if (exportConfirmation) {
-                    window.location.href = "export";
-                } else {
-                    // If the user cancels, do nothing
-                }
-            });
-            
-            
         </script>
+        <footer class="footer">
+    <div class="footer-content">
+        <p>© 2024 Online Shop. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/terms-of-service">Terms of Service</a></li>
+            <li><a href="/contact-us">Contact Us</a></li>
+            <li><a href="/about-us">About Us</a></li>
+        </ul>
+        <div class="social-media">
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://twitter.com" target="_blank">Twitter</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+        </div>
+    </div>
+</footer>
     </body>
 </html>

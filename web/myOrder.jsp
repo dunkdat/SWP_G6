@@ -7,6 +7,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="constant.*" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,7 +17,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </head>
     <body>
-      <header class="header collapsed">
+       <header class="header collapsed">
             <div class="left-section">
                 <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
                 <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
@@ -24,7 +25,7 @@
             </div>
             <div class="right-section">
                 <div class="icons">
-                    <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+                    <a href="ProfileServlet">
                         <c:if test="${current_user == null}">
                             <img src="images/profile.png" alt="Account" >
                         </c:if>
@@ -44,13 +45,13 @@
                                 <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
                             </c:if>
 
-                            <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+                            <a href="ProfileServlet">
                                 Profile
                             </a>
                             <a href="logout">Logout</a>
                         </div>
                     </c:if>
-                        <h3>role: ${current_user.role}</h3>
+
                     <c:if test="${current_user.role == 'Customer'}">
                         <a href="cart"><img src="images/cart.png" alt="Cart"></a> 
                     </c:if>

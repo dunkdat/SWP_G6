@@ -14,21 +14,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.FileOutputStream;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import model.OrderManager;
-import javax.swing.*;
 import model.User;
 
 /**
@@ -64,17 +53,25 @@ public class OrderManagerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession ss = request.getSession();
+        User usLogin = (User)ss.getAttribute("current_user");
+        if(usLogin == null) {
+            response.sendRedirect("login");
+            return;
+        }
+        //only admin or sale can manage
+        if(!usLogin.getRole().equals("admin") && !usLogin.getRole().equals("sale")) {
+            response.sendRedirect("login");
+            return;
+        }
         DAOOrder dao_order = new DAOOrder();
-//        DAOOrder dao_order = new DAOOrder();
 
         if (request.getParameter("service") != null) {
             List<OrderManager> orders2 = dao_order.getAllOrders();
-//            request.setAttribute("isExport", "a");
-//            OrderManager.exportToExcel(orders2);
         }
 
         int page = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
-        int pageSize = 20;
+        int pageSize = 5;
 
         List<OrderManager> orders = dao_order.getAllOrders(page, pageSize, "", "", "", "", "");
 
@@ -108,7 +105,7 @@ public class OrderManagerServlet extends HttpServlet {
             return;
         }
         //only admin or sale can manage
-        if(!usLogin.getRole().equals("admin") || !usLogin.getRole().equals("sale")) {
+        if(!usLogin.getRole().equals("admin") && !usLogin.getRole().equals("sale")) {
             response.sendRedirect("login");
             return;
         }
@@ -116,7 +113,7 @@ public class OrderManagerServlet extends HttpServlet {
 
         int page = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
         String service = request.getParameter("service") != null ? request.getParameter("service") : "";
-        int pageSize = request.getParameter("pageSize") != null ? Integer.parseInt(request.getParameter("pageSize")) : 10;
+        int pageSize = request.getParameter("pageSize") != null ? Integer.parseInt(request.getParameter("pageSize")) : 5;
         String que = request.getParameter("que") != null ? request.getParameter("que") : "";
 
         String querry = request.getParameter("querry") != null ? request.getParameter("querry") : "";

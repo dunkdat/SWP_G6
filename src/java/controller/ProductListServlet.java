@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controller;
 
@@ -15,14 +15,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import model.Products;
-
 /**
  *
- * @author DAT
+ * @author Lenovo
  */
 public class ProductListServlet extends HttpServlet {
-
-    /**
+     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -121,8 +119,4 @@ public class ProductListServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-public static void main(String[] args) {
-    DAOProduct d = new DAOProduct();
-          System.out.println(d.getAllAverageStarRatings());
-    }
 }

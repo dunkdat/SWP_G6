@@ -19,7 +19,7 @@
             </div>
             <div class="right-section">
                 <div class="icons">
-                    <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+                    <a href="ProfileServlet">
                         <c:if test="${current_user == null}">
                             <img src="images/profile.png" alt="Account" >
                         </c:if>
@@ -39,7 +39,7 @@
                                 <img src="${IConstant.PATH_USER}/${current_user.imagePath}" alt="Avatar" class="dropdown-avatar">
                             </c:if>
 
-                            <a href="ProfileServlet?current_user=${sessionScope.current_user.id}">
+                            <a href="ProfileServlet">
                                 Profile
                             </a>
                             <a href="logout">Logout</a>
@@ -52,10 +52,9 @@
                 </div>
             </div>
         </header>
-    </div>
     
-    <c:if test="${current_user == 'Customer'}">
-        <img src="images/cart.png" alt="Cart">
+    <c:if test="${current_user.role == 'Customer'}">
+        <a href="cart"><img src="images/cart.png" alt="Cart"></a> 
     </c:if>
 </div>
         </div>

@@ -1,28 +1,27 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controller;
 
-import dal.DAOOrder;
-import dal.DAOUser;
+import dal.DAOAddress;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Order;
-import model.User;
 
 /**
  *
  * @author Lenovo
  */
-public class MyOrder extends HttpServlet {
-      /** 
+@WebServlet(name="DeleteAddress", urlPatterns={"/deleteAddress"})
+public class DeleteAddress extends HttpServlet {
+   
+    /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -37,10 +36,10 @@ public class MyOrder extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MyOrder</title>");  
+            out.println("<title>Servlet DeleteAddress</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MyOrder at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DeleteAddress at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,17 +56,13 @@ public class MyOrder extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        DAOOrder daoOrder = new DAOOrder();
-        HttpSession ss = request.getSession();
-        DAOUser daoU = new DAOUser();
-        User user =  (User)ss.getAttribute("current_user");
-        if(user == null) {
-            response.sendRedirect("login");
-            return;
+        try {
+            String id = request.getParameter("id");
+            DAOAddress daoA = new DAOAddress();
+            daoA.deleteAddress(Integer.parseInt(id));
+            response.sendRedirect("cartComplete");
+        } catch (Exception e) {
         }
-        List<Order> list = daoOrder.getAllOrderByCus(user.getId());
-        request.setAttribute("orders", list);
-        request.getRequestDispatcher("myOrder.jsp").forward(request, response);
     } 
 
     /** 
@@ -91,4 +86,5 @@ public class MyOrder extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

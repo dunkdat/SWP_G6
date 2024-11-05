@@ -1,28 +1,27 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controller;
 
-import dal.DAOOrder;
-import dal.DAOUser;
+import dal.DAOCategory;
+import dal.DAOProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Order;
-import model.User;
+import model.Products;
 
 /**
  *
- * @author Lenovo
+ * @author DAT
  */
-public class MyOrder extends HttpServlet {
-      /** 
+public class ProductDetailsServlet extends HttpServlet {
+   
+    /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -32,19 +31,21 @@ public class MyOrder extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet MyOrder</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet MyOrder at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String id = request.getParameter("id");
+            if(id!=null){
+            DAOProduct dp = new DAOProduct();
+                DAOCategory c = new DAOCategory();
+            Products p = dp.getProductById(id);
+            request.setAttribute("product", p);
+            request.setAttribute("averageRating", dp.getAverageStarRating(dp.getProductById(id).getName()));
+            request.setAttribute("productReviews", dp.getProductReviews(dp.getProductById(id).getName()));
+            request.setAttribute("relatedProducts", dp.getRelatedProductsByBrand(p.getBrand(),p.getCategory() ,id));
+                    request.setAttribute("categoryList", c.getAllCategory());
+            request.setAttribute("colors", dp.getColorsByProductName(p.getName()));
+            request.getRequestDispatcher("productdetails.jsp").forward(request, response);
+            }
         }
-    } 
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
@@ -57,17 +58,7 @@ public class MyOrder extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        DAOOrder daoOrder = new DAOOrder();
-        HttpSession ss = request.getSession();
-        DAOUser daoU = new DAOUser();
-        User user =  (User)ss.getAttribute("current_user");
-        if(user == null) {
-            response.sendRedirect("login");
-            return;
-        }
-        List<Order> list = daoOrder.getAllOrderByCus(user.getId());
-        request.setAttribute("orders", list);
-        request.getRequestDispatcher("myOrder.jsp").forward(request, response);
+        processRequest(request, response);
     } 
 
     /** 
@@ -91,4 +82,5 @@ public class MyOrder extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

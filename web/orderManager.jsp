@@ -35,98 +35,88 @@
               crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+        <link rel="stylesheet" href="css/homestyle.css"/>              
 
         <style>
-            .paging {
-                text-align: center;
+            .box-procees_order {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+            .pagination {
+                display: flex;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                gap: 10px; /* Khoảng cách giữa các nút */
+            }
+            .paging-box .number-paging {
+                width: 4rem;
+                height: 4rem;
+                line-height: 4rem;
+
+            }
+            .pagination .number-paging {
+                display: inline-block;
+
             }
 
-            .paging-box {
-                background-color: #f8f9fa;
-                border-radius: 5px;
-                overflow: hidden;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            .pagination .number-paging form {
+                margin: 0;
             }
 
-            .prev-paging, .next-paging {
-                padding: 10px;
-            }
-
-            button {
-                background-color: #007bff;
-                color: #fff;
+            .pagination .page-link {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 40px; /* Chiều rộng của nút */
+                height: 40px; /* Chiều cao của nút */
+                border-radius: 50%; /* Bo tròn để tạo hình tròn */
+                background-color: #000; /* Nền đen */
+                color: #fff; /* Chữ trắng */
                 border: none;
-                padding: 8px 12px;
-                border-radius: 4px;
                 cursor: pointer;
+                font-size: 16px;
                 transition: background-color 0.3s ease;
             }
 
-            button:disabled {
-                background-color: #ccc;
+            .pagination .page-link:hover {
+                background-color: #333; /* Màu khi hover */
+            }
+
+            .pagination .number-paging.active .page-link {
+                background-color: red; /* Màu cho nút đang được chọn */
+            }
+
+            .prev-paging button,
+            .next-paging button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: #000;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                font-size: 20px;
+                transition: background-color 0.3s ease;
+            }
+
+            .prev-paging button:hover,
+            .next-paging button:hover {
+                background-color: #333;
+            }
+
+            .prev-paging button:disabled,
+            .next-paging button:disabled {
+                background-color: #666; /* Màu cho nút khi bị vô hiệu hóa */
                 cursor: not-allowed;
             }
-
-            .pagination {
-                list-style: none;
-                display: flex;
-                margin: 0;
-                padding: 10px;
-            }
-
-            .number-paging {
-                margin: 0 5px;
-            }
-
-            .page-link {
-                background-color: #fff;
-                color: #007bff;
-                border: 1px solid #007bff;
-                padding: 8px 12px;
-                border-radius: 4px;
-                cursor: pointer;
-                transition: background-color 0.3s ease, color 0.3s ease;
-            }
-
-            .page-link:hover {
-                background-color: #007bff;
-                color: #fff;
-            }
-
-
-
-            .panging {
-                margin-top: 20px;
-                margin-bottom: 20px;
-                margin-left: 20px;
-            }
-
-            /* CSS cho select box */
-            .panging select {
-                width: 200px;
-                height: 30px;
-                padding: 5px;
-                font-size: 16px;
-                border: 1px solid black;
-                border-radius: 9px;
-                margin-right: 15px;
-
-            }
-
-
-            .panging select option {
-                font-size: 16px;
-            }
-
-
-            .search-button:hover {
-                background-color: #0056b3;
-            }
-
-
-            .number-pagingactive {
-                background-color: #007bff;
+.active {
+                background-color: red;
                 color: #fff;
             }
         </style>
@@ -138,84 +128,83 @@
 
 <body>
 
-
+    <header class="header collapsed" >
+        <div class="left-section">
+            <a class="text-decoration-none" href="homepage"><img src="images/logo.png" alt="Shop Logo" class="w-auto" style="margin-left: 50px;"></a>
+            <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
+            <span class="store-locator">HỆ THỐNG CỬA HÀNG</span>
+        </div>
+        <div class="right-section">
+            <div class="icons">
+                <a href="CustomerManager?Service=updateCustomer&id=${sessionScope.current_user.id}"><img class="w-auto" src="images/profile.png" alt="Account"></a>
+            </div>
+        </div>
+    </header>
     <section>
         <div class="row h-100">
-            <div class="col-md-2 h-100 left-nav-admin p-0">
+            <div class="col-md-2 left-nav-admin p-0"  style="background-color: #ff6600; height: 100vh;">
                 <div class="p-5 pe-0">
                     <ul>
                         <li class="py-4 ps-3 mb-3">
-                            <a href="" class="fs-2 text-white d-flex align-items-center">
-                                <i class='bx bxs-dashboard me-3'></i>
+                            <a href="staffDashboard" class="fs-2 text-white d-flex align-items-center">
+                                <i class="bx bxs-dashboard me-3"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
                         <li class="py-4 ps-3 mb-3 active">
-                            <a href="" class="fs-2 text-white">
-                                <i class='bx bx-cart me-3'></i>
+                            <a href="orderManagerServlet" class="fs-2 text-white">
+                                <i class="bx bx-cart me-3"></i>
                                 <span>Order</span>
                             </a>
                         </li>
                         <li class="py-4 ps-3 mb-3">
-                            <a href="" class="fs-2 text-white d-flex align-items-center">
-                                <i class='bx bx-circle-three-quarter me-3'></i>
-                                <span>Statistic</span>
-                            </a>
-                        </li>
-                        <li class="py-4 ps-3 mb-3">
-                            <a href="" class="fs-2 text-white d-flex align-items-center">
-                                <i class='bx bxs-data me-3'></i>
+                            <a href="productlist" class="fs-2 text-white d-flex align-items-center">
+                                <i class="bx bxs-data me-3"></i>
                                 <span>Products</span>
                             </a>
                         </li>
-                        <li class="py-4 ps-3 mb-3">
-                            <a href="" class="fs-2 text-white d-flex align-items-center">
-                                <i class='bx bx-line-chart me-3'></i>
-                                <span>Stock</span>
-                            </a>
-                        </li>
-                        <li class="py-4 ps-3 mb-3">
-                            <a href="" class="fs-2 text-white d-flex align-items-center">
-                                <i class='bx bx-purchase-tag-alt me-3'></i>
-                                <span>Offer</span>
+                        <li class="py-4 ps-3 mb-3 ">
+                            <a href="CustomerManager" class="fs-3 text-white text-decoration-none">
+                                <i class="bx bx-cart me-3"></i>
+                                <span>User Manager</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="col-md-10 h-100 manage-product">
+            <div class="col-md-10 manage-product">
                 <h1 class="fw-bold my-4">Manager Order</h1>
                 <div class="row mt-5 ">
-<!--                    <div class="col-6">
-                        <div class="d-flex align-items-center">
-                            <div class="file-upload_box" data-bs-toggle="modal" data-bs-target="#importModal">
-                                <span class="d-md-block d-none" onclick="exportData()">Import from excel</span>
-                                 <input type="file" accept="xls" id="file-upload_input"> 
-                                <i class='bx bxs-file-import'></i>
-                            </div>
-                            <form id="exportForm" action="orderManagerServlet" method="get">
-                                 Nút để kích hoạt hàm exportData 
-                                <div class="file-export_box ms-4" onclick="exportData()">
-                                    <input type="hidden" name="service" value="export">
-                                    <span class="d-md-block d-none">Export to Excel</span>
-                                    <i class='bx bxs-file-export'></i>
-                                </div>
-                            </form>
-                            <div class="col-sm-6 col-md-5 search-box " style="padding-right: 10%; margin-left: 2%;">
-                                <div class="input-box d-flex">
-                                    <form class="d-flex" action="orderManagerServlet" method="post">
-                                        <div class="search-input" style="flex: 3;">
-                                            <input name="search" type="text"
-                                                   placeholder="Search for order"
-                                                   aria-label="Example text with button addon" style="width: 100%;">
-                                        </div>
-                                        <button name="service" value="search" type="submit" class="search-button" style="background-color: #007bff; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; margin-left: 10px; cursor: pointer; transition: background-color 0.3s;">Search</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
-                    <div class="col-6">
+                    <!--                    <div class="col-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="file-upload_box" data-bs-toggle="modal" data-bs-target="#importModal">
+                                                    <span class="d-md-block d-none" onclick="exportData()">Import from excel</span>
+                                                     <input type="file" accept="xls" id="file-upload_input"> 
+                                                    <i class='bx bxs-file-import'></i>
+                                                </div>
+                                                <form id="exportForm" action="orderManagerServlet" method="get">
+                                                     Nút để kích hoạt hàm exportData 
+                                                    <div class="file-export_box ms-4" onclick="exportData()">
+                                                        <input type="hidden" name="service" value="export">
+                                                        <span class="d-md-block d-none">Export to Excel</span>
+                                                        <i class='bx bxs-file-export'></i>
+                                                    </div>
+                                                </form>
+                                                <div class="col-sm-6 col-md-5 search-box " style="padding-right: 10%; margin-left: 2%;">
+                                                    <div class="input-box d-flex">
+                                                        <form class="d-flex" action="orderManagerServlet" method="post">
+                                                            <div class="search-input" style="flex: 3;">
+                                                                <input name="search" type="text"
+                                                                       placeholder="Search for order"
+                                                                       aria-label="Example text with button addon" style="width: 100%;">
+                                                            </div>
+                                                            <button name="service" value="search" type="submit" class="search-button" style="background-color: #007bff; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; margin-left: 10px; cursor: pointer; transition: background-color 0.3s;">Search</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                    <div class="col-12">
                         <div class="box-procees_order">
                             <form id="myForm" action="orderManagerServlet" method="post">
                                 <input type="hidden" value="<%=totalPages%>" name="totalPages">
@@ -225,27 +214,28 @@
                                 <input type="hidden" value="pagging" name="service">
                                 <input type="hidden" value="<%=que%>" name="que">
                                 <div class="panging" name="epp">
-                                    <label for="pa"  style="font-size: 16px">Choose elements per page:</label>
+                                    <label for="pa"  style="font-size: 20px; padding: 5px 10px;">Choose elements per page:</label>
                                     <select id="pa" name="nepp">
+                                        <option value="5" <%= (pageSize == 5) ? "selected" : ""%>>5 elements per page</option>
+                                        <option value="10" <%= (pageSize == 10) ? "selected" : ""%>>10 elements per page</option>
                                         <option value="20" <%= (pageSize == 20) ? "selected" : ""%>>20 elements per page</option>
-                                        <option value="50" <%= (pageSize == 50) ? "selected" : ""%>>50 elements per page</option>
-                                        <option value="100" <%= (pageSize == 100) ? "selected" : ""%>>100 elements per page</option>
 
                                     </select>
                                 </div>
                             </form>
                             <script>
 
-                                $(document).ready(function () {
-                                    $('#pa').change(function () {
-                                        var selectedValue = $(this).val();
-                                        $('#selectedValue').val(selectedValue);
-                                        $('#myForm').submit();
-                                    });
-                                });
+        $(document).ready(function () {
+            $('#pa').change(function () {
+                var selectedValue = $(this).val();
+                $('#selectedValue').val(selectedValue);
+                $('#myForm').submit();
+            });
+        });
                             </script>
 
-                            <div class="sort-order_btn">
+                            <div class="box-right">
+                                 <div class="sort-order_btn">
                                 <i class='bx bx-sort-alt-2'></i>
                                 <span>Sort by</span>
                                 <div class="box-sort_order">
@@ -378,6 +368,7 @@
                                     </form>
                                 </div>
                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -449,7 +440,7 @@
                                 <span class="text-danger fw-bold fs-4">Add date:</span><%=order.getOrderDate()%>
                             </div>
                             <div class="col-sm-12 col-md-2">
-                                <span class="text-danger fw-bold ">Total: </span><%=df.format(order.getTotal())%> vnđ
+                                <span class="text-danger fw-bold ">Total: </span><%=df.format(order.getTotal())%> $
                             </div>
                             <div class="col-6 fs-4 col-md-2">
                                 <form id="statusForm_<%=order.getOrderId()%>" action="orderManagerServlet" method="POST" onsubmit="return confirm('Are you sure you want to update the status?')">
@@ -541,9 +532,9 @@
 
                 </div>
             </div>
-            <div class="paging mt-5">
+            <div class="paging mb-5">
                 <div class="paging-box d-flex">
-                    <form method="post" action="orderManagerServlet" class="prev-paging">
+                    <form method="post" action="orderManagerServlet" class="prev-paging me-3">
 
                         <input type="hidden" name="querry" value="<%=querry%>">
                         <input type="hidden" name="querry2" value="<%=querry2%>">
@@ -559,7 +550,7 @@
 
                     <ul class="pagination">
                         <% for (int i = 1; i <= totalPages; i++) {%>
-                        <li class="number-paging" <%= (i == currentPage) ? "active" : ""%>>
+                        <li class="number-paging <%= (i == currentPage) ? "active" : ""%>" >
                             <form method="post" action="orderManagerServlet">
                                 <input type="hidden" name="querry" value="<%=querry%>">
                                 <input type="hidden" name="querry2" value="<%=querry2%>">
@@ -576,7 +567,7 @@
                         <% }%>
                     </ul>
 
-                    <form method="post" action="orderManagerServlet" class="next-paging">
+                    <form method="post" action="orderManagerServlet" class="next-paging ms-3">
 
                         <input type="hidden" name="querry" value="<%=querry%>">
                         <input type="hidden" name="querry2" value="<%=querry2%>">
@@ -591,8 +582,6 @@
                     </form>
                 </div>
             </div>
-
-
         </div>
 
     </div>
@@ -672,7 +661,22 @@
             }
         }
     </script>
-
+<footer class="footer">
+    <div class="footer-content">
+        <p>© 2024 Online Shop. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/terms-of-service">Terms of Service</a></li>
+            <li><a href="/contact-us">Contact Us</a></li>
+            <li><a href="/about-us">About Us</a></li>
+        </ul>
+        <div class="social-media">
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://twitter.com" target="_blank">Twitter</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+        </div>
+    </div>
+</footer>
 </body>
 
 </html>

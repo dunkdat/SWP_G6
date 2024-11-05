@@ -24,7 +24,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
-       <header class="header collapsed">
+        <header class="header collapsed">
             <div class="left-section">
                 <a href="homepage"><img src="images/logo.png" alt="Shop Logo" style="margin-left: 50px;"></a>
                 <span class="hotline">HOTLINE: 0962906982 | 0333256947</span>
@@ -69,7 +69,7 @@
             <div class="container py-5 h-100">
                 <div class="mt-5">
                     <a href="myOrder" class="btn px-4 py-2 rounded text-white bg-info">My Order</a>
-                    <a href="myCart" class="btn px-4 py-2 rounded text-warning bg-success">My Cart</a>
+                    <a href="cart" class="btn px-4 py-2 rounded text-warning bg-success">My Cart</a>
                 </div>
 
                 <form action="cartComplete" method="post" class="mt-4">
@@ -114,8 +114,10 @@
                                                                             <i class="fas fa-minus"></i>
                                                                         </a>
                                                                     </button>
-                                                                    <input id="form1" min="0" name="quantity" value="${product.quantity}" type="number"
-                                                                           class="form-control form-control-sm" readonly />
+
+                                                                    <input id="quantityInput_${product.id}" min="0" name="quantity" value="${product.quantity}" type="number"
+                                                                           class="form-control form-control-sm" onchange="validateAndSubmit('${product.id}')" />
+
                                                                     <button type="button" class="btn btn-link px-2">
                                                                         <a href="cart?Service=changeQuantity&pid=${product.id}&action=add">
                                                                             <i class="fas fa-plus"></i>
@@ -171,5 +173,21 @@
                 </form>
             </div>
         </section>
+        <script>
+            function validateAndSubmit(productId) {
+                const input = document.getElementById('quantityInput_'+productId);
+                const value = input.value;
+
+                // Kiểm tra xem giá trị có phải là số nguyên không và lớn hơn hoặc bằng 0
+                if (Number.isInteger(Number(value)) && Number(value) >= 0) {
+                    // Gửi yêu cầu với số lượng mới
+                    window.location.href = "cart?Service=changeQuantity&pid="+productId+"&quantity="+value+"&action=asign";
+                } else {
+                    alert("Vui lòng nhập số hợp lệ.");
+                    // Reset lại giá trị ban đầu nếu không hợp lệ
+                    input.value = input.defaultValue;
+                }
+            }
+        </script>
     </body>
 </html>
